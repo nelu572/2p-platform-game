@@ -4,6 +4,7 @@ public interface IInputProvider
 {
     float GetMove();
     bool GetJump();
+    bool GetOnGround();
 }
 
 public class PlayerController : MonoBehaviour
@@ -47,10 +48,13 @@ public class PlayerController : MonoBehaviour
 
         if (input.GetJump())
         {
-            rb.linearVelocity = new Vector2(
-                rb.linearVelocity.x,
-                jumpForce
-            );
+            if (input.GetOnGround())
+            {
+                rb.linearVelocity = new Vector2(
+                    rb.linearVelocity.x,
+                    jumpForce
+                );
+            }
         }
     }
 }
