@@ -1,60 +1,34 @@
 using UnityEngine;
-
-public interface IInputProvider
-{
-    float GetMove();
-    bool GetJump();
-    bool GetOnGround();
-}
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private IInputProvider input;
+    private Vector2 moveInput;
 
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    [SerializeField] float speed = 5f;
+    [SerializeField] float jumpPower = 8f;
 
-    public void Initialize(IInputProvider provider)
-    {
-        input = provider;
-    }
-
-    private void Awake()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        Initialize(GetComponent<IInputProvider>());
+        moveInput = context.ReadValue<Vector2>();
     }
 
-    private void FixedUpdate()
+    public void OnJump(InputAction.CallbackContext context)
     {
-        if (input == null) return;
-
-        float move = input.GetMove();
-
-        rb.linearVelocity = new Vector2(
-            move * moveSpeed,
-            rb.linearVelocity.y
-        );
-    }
-
-    private void Update()
-    {
-        if (input == null) return;
-
-        if (input.GetJump())
+        if (context.started)
         {
-            if (input.GetOnGround())
-            {
-                rb.linearVelocity = new Vector2(
-                    rb.linearVelocity.x,
-                    jumpForce
-                );
-            }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
         }
+    }
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
     }
 }
