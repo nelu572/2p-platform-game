@@ -10,7 +10,7 @@ public class SceneChange : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene("Mode Select Scene");
+        SceneManager.LoadScene("Mod Select Scene");
     }
     public void Option()
     {
