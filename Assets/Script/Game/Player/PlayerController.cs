@@ -22,10 +22,13 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+<<<<<<< HEAD
         if (moveInput.x < 0)
             transform.localScale = new Vector3(-1f, 1.5f, 1);
         else if (moveInput.x > 0)
             transform.localScale = new Vector3(1f, 1.5f, 1);
+=======
+>>>>>>> 6951cadf5d1c159d2ae53e5643c2cbb65d0518e4
     }
 
     public void OnJump(InputAction.CallbackContext context)
