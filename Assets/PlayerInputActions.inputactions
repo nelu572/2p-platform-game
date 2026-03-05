@@ -23,6 +23,27 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+<<<<<<< HEAD
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "43e672d6-5d5c-484b-ad07-e84022f674b3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill",
+                    "type": "Button",
+                    "id": "97a6665e-d57c-4f55-b7b6-d65719d02b24",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+=======
+>>>>>>> 6951cadf5d1c159d2ae53e5643c2cbb65d0518e4
                 }
             ],
             "bindings": [
@@ -91,6 +112,31 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+<<<<<<< HEAD
+                },
+                {
+                    "name": "",
+                    "id": "368541ee-a662-465b-bfb3-88429e624ce6",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "20825172-f1c7-405f-978a-84cd48a73dcf",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+=======
+>>>>>>> 6951cadf5d1c159d2ae53e5643c2cbb65d0518e4
                 }
             ]
         },
@@ -115,6 +161,27 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+<<<<<<< HEAD
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "058abd84-2ef7-4e9c-81f9-c0eff4ce3ba9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill",
+                    "type": "Button",
+                    "id": "7991db72-a26b-496c-b3cc-5f475a6bbe55",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+=======
+>>>>>>> 6951cadf5d1c159d2ae53e5643c2cbb65d0518e4
                 }
             ],
             "bindings": [
@@ -183,6 +250,31 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
+<<<<<<< HEAD
+                },
+                {
+                    "name": "",
+                    "id": "291b98e7-699a-456f-be81-a825dc305ed5",
+                    "path": "<Keyboard>/numpad7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0288f21-e371-482c-9d93-b77fd5bfc7de",
+                    "path": "<Keyboard>/numpad9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+=======
+>>>>>>> 6951cadf5d1c159d2ae53e5643c2cbb65d0518e4
                 }
             ]
         }
