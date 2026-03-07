@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,12 +24,25 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        Vector3 scale = transform.localScale;
+
+        if (moveInput.x > 0)
+            transform.localScale = new Vector3(Math.Abs(scale.x), scale.y, scale.z);
+        else if (moveInput.x == 0)
+            transform.localScale = scale;
+        else
+            transform.localScale = new Vector3(-Math.Abs(scale.x), scale.y, scale.z);
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started) isJumpHeld = true;
         if (context.canceled) isJumpHeld = false;
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+
     }
 
     void FixedUpdate()
