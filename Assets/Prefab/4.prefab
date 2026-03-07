@@ -274,25 +274,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 97cac101-be61-45c5-8369-8700d2e673fe
     m_ActionName: 'Player2/Jump[/Keyboard/upArrow]'
-<<<<<<< HEAD
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 43e672d6-5d5c-484b-ad07-e84022f674b3
-    m_ActionName: 'Player1/Attack[/Keyboard/q]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 97a6665e-d57c-4f55-b7b6-d65719d02b24
-    m_ActionName: 'Player1/Skill[/Keyboard/e]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 058abd84-2ef7-4e9c-81f9-c0eff4ce3ba9
-    m_ActionName: 'Player2/Attack[/Keyboard/numpad7]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7991db72-a26b-496c-b3cc-5f475a6bbe55
-    m_ActionName: 'Player2/Skill[/Keyboard/numpad9]'
-=======
->>>>>>> 6951cadf5d1c159d2ae53e5643c2cbb65d0518e4
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player1
