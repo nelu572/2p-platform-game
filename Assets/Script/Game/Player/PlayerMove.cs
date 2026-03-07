@@ -1,12 +1,11 @@
 using System;
-using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Scripting.APIUpdating;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private Vector2 moveInput;
 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float jumpPower = 8f;
@@ -14,35 +13,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask objectLayer;
     [SerializeField] private LayerMask groundLayer;
 
+
+    private Vector2 moveInput;
+
+
     private bool isJumpHeld = false;
 
-    void Awake()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-        Vector3 scale = transform.localScale;
-
-        if (moveInput.x > 0)
-            transform.localScale = new Vector3(Math.Abs(scale.x), scale.y, scale.z);
-        else if (moveInput.x == 0)
-            transform.localScale = scale;
-        else
-            transform.localScale = new Vector3(-Math.Abs(scale.x), scale.y, scale.z);
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.started) isJumpHeld = true;
-        if (context.canceled) isJumpHeld = false;
-    }
-
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-
     }
 
     void FixedUpdate()
@@ -53,6 +32,24 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
         }
+    }
+
+    public void SetMoveInput(Vector2 input)
+    {
+        moveInput = input;
+        Vector3 scale = transform.localScale;
+
+        if (moveInput.x > 0)
+            transform.localScale = new Vector3(Math.Abs(scale.x), scale.y, scale.z);
+        else if (moveInput.x == 0)
+            transform.localScale = scale;
+        else
+            transform.localScale = new Vector3(-Math.Abs(scale.x), scale.y, scale.z);
+    }
+
+    public void SetIsJumpHeld(bool input)
+    {
+        
     }
 
     private bool getOnground()

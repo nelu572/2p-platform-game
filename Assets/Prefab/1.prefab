@@ -99,7 +99,8 @@ GameObject:
   - component: {fileID: 1564317978531282679}
   - component: {fileID: 2350575595110465048}
   - component: {fileID: 9068313011290668393}
-  - component: {fileID: 1234275642367842602}
+  - component: {fileID: -5924683806001248481}
+  - component: {fileID: 4977692027028341148}
   - component: {fileID: 8636140227896767328}
   - component: {fileID: 7763698093214760924}
   m_Layer: 6
@@ -253,7 +254,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1234275642367842602
+--- !u!114 &-5924683806001248481
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -262,7 +263,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8987170305632143721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9768d60f907df5e4f93b9074ccde85ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0889c3648185c0b438c77eab93396f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
@@ -273,6 +274,18 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &4977692027028341148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987170305632143721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61da4a707422004489469e26cd5bd525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8636140227896767328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,8 +313,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1234275642367842602}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 4977692027028341148}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -316,8 +329,8 @@ MonoBehaviour:
     m_ActionName: 'Player1/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1234275642367842602}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 4977692027028341148}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -332,8 +345,8 @@ MonoBehaviour:
     m_ActionName: 'Player1/Jump[/Keyboard/w]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1234275642367842602}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 4977692027028341148}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -348,8 +361,8 @@ MonoBehaviour:
     m_ActionName: 'Player2/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1234275642367842602}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 4977692027028341148}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
@@ -364,8 +377,8 @@ MonoBehaviour:
     m_ActionName: 'Player2/Jump[/Keyboard/upArrow]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1234275642367842602}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 4977692027028341148}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
@@ -380,8 +393,8 @@ MonoBehaviour:
     m_ActionName: 'Player1/Attack[/Keyboard/q]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1234275642367842602}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 4977692027028341148}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
         m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
