@@ -1,7 +1,5 @@
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -49,7 +47,7 @@ public class PlayerMove : MonoBehaviour
 
     public void SetIsJumpHeld(bool input)
     {
-        
+        isJumpHeld = input;
     }
 
     private bool getOnground()
@@ -61,7 +59,7 @@ public class PlayerMove : MonoBehaviour
         Vector2 direction = Vector2.down;
         float distance = 0.1f;
 
-        // DrawBoxCast(origin, size, direction, distance); 레이박스 디버깅
+        DrawBoxCast(origin, size, direction, distance);
 
         RaycastHit2D[] hits = Physics2D.BoxCastAll(
             origin,
@@ -74,7 +72,10 @@ public class PlayerMove : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.collider != null && hit.collider.gameObject != gameObject)
+            if (hit.collider == null || hit.collider.gameObject == gameObject)
+                continue;
+
+            if (hit.normal.y > 0.5f)
                 return true;
         }
 

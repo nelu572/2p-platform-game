@@ -32,6 +32,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Skill",
+                    "type": "Button",
+                    "id": "debd4d02-2fc0-45d5-a51c-c957f4ae16c3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -104,11 +113,22 @@
                 {
                     "name": "",
                     "id": "28b1a157-0a25-42d3-9132-43e76bc30678",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4b666bd-7c04-46b5-bea0-5e2937a29810",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -140,6 +160,15 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "ecf4d164-2326-4e6d-8a8b-919f669071bd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill",
+                    "type": "Button",
+                    "id": "0a19e7a5-f3b0-4517-9553-7c507bc27a82",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -216,11 +245,22 @@
                 {
                     "name": "",
                     "id": "597450c2-e465-4486-9516-d3f8cd279be5",
-                    "path": "<Keyboard>/numpad7",
+                    "path": "<Keyboard>/comma",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2f0f750-0847-4492-bc88-bbf40b920e52",
+                    "path": "<Keyboard>/period",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8845834561764597631}
   - component: {fileID: 7325552234951093782}
   - component: {fileID: 1496506939413003553}
+  - component: {fileID: 7856708911248447352}
   - component: {fileID: 5125765784713225748}
   - component: {fileID: 1754689963988877168}
   - component: {fileID: 3272847449256917651}
@@ -33,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.72731626, y: 6.1074233, z: 0}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6481156076292955673}
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 862983005
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -8567186622430992613, guid: 38e88237fcd7d5e4898601db1c66febf, type: 3}
   m_Color: {r: 0.9405657, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,14 +160,26 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1, y: 1.5}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &7856708911248447352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312848622464956131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a00f531514d2c14c803cd35f221992f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5125765784713225748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +333,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ecf4d164-2326-4e6d-8a8b-919f669071bd
     m_ActionName: 'Player2/Attack[/Keyboard/numpad7]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1754689963988877168}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
+        m_MethodName: OnSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: debd4d02-2fc0-45d5-a51c-c957f4ae16c3
+    m_ActionName: 'Player1/Skill[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1754689963988877168}
+        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
+        m_MethodName: OnSkill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0a19e7a5-f3b0-4517-9553-7c507bc27a82
+    m_ActionName: 'Player2/Skill[/Keyboard/numpad9]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player1
