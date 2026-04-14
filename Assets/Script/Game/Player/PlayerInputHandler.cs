@@ -11,23 +11,31 @@ public class PlayerInputHandler : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
     }
 
+    void Update()
+    {
+        _playerController.Move(_moveInput);
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
     }
 
-    public void OnJunp(InputAction.CallbackContext context)
+    public void OnJump(InputAction.CallbackContext context)
     {
-        _playerController.Jump();
+        if (context.started)
+            _playerController.Jump();
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        _playerController.Attack();
+        if (context.started)
+            _playerController.Attack();
     }
 
     public void OnSkill(InputAction.CallbackContext context)
     {
-        _playerController.Skill();
+        if (context.started)
+            _playerController.Skill();
     }
 }
