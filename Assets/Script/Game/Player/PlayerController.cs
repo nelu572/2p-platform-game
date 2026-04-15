@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
     private bool _jumpRequested;
-    private float _moveInput;
 
     void Awake()
     {
@@ -44,8 +43,6 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector2 input)
     {
-        _moveInput = input.x;
-
         Vector2 move = new Vector2(input.x * _moveSpeed * Time.fixedDeltaTime, 0f);
         _rigidbody2D.MovePosition(_rigidbody2D.position + move);
 
