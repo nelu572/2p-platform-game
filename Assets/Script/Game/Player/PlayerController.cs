@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector2 input)
     {
-        Vector2 move = new Vector2(input.x * _moveSpeed * Time.fixedDeltaTime, 0f);
+        Vector2 move = new Vector2(input.x * _moveSpeed * Time.deltaTime, 0f);
         _rigidbody2D.MovePosition(_rigidbody2D.position + move);
 
         if (input.x > 0.01f)
