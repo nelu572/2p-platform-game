@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
-    private bool _jumpRequested;
 
     void Awake()
     {
@@ -31,14 +30,6 @@ public class PlayerController : MonoBehaviour
             _groundCheckRadius,
             _groundLayer
         );
-    }
-    void FixedUpdate()
-    {
-        if (_jumpRequested && _isGrounded)
-        {
-            _rigidbody2D.linearVelocity = new Vector2(0f, _jumpForce);
-            _jumpRequested = false;
-        }
     }
 
     public void Move(Vector2 input)
@@ -54,7 +45,8 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         if (_isGrounded)
-            _jumpRequested = true;
+            _rigidbody2D.linearVelocity = new Vector2(0f, _jumpForce);
+
     }
     public void Attack()
     {
