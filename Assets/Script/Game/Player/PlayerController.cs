@@ -5,39 +5,39 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("이동")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float _moveSpeed = 5f;
 
     [Header("점프")]
-    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float _jumpForce = 10f;
 
     [Header("지면 감지")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.1f;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private float _groundCheckRadius = 0.1f;
+    [SerializeField] private LayerMask _groundLayer;
 
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
     private bool _jumpRequested;
     private float _moveInput;
 
     void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _rb.freezeRotation = true;
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rigidbody2D.freezeRotation = true;
     }
     void Update()
     {
         _isGrounded = Physics2D.OverlapCircle(
-            groundCheck.position,
-            groundCheckRadius,
-            groundLayer
+            _groundCheck.position,
+            _groundCheckRadius,
+            _groundLayer
         );
     }
     void FixedUpdate()
     {
         if (_jumpRequested && _isGrounded)
         {
-            _rb.linearVelocity = new Vector2(0f, jumpForce);
+            _rigidbody2D.linearVelocity = new Vector2(0f, _jumpForce);
             _jumpRequested = false;
         }
     }
@@ -46,9 +46,8 @@ public class PlayerController : MonoBehaviour
     {
         _moveInput = input.x;
 
-        Vector2 move = new Vector2(input.x * moveSpeed * Time.fixedDeltaTime, 0f);
-        _rb.MovePosition(_rb.position + move);
-
+        Vector2 move = new Vector2(input.x * _moveSpeed * Time.fixedDeltaTime, 0f);
+        _rigidbody2D.MovePosition(_rigidbody2D.position + move);
 
         if (input.x > 0.01f)
             transform.localScale = new Vector3(1f, 1f, 1f);
