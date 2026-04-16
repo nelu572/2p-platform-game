@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IAttackController
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundCheckRadius = 0.1f;
     [SerializeField] private LayerMask _groundLayer;
+    public float SkillCooltime { get; set; }
+    public float AttackCooltime { get; set; }
 
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
@@ -30,6 +32,12 @@ public class PlayerController : MonoBehaviour
             _groundCheckRadius,
             _groundLayer
         );
+
+        if(AttackCooltime > 0)
+            AttackCooltime -= Time.deltaTime;
+        
+        if(SkillCooltime > 0)
+            SkillCooltime -= Time.deltaTime;
     }
 
     public void Move(Vector2 input)
@@ -50,11 +58,13 @@ public class PlayerController : MonoBehaviour
     }
     public void Attack()
     {
-        Debug.Log("공격 실행");
+        if (AttackCooltime > 0f)
+            return;
     }
     public void Skill()
     {
-        Debug.Log("스킬 실행");
+        if (SkillCooltime > 0f)
+            return;
     }
     //// 에디터에서 지면 감지 범위 시각화
     //void OnDrawGizmosSelected()
