@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour, IAttackController
     [SerializeField] private LayerMask _groundLayer;
     public float SkillCooltime { get; set; }
     public float AttackCooltime { get; set; }
+    
+    protected delegate void OnAttackHandler();
+    OnAttackHandler OnAttack;
+    protected delegate void OnSkillHandler();
+    OnSkillHandler OnSkill;
 
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
@@ -60,11 +65,13 @@ public class PlayerController : MonoBehaviour, IAttackController
     {
         if (AttackCooltime > 0f)
             return;
+        OnAttack();
     }
     public void Skill()
     {
         if (SkillCooltime > 0f)
             return;
+        OnSkill();
     }
     //// 에디터에서 지면 감지 범위 시각화
     //void OnDrawGizmosSelected()
