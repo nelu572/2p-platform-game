@@ -65,13 +65,13 @@ public class PlayerController : MonoBehaviour, IAttackController
     {
         if (AttackCooltime > 0f)
             return;
-        OnAttack();
+        OnAttack?.Invoke();
     }
     public void Skill()
     {
         if (SkillCooltime > 0f)
             return;
-        OnSkill();
+        OnSkill?.Invoke();
     }
     //// 에디터에서 지면 감지 범위 시각화
     //void OnDrawGizmosSelected()
