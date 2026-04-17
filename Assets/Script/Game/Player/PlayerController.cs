@@ -32,12 +32,6 @@ public class PlayerController : MonoBehaviour, IAttackController
     }
     void Update()
     {
-        _isGrounded = Physics2D.OverlapCircle(
-            _groundCheck.position,
-            _groundCheckRadius,
-            _groundLayer
-        );
-
         if(AttackCooltime > 0)
             AttackCooltime -= Time.deltaTime;
         
@@ -45,6 +39,14 @@ public class PlayerController : MonoBehaviour, IAttackController
             SkillCooltime -= Time.deltaTime;
     }
 
+    void FixedUpdate()
+    {
+        _isGrounded = Physics2D.OverlapCircle(
+            _groundCheck.position,
+            _groundCheckRadius,
+            _groundLayer
+        );
+    }
     public void Move(Vector2 input)
     {
         Vector2 move = new Vector2(input.x * _moveSpeed * Time.deltaTime, 0f);

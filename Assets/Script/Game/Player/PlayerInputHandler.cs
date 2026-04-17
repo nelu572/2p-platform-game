@@ -11,7 +11,7 @@ public class PlayerInputHandler : MonoBehaviour
         _playerController = GetComponent<PlayerController>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         _playerController.Move(_moveInput);
     }
