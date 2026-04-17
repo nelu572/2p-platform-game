@@ -18,9 +18,9 @@ public class PlayerController : MonoBehaviour, IAttackController
     public float AttackCooltime { get; set; }
     
     protected delegate void OnAttackHandler();
-    OnAttackHandler OnAttack;
+    protected OnAttackHandler OnAttack;
     protected delegate void OnSkillHandler();
-    OnSkillHandler OnSkill;
+    protected OnSkillHandler OnSkill;
 
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
