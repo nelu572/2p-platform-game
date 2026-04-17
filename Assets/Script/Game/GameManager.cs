@@ -1,26 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] characterPrefabs;
-    [SerializeField] private CameraMove cameraMove;
+    private GameObject _player1;
+    private GameObject _player2;
 
-    void Start()
+    private List<GameObject> _deathPlayer1;
+    private List<GameObject> _deathPlayer2;
+
+    void Awake()
     {
-        GameObject p1 = SpawnPlayer(CharacterSelectData.player1Index, "Player1", new Vector3(-3, 0, 0));
-        GameObject p2 = SpawnPlayer(CharacterSelectData.player2Index, "Player2", new Vector3(-3, 0, 0));
 
-        cameraMove.SetTargets(p1.transform, p2.transform);
     }
 
-    GameObject SpawnPlayer(int index, string actionMap, Vector3 pos)
+    // Update is called once per frame
+    void Update()
     {
-        GameObject player = Instantiate(characterPrefabs[index], pos, Quaternion.identity);
 
-        PlayerInput input = player.GetComponent<PlayerInput>();
-        input.SwitchCurrentActionMap(actionMap);
-
-        return player;
     }
 }
