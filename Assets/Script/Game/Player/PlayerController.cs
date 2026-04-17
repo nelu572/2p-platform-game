@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour, IAttackController
@@ -17,10 +17,8 @@ public class PlayerController : MonoBehaviour, IAttackController
     public float SkillCooltime { get; set; }
     public float AttackCooltime { get; set; }
     
-    protected delegate void OnAttackHandler();
-    protected OnAttackHandler OnAttack;
-    protected delegate void OnSkillHandler();
-    protected OnSkillHandler OnSkill;
+    protected Action OnAttackHandler;
+    protected Action OnSkillHandler;
 
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
@@ -67,13 +65,13 @@ public class PlayerController : MonoBehaviour, IAttackController
     {
         if (AttackCooltime > 0f)
             return;
-        OnAttack?.Invoke();
+        OnAttackHandler();
     }
     public void Skill()
     {
         if (SkillCooltime > 0f)
             return;
-        OnSkill?.Invoke();
+        OnSkillHandler();
     }
     //// 에디터에서 지면 감지 범위 시각화
     //void OnDrawGizmosSelected()
