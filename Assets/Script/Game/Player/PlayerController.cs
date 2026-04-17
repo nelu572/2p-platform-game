@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour, IAttackController
     public void Jump()
     {
         if (_isGrounded)
-            _rigidbody2D.linearVelocity = new Vector2(0f, _jumpForce);
+            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
 
     }
     public void Attack()
