@@ -1,18 +1,18 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour, IAttackController
 {
-    [Header("ÀÌµ¿")]
+    [Header("ì´ë™")]
     [SerializeField] private float _moveSpeed = 5f;
 
-    [Header("Á¡ÇÁ")]
+    [Header("ì í”„")]
     [SerializeField] private float _jumpForce = 10f;
 
-    [Header("Áö¸é °¨Áö")]
+    [Header("ì§€ë©´ ê°ì§€")]
     [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _groundCheckRadius = 0.1f;
+    [SerializeField] private float _groundCheckRadius = 0.6f;
     [SerializeField] private LayerMask _groundLayer;
     public float SkillCooltime { get; set; }
     public float AttackCooltime { get; set; }
@@ -39,11 +39,13 @@ public class PlayerController : MonoBehaviour, IAttackController
 
     void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapCircle(
+        if (Physics2D.OverlapCircle(
             _groundCheck.position,
             _groundCheckRadius,
-            _groundLayer
-        );
+            _groundLayer) != null)
+        {
+            _isGrounded = true;
+        }
     }
     public void Move(Vector2 input)
     {
@@ -58,8 +60,10 @@ public class PlayerController : MonoBehaviour, IAttackController
     public void Jump()
     {
         if (_isGrounded)
+        {
             _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
-
+            _isGrounded = false;
+        }
     }
     public void Attack()
     {
@@ -73,7 +77,7 @@ public class PlayerController : MonoBehaviour, IAttackController
             return;
         OnSkillHandler();
     }
-    //// ¿¡µğÅÍ¿¡¼­ Áö¸é °¨Áö ¹üÀ§ ½Ã°¢È­
+    //// ì—ë””í„°ì—ì„œ ì§€ë©´ ê°ì§€ ë²”ìœ„ ì‹œê°í™”
     //void OnDrawGizmosSelected()
     //{
     //    if (groundCheck == null) return;
