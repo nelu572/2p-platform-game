@@ -37,16 +37,6 @@ public class PlayerController : MonoBehaviour, IAttackController
             SkillCooltime -= Time.deltaTime;
     }
 
-    void FixedUpdate()
-    {
-        if (Physics2D.OverlapCircle(
-            _groundCheck.position,
-            _groundCheckRadius,
-            _groundLayer) != null)
-        {
-            _isGrounded = true;
-        }
-    }
     public void Move(Vector2 input)
     {
         _rigidbody2D.linearVelocity = new Vector2(
@@ -61,6 +51,14 @@ public class PlayerController : MonoBehaviour, IAttackController
     }
     public void Jump()
     {
+        if (Physics2D.OverlapCircle(
+            _groundCheck.position,
+            _groundCheckRadius,
+            _groundLayer) != null)
+        {
+            _isGrounded = true;
+        }
+
         if (_isGrounded)
         {
             _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
