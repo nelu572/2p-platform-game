@@ -49,8 +49,10 @@ public class PlayerController : MonoBehaviour, IAttackController
     }
     public void Move(Vector2 input)
     {
-        Vector2 move = new Vector2(input.x * _moveSpeed * Time.deltaTime, 0f);
-        _rigidbody2D.MovePosition(_rigidbody2D.position + move);
+        _rigidbody2D.linearVelocity = new Vector2(
+            input.x * _moveSpeed,
+            _rigidbody2D.linearVelocity.y  // ← 현재 y velocity 유지
+        );
 
         if (input.x > 0.01f)
             transform.localScale = new Vector3(1f, 1f, 1f);
