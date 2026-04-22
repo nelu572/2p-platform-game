@@ -1,19 +1,21 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System;
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour, IAttackController
 {
-    [Header("ÀÌµ¿")]
+    [Header("ì´ë™")]
     [SerializeField] private float _moveSpeed = 5f;
 
-    [Header("Á¡ÇÁ")]
+    [Header("ì í”„")]
     [SerializeField] private float _jumpForce = 10f;
 
-    [Header("Áö¸é °¨Áö")]
-    [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _groundCheckRadius = 0.1f;
+    [Header("ì§€ë©´ ê°ì§€")]
     [SerializeField] private LayerMask _groundLayer;
+    
+    //ìºì‹±ì„ ìœ„í•œ ë³€ìˆ˜
+    private Vector2 boxSize;
     public float SkillCooltime { get; set; }
     public float AttackCooltime { get; set; }
     
@@ -21,12 +23,16 @@ public class PlayerController : MonoBehaviour, IAttackController
     protected Action OnSkillHandler;
 
     private Rigidbody2D _rigidbody2D;
+    private BoxCollider2D _boxCollider2D;
     private bool _isGrounded;
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.freezeRotation = true;
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+
+        boxSize = _boxCollider2D.size;
     }
     void Update()
     {
@@ -36,19 +42,26 @@ public class PlayerController : MonoBehaviour, IAttackController
         if(SkillCooltime > 0)
             SkillCooltime -= Time.deltaTime;
     }
-
     void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapCircle(
-            _groundCheck.position,
-            _groundCheckRadius,
-            _groundLayer
-        );
+        Vector2 boxCenter = (Vector2)transform.position + _boxCollider2D.offset; // ì§€ì—­ë³€ìˆ˜
+        Vector2 capsuleCenter = new Vector2(boxCenter.x, boxCenter.y - boxSize.y * 0.5f); // ì§€ì—­ë³€ìˆ˜
+
+        _isGrounded = Physics2D.OverlapCapsule(
+            capsuleCenter,
+            new Vector2(boxSize.x * 0.9f, 0.1f),
+            CapsuleDirection2D.Horizontal,
+            0f,
+            _groundLayer ) != null;
+        
     }
+
     public void Move(Vector2 input)
     {
-        Vector2 move = new Vector2(input.x * _moveSpeed * Time.deltaTime, 0f);
-        _rigidbody2D.MovePosition(_rigidbody2D.position + move);
+        _rigidbody2D.linearVelocity = new Vector2(
+            input.x * _moveSpeed,
+            _rigidbody2D.linearVelocity.y  // â† í˜„ì¬ y velocity ìœ ì§€
+        );
 
         if (input.x > 0.01f)
             transform.localScale = new Vector3(1f, 1f, 1f);
@@ -58,8 +71,9 @@ public class PlayerController : MonoBehaviour, IAttackController
     public void Jump()
     {
         if (_isGrounded)
-            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
-
+        {
+            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);   
+        }
     }
     public void Attack()
     {
@@ -73,11 +87,4 @@ public class PlayerController : MonoBehaviour, IAttackController
             return;
         OnSkillHandler();
     }
-    //// ¿¡µğÅÍ¿¡¼­ Áö¸é °¨Áö ¹üÀ§ ½Ã°¢È­
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (groundCheck == null) return;
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-    //}
 }
