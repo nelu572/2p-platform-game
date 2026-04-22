@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour, IAttackController
@@ -11,9 +12,10 @@ public class PlayerController : MonoBehaviour, IAttackController
     [SerializeField] private float _jumpForce = 10f;
 
     [Header("지면 감지")]
-    [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _groundCheckRadius = 0.6f;
     [SerializeField] private LayerMask _groundLayer;
+    
+    //캐싱을 위한 변수
+    private Vector2 boxSize;
     public float SkillCooltime { get; set; }
     public float AttackCooltime { get; set; }
     
@@ -21,12 +23,16 @@ public class PlayerController : MonoBehaviour, IAttackController
     protected Action OnSkillHandler;
 
     private Rigidbody2D _rigidbody2D;
+    private BoxCollider2D _boxCollider2D;
     private bool _isGrounded;
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.freezeRotation = true;
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+
+        boxSize = _boxCollider2D.size;
     }
     void Update()
     {
@@ -35,6 +41,19 @@ public class PlayerController : MonoBehaviour, IAttackController
         
         if(SkillCooltime > 0)
             SkillCooltime -= Time.deltaTime;
+    }
+    void FixedUpdate()
+    {
+        Vector2 boxCenter = (Vector2)transform.position + _boxCollider2D.offset; // 지역변수
+        Vector2 capsuleCenter = new Vector2(boxCenter.x, boxCenter.y - boxSize.y * 0.5f); // 지역변수
+
+        _isGrounded = Physics2D.OverlapCapsule(
+            capsuleCenter,
+            new Vector2(boxSize.x * 0.9f, 0.1f),
+            CapsuleDirection2D.Horizontal,
+            0f,
+            _groundLayer ) != null;
+        
     }
 
     public void Move(Vector2 input)
@@ -51,18 +70,9 @@ public class PlayerController : MonoBehaviour, IAttackController
     }
     public void Jump()
     {
-        if (Physics2D.OverlapCircle(
-            _groundCheck.position,
-            _groundCheckRadius,
-            _groundLayer) != null)
-        {
-            _isGrounded = true;
-        }
-
         if (_isGrounded)
         {
-            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
-            _isGrounded = false;
+            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);   
         }
     }
     public void Attack()
@@ -77,11 +87,4 @@ public class PlayerController : MonoBehaviour, IAttackController
             return;
         OnSkillHandler();
     }
-    //// 에디터에서 지면 감지 범위 시각화
-    //void OnDrawGizmosSelected()
-    //{
-    //    if (groundCheck == null) return;
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-    //}
 }
