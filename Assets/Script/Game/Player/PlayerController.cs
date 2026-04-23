@@ -21,7 +21,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Rigidbody2D _rigidbody2D;
     private BoxCollider2D _boxCollider2D;
-    private bool _isGrounded;
+
+    // 점프 공격과 일반공격 애니메이션 구별하기 위해 public으로 변경
+    public bool _isGrounded;
 
     public int TeamId { get; set; }
 

@@ -42,7 +42,10 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         AttackCooltime = _attackCooltimeMax;
 
         // 에니메이션이 생긴다면 주석처리를 해제할 것입니다
-        //animator.SetTrigger("Attack");
+        //if (_playerController._isGrounded)
+        //    animator.SetTrigger("NormalAttack");
+        //else
+        //    animator.SetTrigger("JumpAttack");
 
         // 공격 판정
         PerformAttackHit();
