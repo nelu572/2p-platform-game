@@ -69,15 +69,11 @@ public class PlayerController : MonoBehaviour
     
     public void Attack()
     {
-        if (AttackCooltime > 0f)
-            return;
         OnAttackHandler?.Invoke();
     }
     
     public void Skill()
     {
-        if (SkillCooltime > 0f)
-            return;
         OnSkillHandler?.Invoke();
     }
 }
