@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public bool _isGrounded;
 
     public int TeamId { get; set; }
-
+    //넉백을 위해 만든 프로퍼티
+    public bool IsKnockedBack { get; set; }
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -52,6 +53,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move(Vector2 input)
     {
+        if (IsKnockedBack) return;
+
         _rigidbody2D.linearVelocity = new Vector2(
             input.x * _moveSpeed,
             _rigidbody2D.linearVelocity.y  // ← 현재 y velocity 유지
