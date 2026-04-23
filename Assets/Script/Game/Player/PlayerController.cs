@@ -3,7 +3,7 @@ using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IAttackController
+public class PlayerController : MonoBehaviour
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -13,14 +13,11 @@ public class PlayerController : MonoBehaviour, IAttackController
 
     [Header("지면 감지")]
     [SerializeField] private LayerMask _groundLayer;
-    
     //캐싱을 위한 변수
     private Vector2 boxSize;
-    public float SkillCooltime { get; set; }
-    public float AttackCooltime { get; set; }
-    
-    protected Action OnAttackHandler;
-    protected Action OnSkillHandler;
+
+    public Action OnAttackHandler;
+    public Action OnSkillHandler;
 
     private Rigidbody2D _rigidbody2D;
     private BoxCollider2D _boxCollider2D;
@@ -34,14 +31,7 @@ public class PlayerController : MonoBehaviour, IAttackController
 
         boxSize = _boxCollider2D.size;
     }
-    void Update()
-    {
-        if(AttackCooltime > 0)
-            AttackCooltime -= Time.deltaTime;
-        
-        if(SkillCooltime > 0)
-            SkillCooltime -= Time.deltaTime;
-    }
+    
     void FixedUpdate()
     {
         Vector2 boxCenter = (Vector2)transform.position + _boxCollider2D.offset; // 지역변수
@@ -68,6 +58,7 @@ public class PlayerController : MonoBehaviour, IAttackController
         else if (input.x < -0.01f)
             transform.localScale = new Vector3(-1f, 1f, 1f);
     }
+    
     public void Jump()
     {
         if (_isGrounded)
@@ -75,16 +66,18 @@ public class PlayerController : MonoBehaviour, IAttackController
             _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);   
         }
     }
+    
     public void Attack()
     {
         if (AttackCooltime > 0f)
             return;
-        OnAttackHandler();
+        OnAttackHandler?.Invoke();
     }
+    
     public void Skill()
     {
         if (SkillCooltime > 0f)
             return;
-        OnSkillHandler();
+        OnSkillHandler?.Invoke();
     }
 }
