@@ -3,7 +3,7 @@ using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private BoxCollider2D _boxCollider2D;
     private bool _isGrounded;
+
+    public int TeamId { get; set; }
 
     void Awake()
     {
@@ -75,5 +77,10 @@ public class PlayerController : MonoBehaviour
     public void Skill()
     {
         OnSkillHandler?.Invoke();
+    }
+
+    public void TakeDamage(int attackDamage)
+    {
+        Debug.Log($"{TeamId} : 체력 감소");
     }
 }

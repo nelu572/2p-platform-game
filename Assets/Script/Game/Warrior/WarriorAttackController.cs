@@ -67,7 +67,9 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             {
                 // 다른 팀만 데미지
                 if (damageable.TeamId != GetComponent<IDamageable>().TeamId)
+                {
                     damageable.TakeDamage(_attackDamage);
+                }
             }
             
         }
