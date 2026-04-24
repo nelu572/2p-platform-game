@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -87,5 +88,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(int attackDamage)
     {
         Debug.Log($"{TeamId} : 체력 감소");
+    }
+
+    public void ApplyKnockback(Vector2 direction, float force)
+    {
+        _rigidbody2D.AddForce(direction * force, ForceMode2D.Impulse);
+        StartCoroutine(KnockbackRoutine());
+    }
+
+    private IEnumerator KnockbackRoutine()
+    {
+        IsKnockedBack = true;
+        while (Mathf.Abs(_rigidbody2D.linearVelocity.x) > 0.1f)
+        {
+            _rigidbody2D.linearVelocity = new Vector2(
+                Mathf.Lerp(_rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 5f),
+                _rigidbody2D.linearVelocity.y
+            );
+            yield return null;
+        }
+        _rigidbody2D.linearVelocity = new Vector2(0f, _rigidbody2D.linearVelocity.y);
+        IsKnockedBack = false;
     }
 }

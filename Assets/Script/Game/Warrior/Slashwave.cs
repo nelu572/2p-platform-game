@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 // 검기 발사체
 public class SlashWave : MonoBehaviour
@@ -16,6 +15,8 @@ public class SlashWave : MonoBehaviour
     private float _maxDistance;
     //검기가 시작된 지점
     private Vector2 _startPosition;
+
+    [SerializeField] private float _knockbackForce = 8f;
 
     public void Initialize(int damage, int ownerTeamId, Vector2 direction, float speed, float maxDistance)
     {
@@ -46,31 +47,8 @@ public class SlashWave : MonoBehaviour
 
             damageable.TakeDamage(_damage);
 
-            // 넉백
-            if (col.TryGetComponent<Rigidbody2D>(out var rb))
-            {
-                rb.AddForce(_direction * 8f, ForceMode2D.Impulse);
-
                 if (col.TryGetComponent<PlayerController>(out var pc))
-                    StartCoroutine(KnockbackRoutine(pc, rb));
-            }
+                    pc.ApplyKnockback(_direction, _knockbackForce);
         }
-    }
-
-    private IEnumerator KnockbackRoutine(PlayerController pc, Rigidbody2D rb)
-    {
-        pc.IsKnockedBack = true;
-
-        while (Mathf.Abs(rb.linearVelocity.x) > 0.1f)
-        {
-            rb.linearVelocity = new Vector2(
-                Mathf.Lerp(rb.linearVelocity.x, 0f, Time.deltaTime * 5f),
-                rb.linearVelocity.y
-            );
-            yield return null;
-        }
-
-        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-        pc.IsKnockedBack = false;
     }
 }

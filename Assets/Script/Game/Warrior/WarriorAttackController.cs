@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 public class WarriorAttackController : MonoBehaviour, IAttackController
@@ -142,25 +140,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             slashWave.Initialize(_slashWaveDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance);
 
         // 시전자 반동
-        _rigidbody2d.AddForce(-direction * _selfKnockbackForce, ForceMode2D.Impulse);
-        StartCoroutine(SelfKnockbackRoutine(_rigidbody2d));
-    }
-
-    private IEnumerator SelfKnockbackRoutine(Rigidbody2D rigidbody2D)
-    {
-        _playerController.IsKnockedBack = true;
-
-        while (Mathf.Abs(rigidbody2D.linearVelocity.x) > 0.1f)
-        {
-            rigidbody2D.linearVelocity = new Vector2(
-                Mathf.Lerp(rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 5f),
-                rigidbody2D.linearVelocity.y
-            );
-            yield return null;
-        }
-
-        rigidbody2D.linearVelocity = new Vector2(0f, rigidbody2D.linearVelocity.y);
-        _playerController.IsKnockedBack = false;
+        _playerController.ApplyKnockback(-direction, _selfKnockbackForce);
     }
 
 #if UNITY_EDITOR
