@@ -33,8 +33,6 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     private PlayerController _playerController;
     //자기 자신에 있는 인터페이스 캐싱용
     private IDamageable _selfDamageable;
-
-    private Rigidbody2D _rigidbody2d;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator animator;
 
@@ -42,7 +40,6 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     {
         _playerController = GetComponent<PlayerController>();
         _selfDamageable = GetComponent<IDamageable>();
-        _rigidbody2d = GetComponent<Rigidbody2D>();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
@@ -127,12 +124,10 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             
         );
 
-        _slashWaveScale.x *= isFacingRight ? 1f : -1f; 
+        Vector3 waveScale = new Vector3(_slashWaveScale.x * (isFacingRight ? 1f : -1f), _slashWaveScale.y, 1f);
 
         // 방향에 따라 스프라이트 반전
-        slashWaveObj.transform.localScale = new Vector3(
-            _slashWaveScale.x, _slashWaveScale.y, 1f
-        );
+        slashWaveObj.transform.localScale = waveScale;
 
         // 검기 초기화
         if(slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
