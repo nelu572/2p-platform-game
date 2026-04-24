@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IAttackController
+public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -13,18 +14,20 @@ public class PlayerController : MonoBehaviour, IAttackController
 
     [Header("지면 감지")]
     [SerializeField] private LayerMask _groundLayer;
-    
+    [SerializeField] private bool _isGrounded;
     //캐싱을 위한 변수
     private Vector2 boxSize;
-    public float SkillCooltime { get; set; }
-    public float AttackCooltime { get; set; }
-    
-    protected Action OnAttackHandler;
-    protected Action OnSkillHandler;
+
+    public Action OnAttackHandler;
+    public Action OnSkillHandler;
 
     private Rigidbody2D _rigidbody2D;
     private BoxCollider2D _boxCollider2D;
-    private bool _isGrounded;
+
+    public bool IsGrounded => _isGrounded;
+    public int TeamId { get; set; }
+    //넉백을 위해 만든 프로퍼티
+    public bool IsKnockedBack { get; set; }
 
     void Awake()
     {
@@ -34,14 +37,7 @@ public class PlayerController : MonoBehaviour, IAttackController
 
         boxSize = _boxCollider2D.size;
     }
-    void Update()
-    {
-        if(AttackCooltime > 0)
-            AttackCooltime -= Time.deltaTime;
-        
-        if(SkillCooltime > 0)
-            SkillCooltime -= Time.deltaTime;
-    }
+    
     void FixedUpdate()
     {
         Vector2 boxCenter = (Vector2)transform.position + _boxCollider2D.offset; // 지역변수
@@ -58,6 +54,8 @@ public class PlayerController : MonoBehaviour, IAttackController
 
     public void Move(Vector2 input)
     {
+        if (IsKnockedBack) return;
+
         _rigidbody2D.linearVelocity = new Vector2(
             input.x * _moveSpeed,
             _rigidbody2D.linearVelocity.y  // ← 현재 y velocity 유지
@@ -68,6 +66,7 @@ public class PlayerController : MonoBehaviour, IAttackController
         else if (input.x < -0.01f)
             transform.localScale = new Vector3(-1f, 1f, 1f);
     }
+    
     public void Jump()
     {
         if (_isGrounded)
@@ -75,16 +74,40 @@ public class PlayerController : MonoBehaviour, IAttackController
             _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);   
         }
     }
+    
     public void Attack()
     {
-        if (AttackCooltime > 0f)
-            return;
-        OnAttackHandler();
+        OnAttackHandler?.Invoke();
     }
+    
     public void Skill()
     {
-        if (SkillCooltime > 0f)
-            return;
-        OnSkillHandler();
+        OnSkillHandler?.Invoke();
+    }
+
+    public void TakeDamage(int attackDamage)
+    {
+        Debug.Log($"{TeamId} : 체력 감소");
+    }
+
+    public void ApplyKnockback(Vector2 direction, float force)
+    {
+        _rigidbody2D.AddForce(direction * force, ForceMode2D.Impulse);
+        StartCoroutine(KnockbackRoutine());
+    }
+
+    private IEnumerator KnockbackRoutine()
+    {
+        IsKnockedBack = true;
+        while (Mathf.Abs(_rigidbody2D.linearVelocity.x) > 0.1f)
+        {
+            _rigidbody2D.linearVelocity = new Vector2(
+                Mathf.Lerp(_rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 5f),
+                _rigidbody2D.linearVelocity.y
+            );
+            yield return null;
+        }
+        _rigidbody2D.linearVelocity = new Vector2(0f, _rigidbody2D.linearVelocity.y);
+        IsKnockedBack = false;
     }
 }
