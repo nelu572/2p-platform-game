@@ -60,7 +60,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
-        //if (_playerController._isGrounded)
+        //if (_playerController.IsGrounded)
         //    animator.SetTrigger("NormalAttack");
         //else
         //    animator.SetTrigger("JumpAttack");
@@ -124,9 +124,8 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             
         );
 
-        Vector3 waveScale = new Vector3(_slashWaveScale.x * (isFacingRight ? 1f : -1f), _slashWaveScale.y, 1f);
-
         // 방향에 따라 스프라이트 반전
+        Vector3 waveScale = new Vector3(_slashWaveScale.x * (isFacingRight ? 1f : -1f), _slashWaveScale.y, 1f);
         slashWaveObj.transform.localScale = waveScale;
 
         // 검기 초기화

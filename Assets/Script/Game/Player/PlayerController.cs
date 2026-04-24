@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [Header("지면 감지")]
     [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private bool _isGrounded;
     //캐싱을 위한 변수
     private Vector2 boxSize;
 
@@ -23,12 +24,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     private Rigidbody2D _rigidbody2D;
     private BoxCollider2D _boxCollider2D;
 
-    // 점프 공격과 일반공격 애니메이션 구별하기 위해 public으로 변경
-    public bool _isGrounded;
-
+    public bool IsGrounded => _isGrounded;
     public int TeamId { get; set; }
     //넉백을 위해 만든 프로퍼티
     public bool IsKnockedBack { get; set; }
+
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
