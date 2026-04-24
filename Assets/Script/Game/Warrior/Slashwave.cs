@@ -15,16 +15,19 @@ public class SlashWave : MonoBehaviour
     private float _maxDistance;
     //검기가 시작된 지점
     private Vector2 _startPosition;
+    //검기에 맞을 레이어
+    private LayerMask _layerMask;
 
     [SerializeField] private float _knockbackForce = 8f;
 
-    public void Initialize(int damage, int ownerTeamId, Vector2 direction, float speed, float maxDistance)
+    public void Initialize(int damage, int ownerTeamId, Vector2 direction, float speed, float maxDistance, LayerMask layerMask)
     {
         _damage = damage;
         _ownerTeamId = ownerTeamId;
         _direction = direction.normalized;
         _speed = speed;
         _maxDistance = maxDistance;
+        _layerMask = layerMask;
         _startPosition = transform.position;
     }
 
@@ -39,6 +42,8 @@ public class SlashWave : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        // 충돌한 오브젝트의 레이어가 _layerMask에 포함되는지 확인
+        if ((_layerMask.value & (1 << col.gameObject.layer)) == 0) return;
 
         if (col.TryGetComponent<IDamageable>(out var damageable))
         {

@@ -8,6 +8,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     [SerializeField] private float _attackCooltimeMax = 0.8f;
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
     [SerializeField] private Transform _attackPoint;
+    [SerializeField] private LayerMask _attackLayerMask;
 
     [Header("스킬 설정 - 검기")]
     //공격력
@@ -44,6 +45,11 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         //animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
+
+        _attackLayerMask += LayerMask.GetMask("Warrior");
+        _attackLayerMask += LayerMask.GetMask("RailGun");
+        _attackLayerMask += LayerMask.GetMask("Witch");
+        _attackLayerMask += LayerMask.GetMask("BatMan");
     }
 
     void Update()
@@ -75,7 +81,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             ? (Vector2)_attackPoint.position
             : (Vector2)transform.position + new Vector2(isFacingRight ? 0.6f : -0.6f, 0f);
 
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(origin, _attackBoxSize, 0f);
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(origin, _attackBoxSize, 0f, _attackLayerMask);
 
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -130,7 +136,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
 
         // 검기 초기화
         if(slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
-            slashWave.Initialize(_slashWaveDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance);
+            slashWave.Initialize(_slashWaveDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
 
         // 시전자 반동
         _playerController.ApplyKnockback(-direction, _selfKnockbackForce);
