@@ -135,8 +135,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         );
 
         // 검기 초기화
-        SlashWave slashWave;
-        if(slashWaveObj.TryGetComponent<SlashWave>(out slashWave))
+        if(slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
             slashWave.Initialize(_slashWaveDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance);
 
         // 시전자 반동
