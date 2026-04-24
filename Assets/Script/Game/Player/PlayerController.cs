@@ -4,7 +4,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;

@@ -47,7 +47,7 @@ public class SlashWave : MonoBehaviour
 
             damageable.TakeDamage(_damage);
 
-                if (col.TryGetComponent<PlayerController>(out var pc))
+                if (col.TryGetComponent<IKnockbackable>(out var pc))
                     pc.ApplyKnockback(_direction, _knockbackForce);
         }
     }
