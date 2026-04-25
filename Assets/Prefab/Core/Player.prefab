@@ -182,7 +182,7 @@ MonoBehaviour:
   _jumpForce: 25
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   _isGrounded: 0
 --- !u!114 &493374525097729564
 MonoBehaviour:
