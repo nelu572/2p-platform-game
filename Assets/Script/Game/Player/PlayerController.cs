@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
 
         boxSize = _boxCollider2D.size;
     }
-    
+
     void FixedUpdate()
     {
         Vector2 boxCenter = (Vector2)transform.position + _boxCollider2D.offset; // 지역변수
@@ -48,8 +48,8 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
             new Vector2(boxSize.x * 0.9f, 0.1f),
             CapsuleDirection2D.Horizontal,
             0f,
-            _groundLayer ) != null;
-        
+            _groundLayer) != null;
+
     }
 
     public void Move(Vector2 input)
@@ -66,20 +66,20 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
         else if (input.x < -0.01f)
             transform.localScale = new Vector3(-1f, 1f, 1f);
     }
-    
+
     public void Jump()
     {
         if (_isGrounded)
         {
-            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);   
+            _rigidbody2D.linearVelocity = new Vector2(_rigidbody2D.linearVelocity.x, _jumpForce);
         }
     }
-    
+
     public void Attack()
     {
         OnAttackHandler?.Invoke();
     }
-    
+
     public void Skill()
     {
         OnSkillHandler?.Invoke();
