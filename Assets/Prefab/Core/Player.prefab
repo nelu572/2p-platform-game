@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4071780637921829554}
   - component: {fileID: 8321635674780206167}
   - component: {fileID: 6899216782923802923}
+  - component: {fileID: -7592069465267567888}
+  - component: {fileID: 493374525097729564}
   - component: {fileID: 6225754125672622147}
   - component: {fileID: 7475279092352623639}
   m_Layer: 0
@@ -106,7 +108,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 6200000, guid: 48fec47027284bd4093ba927083c8e53, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -164,6 +166,36 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &-7592069465267567888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245058897444931648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0889c3648185c0b438c77eab93396f7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 5
+  _jumpForce: 25
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _isGrounded: 0
+--- !u!114 &493374525097729564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245058897444931648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0a824c034a1a3499be2487b6eff7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6225754125672622147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,9 +223,9 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8245058897444931648}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -207,9 +239,9 @@ MonoBehaviour:
     m_ActionName: 'Player1/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8245058897444931648}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -223,9 +255,9 @@ MonoBehaviour:
     m_ActionName: 'Player1/Jump[/Keyboard/w]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8245058897444931648}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -239,9 +271,9 @@ MonoBehaviour:
     m_ActionName: 'Player2/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: ce0a824c034a1a3499be2487b6eff7c7, type: 3}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnJump
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -255,9 +287,9 @@ MonoBehaviour:
     m_ActionName: 'Player2/Jump[/Keyboard/upArrow]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8245058897444931648}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -271,9 +303,9 @@ MonoBehaviour:
     m_ActionName: 'Player1/Attack[/Keyboard/q]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: ce0a824c034a1a3499be2487b6eff7c7, type: 3}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -287,9 +319,9 @@ MonoBehaviour:
     m_ActionName: 'Player2/Attack[/Keyboard/numpad7]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8245058897444931648}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSkill
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -303,9 +335,9 @@ MonoBehaviour:
     m_ActionName: 'Player1/Skill[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: ce0a824c034a1a3499be2487b6eff7c7, type: 3}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 493374525097729564}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSkill
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

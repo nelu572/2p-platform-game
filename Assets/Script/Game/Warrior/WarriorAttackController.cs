@@ -18,7 +18,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     // 검기 이동 속도
     [SerializeField] private float _slashWaveSpeed = 10f;
     // 시전자 반동 힘
-    [SerializeField] private float _selfKnockbackForce = 4f;    
+    [SerializeField] private float _selfKnockbackForce = 4f;
     // 검기 프리팹
     [SerializeField] private GameObject _slashWavePrefab;
     // 검기 최대 사거리
@@ -35,14 +35,14 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     //자기 자신에 있는 인터페이스 캐싱용
     private IDamageable _selfDamageable;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
-    //private Animator animator;
+    //private Animator _animator;
 
     void Awake()
     {
         _playerController = GetComponent<PlayerController>();
         _selfDamageable = GetComponent<IDamageable>();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
-        //animator = GetComponent<Animator>();
+        //_animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
 
@@ -67,9 +67,9 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //if (_playerController.IsGrounded)
-        //    animator.SetTrigger("NormalAttack");
+        //    _animator.SetTrigger("NormalAttack");
         //else
-        //    animator.SetTrigger("JumpAttack");
+        //    _animator.SetTrigger("JumpAttack");
         PerformAttackHit();
         AttackCooltime = _attackCooltimeMax;
     }
@@ -105,7 +105,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
-        //animator.SetTrigger("Skill");
+        //_animator.SetTrigger("Skill");
 
         FireSlashWave();
         SkillCooltime = _skillCooltimeMax;
@@ -127,7 +127,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             _slashWavePrefab,
             transform.position,
             Quaternion.identity
-            
+
         );
 
         // 방향에 따라 스프라이트 반전
@@ -135,7 +135,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         slashWaveObj.transform.localScale = waveScale;
 
         // 검기 초기화
-        if(slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
+        if (slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
             slashWave.Initialize(_slashWaveDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
 
         // 시전자 반동
