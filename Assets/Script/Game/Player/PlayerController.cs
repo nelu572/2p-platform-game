@@ -4,7 +4,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
+public class PlayerController : MonoBehaviour, IKnockbackable
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -25,8 +25,6 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
     private BoxCollider2D _boxCollider2D;
 
     public bool IsGrounded => _isGrounded;
-    public int TeamId { get; set; }
-    //넉백을 위해 만든 프로퍼티
     public bool IsKnockedBack { get; set; }
 
     void Awake()
@@ -83,11 +81,6 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
     public void Skill()
     {
         OnSkillHandler?.Invoke();
-    }
-
-    public void TakeDamage(int attackDamage)
-    {
-        Debug.Log($"{TeamId} : 체력 감소");
     }
 
     public void ApplyKnockback(Vector2 direction, float force)
