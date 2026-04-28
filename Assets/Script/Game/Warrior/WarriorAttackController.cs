@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerController))]
-public class WarriorAttackController : MonoBehaviour, IAttackController
+public class WarriorAttackController : PlayerStat, IAttackController
 {
     [Header("공격 설정")]
-    [SerializeField] private int _attackDamage = 30;
+    //공격력
     [SerializeField] private float _attackCooltimeMax = 0.8f;
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
     [SerializeField] private Transform _attackPoint;
@@ -12,7 +13,6 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
 
     [Header("스킬 설정 - 검기")]
     //공격력
-    [SerializeField] private int _slashWaveDamage = 50;
     //스킬 쿨타임
     [SerializeField] private float _skillCooltimeMax = 10f;
     // 검기 이동 속도
@@ -27,8 +27,6 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     [SerializeField] private Vector2 _slashWaveScale = new Vector2(4.5f, 8f);
 
     [Header("쿨타임")]
-    public float SkillCooltime { get; set; }
-    public float AttackCooltime { get; set; }
 
     //델리게이트에 함수를 가져오기 위한 참조 변수
     private PlayerController _playerController;
@@ -90,7 +88,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             if (enemy.TryGetComponent<IDamageable>(out var damageable))
             {
                 if (damageable.TeamId != _selfDamageable.TeamId)
-                    damageable.TakeDamage(_attackDamage);
+                    damageable.TakeDamage(AttackDamage);
             }
         }
         //인터페이스에서 프로퍼티 값으로 적과 자신(아군)을 구별하고 있습니다
