@@ -6,6 +6,8 @@ using UnityEngine;
 public class UIPanelEditor : Editor
 {
     private SerializedProperty _canvasGroupProp;
+    private SerializedProperty _baseEnabledProp;
+
     private SerializedProperty _panelDataProp;
 
     private SerializedProperty _dataTypeProp;
@@ -25,6 +27,8 @@ public class UIPanelEditor : Editor
     private void OnEnable()
     {
         _canvasGroupProp = serializedObject.FindProperty("_canvasGroup");
+        _baseEnabledProp = serializedObject.FindProperty("_baseEnabled");
+
         _panelDataProp = serializedObject.FindProperty("_panelTransitionData");
 
         _dataTypeProp = _panelDataProp.FindPropertyRelative("Type");
@@ -43,7 +47,11 @@ public class UIPanelEditor : Editor
     {
         serializedObject.Update();
 
+        EditorGUILayout.LabelField("Base", EditorStyles.boldLabel);
+        EditorGUILayout.Space(3);
+
         EditorGUILayout.PropertyField(_canvasGroupProp);
+        EditorGUILayout.PropertyField(_baseEnabledProp);
         EditorGUILayout.Space(6);
 
         EditorGUILayout.LabelField("Animation", EditorStyles.boldLabel);
