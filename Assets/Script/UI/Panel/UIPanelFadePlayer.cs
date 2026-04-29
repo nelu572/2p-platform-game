@@ -13,7 +13,7 @@ public class UIPanelFadePlayer : IUITransitionPlayer
         _canvasGroup = canvasGroup;
     }
 
-    public void Prepare(bool isOpening)
+    public void Prepare(bool isOpening, PanelTransitionData transitionData)
     {
         // Fade 시작 전에 alpha를 시작값으로 맞춰 둔다.
         _canvasGroup.alpha = isOpening ? 0f : 1f;

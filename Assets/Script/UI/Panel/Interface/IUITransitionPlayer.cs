@@ -6,6 +6,6 @@ using DG.Tweening;
 public interface IUITransitionPlayer
 {
     bool CanPlay(PanelType panelType);
-    void Prepare(bool isOpening);
+    void Prepare(bool isOpening, PanelTransitionData transitionData);
     Tween CreateTween(bool isOpening, PanelTransitionData transitionData);
 }

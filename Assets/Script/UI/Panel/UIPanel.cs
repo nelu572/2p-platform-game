@@ -82,7 +82,7 @@ public class UIPanel : MonoBehaviour
             }
 
             // 각 플레이어가 자기 타입의 시작 상태를 먼저 맞춘다.
-            transitionPlayer.Prepare(isOpening);
+            transitionPlayer.Prepare(isOpening, _panelTransitionData);
 
             if (sequence == null)
             {
@@ -112,11 +112,12 @@ public class UIPanel : MonoBehaviour
 
         if (_transitionPlayers == null)
         {
-            // TODO: Move가 추가되면 여기서 플레이어를 함께 등록
+            // Move까지 포함해서 패널 타입별 플레이어를 한 번만 구성한다.
             _transitionPlayers = new IUITransitionPlayer[]
             {
                 new UIPanelFadePlayer(_canvasGroup),
-                new UIPanelScalePlayer(_rectTransform)
+                new UIPanelScalePlayer(_rectTransform),
+                new UIPanelMovePlayer(_rectTransform)
             };
         }
     }

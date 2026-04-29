@@ -18,7 +18,7 @@ public class UIPanelScalePlayer : IUITransitionPlayer
         return panelType.HasFlag(PanelType.ScaleInOut);
     }
 
-    public void Prepare(bool isOpening)
+    public void Prepare(bool isOpening, PanelTransitionData transitionData)
     {
         // Scale 시작 전에 localScale을 시작값으로 맞춰 둔다.
         _rectTransform.localScale = isOpening ? Vector3.zero : Vector3.one;

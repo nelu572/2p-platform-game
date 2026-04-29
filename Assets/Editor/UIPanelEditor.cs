@@ -5,6 +5,8 @@ using UnityEngine;
 [CustomEditor(typeof(UIPanel))]
 public class UIPanelEditor : Editor
 {
+    private bool _isReady;
+
     private SerializedProperty _canvasGroupProp;
     private SerializedProperty _baseEnabledProp;
 
@@ -26,10 +28,22 @@ public class UIPanelEditor : Editor
 
     private void OnEnable()
     {
+        _isReady = false;
+
+        if (targets == null || targets.Length == 0 || targets[0] == null)
+        {
+            return;
+        }
+
         _canvasGroupProp = serializedObject.FindProperty("_canvasGroup");
         _baseEnabledProp = serializedObject.FindProperty("_baseEnabled");
 
         _panelDataProp = serializedObject.FindProperty("_panelTransitionData");
+
+        if (_panelDataProp == null)
+        {
+            return;
+        }
 
         _dataTypeProp = _panelDataProp.FindPropertyRelative("Type");
 
@@ -41,10 +55,17 @@ public class UIPanelEditor : Editor
 
         _moveOffsetProp = _panelDataProp.FindPropertyRelative("MoveOffset");
         _moveTimeProp = _panelDataProp.FindPropertyRelative("MoveTime");
+
+        _isReady = true;
     }
 
     public override void OnInspectorGUI()
     {
+        if (_isReady == false || target == null)
+        {
+            return;
+        }
+
         serializedObject.Update();
 
         EditorGUILayout.LabelField("Base", EditorStyles.boldLabel);
@@ -91,7 +112,7 @@ public class UIPanelEditor : Editor
         {
             DrawSection(
                 "Move",
-                _moveOffsetProp, "Start Pos",
+                _moveOffsetProp, "Offset",
                 _moveTimeProp, "Duration");
         }
 
