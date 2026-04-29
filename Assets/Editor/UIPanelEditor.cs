@@ -57,8 +57,17 @@ public class UIPanelEditor : Editor
         EditorGUILayout.LabelField("Animation", EditorStyles.boldLabel);
 
         PanelType type = (PanelType)_dataTypeProp.intValue;
+        EditorGUI.BeginChangeCheck();
+
         type = (PanelType)EditorGUILayout.EnumFlagsField("Type", type);
-        _dataTypeProp.intValue = (int)type;
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(target, "Change UIPanel Type");
+            _dataTypeProp.intValue = (int)type;
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(target);
+        }
 
         EditorGUILayout.Space(3);
 

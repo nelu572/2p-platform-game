@@ -8,11 +8,13 @@ public class UIPanel : MonoBehaviour
     [SerializeField] private bool _baseEnabled = false;
     // 패널 표시와 입력 차단을 함께 제어한다.
     [SerializeField] private CanvasGroup _canvasGroup;
+    // Scale 전환에서 시작/종료 크기를 제어한다.
+    [SerializeField] private RectTransform _rectTransform;
     // 패널이 어떤 방식으로 열리고 닫힐지 정의하는 설정값.
     [SerializeField] private PanelTransitionData _panelTransitionData = new PanelTransitionData();
 
-    // 실제 애니메이션 실행은 TransitionPlayer 구현체에 위임한다.
-    private IUITransitionPlayer _transitionPlayer;
+    // 실제 애니메이션 실행은 TransitionPlayer 구현체 목록에 위임한다.
+    private IUITransitionPlayer[] _transitionPlayers;
     private Tween _activeTween;
 
     private void Awake()
@@ -35,15 +37,7 @@ public class UIPanel : MonoBehaviour
             gameObject.SetActive(true);
 
         SetInteraction(true);
-
-        if (_transitionPlayer.CanPlay(_panelTransitionData.Type))
-        {
-            _transitionPlayer.Prepare(true);
-            _activeTween = _transitionPlayer.CreateTween(true, _panelTransitionData);
-            return;
-        }
-
-        _activeTween = null;
+        _activeTween = CreateTransitionTween(true);
     }
 
     public void Close()
@@ -53,16 +47,7 @@ public class UIPanel : MonoBehaviour
 
         // 닫히는 동안 중복 입력이 들어오지 않게 먼저 막는다.
         SetInteraction(false);
-
-        if (_transitionPlayer.CanPlay(_panelTransitionData.Type))
-        {
-            _transitionPlayer.Prepare(false);
-            _activeTween = _transitionPlayer.CreateTween(false, _panelTransitionData);
-        }
-        else
-        {
-            _activeTween = null;
-        }
+        _activeTween = CreateTransitionTween(false);
 
         if (_activeTween == null)
         {
@@ -83,6 +68,34 @@ public class UIPanel : MonoBehaviour
     }
 
     /// <summary>
+    /// 현재 PanelType에 맞는 TransitionPlayer만 골라서 하나의 Tween으로 묶는다.
+    /// </summary>
+    private Tween CreateTransitionTween(bool isOpening)
+    {
+        Sequence sequence = null;
+
+        foreach (IUITransitionPlayer transitionPlayer in _transitionPlayers)
+        {
+            if (transitionPlayer.CanPlay(_panelTransitionData.Type) == false)
+            {
+                continue;
+            }
+
+            // 각 플레이어가 자기 타입의 시작 상태를 먼저 맞춘다.
+            transitionPlayer.Prepare(isOpening);
+
+            if (sequence == null)
+            {
+                sequence = DOTween.Sequence();
+            }
+
+            sequence.Join(transitionPlayer.CreateTween(isOpening, _panelTransitionData));
+        }
+
+        return sequence;
+    }
+
+    /// <summary>
     /// 패널 실행에 필요한 참조를 미리 보장한다.
     /// </summary>
     private void EnsureComponents()
@@ -92,10 +105,19 @@ public class UIPanel : MonoBehaviour
             _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        if (_transitionPlayer == null)
+        if (_rectTransform == null)
         {
-            // TODO: PanelType에 맞는 TransitionPlayer를 선택하도록 분기 추가
-            _transitionPlayer = new UIPanelFadePlayer(_canvasGroup);
+            _rectTransform = GetComponent<RectTransform>();
+        }
+
+        if (_transitionPlayers == null)
+        {
+            // TODO: Move가 추가되면 여기서 플레이어를 함께 등록
+            _transitionPlayers = new IUITransitionPlayer[]
+            {
+                new UIPanelFadePlayer(_canvasGroup),
+                new UIPanelScalePlayer(_rectTransform)
+            };
         }
     }
 

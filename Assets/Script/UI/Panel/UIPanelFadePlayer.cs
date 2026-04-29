@@ -1,7 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-// Fade 타입 패널의 열기/닫기 애니메이션만 담당한다.
+/// <summary>
+/// Fade 타입 패널의 열기/닫기 애니메이션만 담당한다.
+/// </summary>
 public class UIPanelFadePlayer : IUITransitionPlayer
 {
     private readonly CanvasGroup _canvasGroup;
