@@ -37,6 +37,8 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
     void Awake()
     {
+        AttackDamage = 30;
+        SkillDamage = 50;
         _playerController = GetComponent<PlayerController>();
         _selfDamageable = GetComponent<IDamageable>();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
@@ -134,7 +136,7 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
         // 검기 초기화
         if (slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
-            slashWave.Initialize(_slashWaveDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
+            slashWave.Initialize(SkillDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
 
         // 시전자 반동
         _playerController.ApplyKnockback(-direction, _selfKnockbackForce);
