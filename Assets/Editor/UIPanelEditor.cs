@@ -1,9 +1,11 @@
 using UnityEditor;
 using UnityEngine;
 
+[CanEditMultipleObjects]
 [CustomEditor(typeof(UIPanel))]
 public class UIPanelEditor : Editor
 {
+    private SerializedProperty _canvasGroupProp;
     private SerializedProperty _panelDataProp;
 
     private SerializedProperty _dataTypeProp;
@@ -22,6 +24,7 @@ public class UIPanelEditor : Editor
 
     private void OnEnable()
     {
+        _canvasGroupProp = serializedObject.FindProperty("_canvasGroup");
         _panelDataProp = serializedObject.FindProperty("_panelTransitionData");
 
         _dataTypeProp = _panelDataProp.FindPropertyRelative("Type");
@@ -40,64 +43,60 @@ public class UIPanelEditor : Editor
     {
         serializedObject.Update();
 
+        EditorGUILayout.PropertyField(_canvasGroupProp);
+        EditorGUILayout.Space(6);
+
         EditorGUILayout.LabelField("Animation", EditorStyles.boldLabel);
 
         PanelType type = (PanelType)_dataTypeProp.intValue;
-        EditorGUI.BeginChangeCheck();
         type = (PanelType)EditorGUILayout.EnumFlagsField("Type", type);
-
-        if (EditorGUI.EndChangeCheck())
-        {
-            Undo.RecordObject(target, "Change UIPanel Type");
-            _dataTypeProp.intValue = (int)type;
-            serializedObject.ApplyModifiedProperties();
-            EditorUtility.SetDirty(target);
-        }
+        _dataTypeProp.intValue = (int)type;
 
         EditorGUILayout.Space(3);
 
         if (type.HasFlag(PanelType.FadeInOut))
         {
-            GUILayout.BeginVertical(GUI.skin.box);
-
-            EditorGUILayout.LabelField("Fade", EditorStyles.boldLabel);
-
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_fadeInDurationProp, new GUIContent("In Duration"));
-            EditorGUILayout.PropertyField(_fadeOutDurationProp, new GUIContent("Out Duration"));
-            EditorGUI.indentLevel--;
-
-            GUILayout.EndVertical();
+            DrawSection(
+                "Fade",
+                _fadeInDurationProp, "In Duration",
+                _fadeOutDurationProp, "Out Duration");
         }
 
         if (type.HasFlag(PanelType.ScaleInOut))
         {
-            GUILayout.BeginVertical(GUI.skin.box);
-
-            EditorGUILayout.LabelField("Scale", EditorStyles.boldLabel);
-
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_scaleInDurationProp, new GUIContent("In Duration"));
-            EditorGUILayout.PropertyField(_scaleOutDurationProp, new GUIContent("Out Duration"));
-            EditorGUI.indentLevel--;
-
-            GUILayout.EndVertical();
+            DrawSection(
+                "Scale",
+                _scaleInDurationProp, "In Duration",
+                _scaleOutDurationProp, "Out Duration");
         }
 
         if (type.HasFlag(PanelType.Move))
         {
-            GUILayout.BeginVertical(GUI.skin.box);
-
-            EditorGUILayout.LabelField("Move", EditorStyles.boldLabel);
-
-            EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(_moveOffsetProp, new GUIContent("Start Pos"));
-            EditorGUILayout.PropertyField(_moveTimeProp, new GUIContent("Duration"));
-            EditorGUI.indentLevel--;
-
-            GUILayout.EndVertical();
+            DrawSection(
+                "Move",
+                _moveOffsetProp, "Start Pos",
+                _moveTimeProp, "Duration");
         }
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    // 인스펙터 레이아웃은 공통으로 두고, 섹션별 표시 값만 넘겨서 반복을 줄인다.
+    private void DrawSection(
+        string title,
+        SerializedProperty firstProp,
+        string firstLabel,
+        SerializedProperty secondProp,
+        string secondLabel)
+    {
+        GUILayout.BeginVertical(GUI.skin.box);
+        EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
+
+        EditorGUI.indentLevel++;
+        EditorGUILayout.PropertyField(firstProp, new GUIContent(firstLabel));
+        EditorGUILayout.PropertyField(secondProp, new GUIContent(secondLabel));
+        EditorGUI.indentLevel--;
+
+        GUILayout.EndVertical();
     }
 }

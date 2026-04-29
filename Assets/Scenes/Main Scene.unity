@@ -1463,8 +1463,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093d242e68c60104984c0273a519aa53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 1177410052}
   _panelTransitionData:
-    Type: -1
+    Type: 1
     FadeInDuration: 0.3
     FadeOutDuration: 0.3
     ScaleInDuration: 0.3
