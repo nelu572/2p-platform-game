@@ -7,13 +7,12 @@ using UnityEngine;
 public class UIPanelMovePlayer : IUITransitionPlayer
 {
     private readonly RectTransform _rectTransform;
-    private readonly Vector2 _openedPosition;
+    private Vector2 _openedPosition;
+    private bool _hasOpenedPosition;
 
     public UIPanelMovePlayer(RectTransform rectTransform)
     {
         _rectTransform = rectTransform;
-        // 현재 위치를 패널이 완전히 열린 기준 위치로 사용한다.
-        _openedPosition = rectTransform.anchoredPosition;
     }
 
     public bool CanPlay(PanelType panelType)
@@ -23,6 +22,13 @@ public class UIPanelMovePlayer : IUITransitionPlayer
 
     public void Prepare(bool isOpening, PanelTransitionData transitionData)
     {
+        if (isOpening || _hasOpenedPosition == false)
+        {
+            // Open 직전 위치를 열린 기준점으로 다시 잡아서 레이아웃 변경도 따라간다.
+            _openedPosition = _rectTransform.anchoredPosition;
+            _hasOpenedPosition = true;
+        }
+
         // 현재 위치를 기준으로 MoveOffset만큼 떨어진 곳을 닫힌 위치로 사용한다.
         Vector2 closedPosition = _openedPosition + (Vector2)transitionData.Move.Offset;
         _rectTransform.anchoredPosition = isOpening ? closedPosition : _openedPosition;

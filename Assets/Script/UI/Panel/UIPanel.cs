@@ -17,14 +17,15 @@ public class UIPanel : MonoBehaviour
     private IUITransitionPlayer[] _transitionPlayers;
     private Tween _activeTween;
 
-    private void Awake()
+    void Awake()
     {
         EnsureComponents();
     }
 
-    private void Start()
+    void Start()
     {
-        if (_baseEnabled) Open();
+        if (_baseEnabled)
+            Open();
     }
 
     public void Open()
