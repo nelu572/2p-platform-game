@@ -28,8 +28,8 @@ public class UIPanelScalePlayer : IUITransitionPlayer
     {
         Vector3 endScale = isOpening ? Vector3.one : Vector3.zero;
         float duration = isOpening
-            ? transitionData.ScaleInDuration
-            : transitionData.ScaleOutDuration;
+            ? transitionData.Scale.InDuration
+            : transitionData.Scale.OutDuration;
 
         return _rectTransform.DOScale(endScale, duration);
     }

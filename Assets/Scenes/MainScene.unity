@@ -1438,7 +1438,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 2560, y: 144}
+  m_ReferenceResolution: {x: 2560, y: 1440}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1506,12 +1506,15 @@ MonoBehaviour:
   _rectTransform: {fileID: 0}
   _panelTransitionData:
     Type: 4
-    FadeInDuration: 1
-    FadeOutDuration: 0.3
-    ScaleInDuration: 20
-    ScaleOutDuration: 0.3
-    MoveOffset: {x: 0, y: 1000, z: 0}
-    MoveTime: 0.3
+    Fade:
+      InDuration: 1
+      OutDuration: 0.3
+    Scale:
+      InDuration: 20
+      OutDuration: 0.3
+    Move:
+      Offset: {x: 0, y: 1000, z: 0}
+      Duration: 0.3
 --- !u!225 &1405327816
 CanvasGroup:
   m_ObjectHideFlags: 0

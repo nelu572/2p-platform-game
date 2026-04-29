@@ -24,15 +24,15 @@ public class UIPanelMovePlayer : IUITransitionPlayer
     public void Prepare(bool isOpening, PanelTransitionData transitionData)
     {
         // 현재 위치를 기준으로 MoveOffset만큼 떨어진 곳을 닫힌 위치로 사용한다.
-        Vector2 closedPosition = _openedPosition + (Vector2)transitionData.MoveOffset;
+        Vector2 closedPosition = _openedPosition + (Vector2)transitionData.Move.Offset;
         _rectTransform.anchoredPosition = isOpening ? closedPosition : _openedPosition;
     }
 
     public Tween CreateTween(bool isOpening, PanelTransitionData transitionData)
     {
-        Vector2 closedPosition = _openedPosition + (Vector2)transitionData.MoveOffset;
+        Vector2 closedPosition = _openedPosition + (Vector2)transitionData.Move.Offset;
         Vector2 endPosition = isOpening ? _openedPosition : closedPosition;
 
-        return _rectTransform.DOAnchorPos(endPosition, transitionData.MoveTime);
+        return _rectTransform.DOAnchorPos(endPosition, transitionData.Move.Duration);
     }
 }

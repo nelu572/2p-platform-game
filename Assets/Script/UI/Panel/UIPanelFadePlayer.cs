@@ -28,8 +28,8 @@ public class UIPanelFadePlayer : IUITransitionPlayer
     {
         float endAlpha = isOpening ? 1f : 0f;
         float duration = isOpening
-            ? transitionData.FadeInDuration
-            : transitionData.FadeOutDuration;
+            ? transitionData.Fade.InDuration
+            : transitionData.Fade.OutDuration;
 
         return _canvasGroup.DOFade(endAlpha, duration);
     }

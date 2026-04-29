@@ -47,14 +47,18 @@ public class UIPanelEditor : Editor
 
         _dataTypeProp = _panelDataProp.FindPropertyRelative("Type");
 
-        _fadeInDurationProp = _panelDataProp.FindPropertyRelative("FadeInDuration");
-        _fadeOutDurationProp = _panelDataProp.FindPropertyRelative("FadeOutDuration");
+        SerializedProperty fadeProp = _panelDataProp.FindPropertyRelative("Fade");
+        SerializedProperty scaleProp = _panelDataProp.FindPropertyRelative("Scale");
+        SerializedProperty moveProp = _panelDataProp.FindPropertyRelative("Move");
 
-        _scaleInDurationProp = _panelDataProp.FindPropertyRelative("ScaleInDuration");
-        _scaleOutDurationProp = _panelDataProp.FindPropertyRelative("ScaleOutDuration");
+        _fadeInDurationProp = fadeProp.FindPropertyRelative("InDuration");
+        _fadeOutDurationProp = fadeProp.FindPropertyRelative("OutDuration");
 
-        _moveOffsetProp = _panelDataProp.FindPropertyRelative("MoveOffset");
-        _moveTimeProp = _panelDataProp.FindPropertyRelative("MoveTime");
+        _scaleInDurationProp = scaleProp.FindPropertyRelative("InDuration");
+        _scaleOutDurationProp = scaleProp.FindPropertyRelative("OutDuration");
+
+        _moveOffsetProp = moveProp.FindPropertyRelative("Offset");
+        _moveTimeProp = moveProp.FindPropertyRelative("Duration");
 
         _isReady = true;
     }
@@ -69,7 +73,6 @@ public class UIPanelEditor : Editor
         serializedObject.Update();
 
         EditorGUILayout.LabelField("Base", EditorStyles.boldLabel);
-        EditorGUILayout.Space(3);
 
         EditorGUILayout.PropertyField(_canvasGroupProp);
         EditorGUILayout.PropertyField(_baseEnabledProp);
