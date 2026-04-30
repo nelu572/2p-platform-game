@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerController))]
@@ -29,19 +30,27 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
 
-    //GC부하를 줄이기 위해 미리 Collider2D[]버퍼 생성
-    private Collider2D[] _hitBuffer = new Collider2D[15];
+    //GC부하를 줄이기 위해 미리 Collider2D<>버퍼 생성
+    //리스트도 동적 배열이라서 크기가 변경되면 재할당이 발생하지만
+    //이미 존재하는 리스트를 사용하기에 OverlapBoxAll보다는 성능면에서는 좋다
+    List<Collider2D> _hitBuffer = new List<Collider2D>(15);
+    private ContactFilter2D _contactFilter;
     void Awake()
     {
+
         //스크립트 가져오기
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
 
-
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
+
+        // LayerMask를 ContactFilter2D로 변환
+        _contactFilter = new ContactFilter2D();
+        _contactFilter.SetLayerMask(_attackLayerMask);
+        _contactFilter.useTriggers = true;
     }
 
     public void Attack()
@@ -66,9 +75,9 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             : (Vector2)transform.position + new Vector2(isFacingRight ? 0.6f : -0.6f, 0f);
 
 
-        int count = Physics2D.OverlapBoxNonAlloc(origin, _attackBoxSize, 0f, _hitBuffer, _attackLayerMask);
+        Physics2D.OverlapBox(origin, _attackBoxSize, 0f, _contactFilter, _hitBuffer);
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < _hitBuffer.Count; i++)
         {
             Collider2D enemy = _hitBuffer[i];
             if (enemy.gameObject == gameObject) continue;
