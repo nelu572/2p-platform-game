@@ -7,6 +7,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     [Header("공격 설정")]
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
     [SerializeField] private Transform _attackPoint;
+    //감지 레이어
     [SerializeField] private LayerMask _attackLayerMask;
 
     [Header("스킬 설정 - 검기")]
@@ -41,11 +42,6 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
 
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
-
-        _attackLayerMask += LayerMask.GetMask("Warrior");
-        _attackLayerMask += LayerMask.GetMask("RailGun");
-        _attackLayerMask += LayerMask.GetMask("Witch");
-        _attackLayerMask += LayerMask.GetMask("BatMan");
     }
 
     public void Attack()
