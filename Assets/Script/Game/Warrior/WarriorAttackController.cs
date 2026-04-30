@@ -4,19 +4,12 @@
 [RequireComponent(typeof(PlayerController))]
 public class WarriorAttackController : MonoBehaviour, IAttackController
 {
-    [SerializeField] private int _maxHp = 1000;
-
     [Header("공격 설정")]
-    [SerializeField] private int _damage = 30;
-    [SerializeField] private float _attackCooltimeMax = 0.8f;
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private LayerMask _attackLayerMask;
 
     [Header("스킬 설정 - 검기")]
-    [SerializeField] private int _skillDamage = 50;
-    //스킬 쿨타임
-    [SerializeField] private float _skillCooltimeMax = 10f;
     // 검기 이동 속도
     [SerializeField] private float _slashWaveSpeed = 10f;
     // 시전자 반동 힘
@@ -43,7 +36,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
 
-        _playerStat.StatInitialize(_damage, _skillDamage, _maxHp, _attackCooltimeMax, _skillCooltimeMax);
+
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
 
@@ -51,14 +44,6 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         _attackLayerMask += LayerMask.GetMask("RailGun");
         _attackLayerMask += LayerMask.GetMask("Witch");
         _attackLayerMask += LayerMask.GetMask("BatMan");
-    }
-
-    void Update()
-    {
-        if (_playerStat.AttackCooltime > 0)
-            _playerStat.AttackCooltime -= Time.deltaTime;
-        if (_playerStat.SkillCooltime > 0)
-            _playerStat.SkillCooltime -= Time.deltaTime;
     }
 
     public void Attack()
@@ -72,7 +57,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         //else
         //    _animator.SetTrigger("JumpAttack");
         PerformAttackHit();
-        _playerStat.AttackCooltime = _attackCooltimeMax;
+        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
     }
     
     public void PerformAttackHit()
@@ -109,7 +94,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         //_animator.SetTrigger("Skill");
 
         FireSlashWave();
-        _playerStat.SkillCooltime = _skillCooltimeMax;
+        _playerStat.SkillCooltime = _playerStat.SkillCooltimeMax;
     }
 
     private void FireSlashWave()
