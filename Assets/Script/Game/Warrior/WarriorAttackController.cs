@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerController))]
 public class WarriorAttackController : PlayerStat, IAttackController
 {
@@ -39,8 +38,11 @@ public class WarriorAttackController : PlayerStat, IAttackController
     {
         AttackDamage = 30;
         SkillDamage = 50;
+        MaxHp = 100;
+        Hp = MaxHp;
+
         _playerController = GetComponent<PlayerController>();
-        _selfDamageable = GetComponent<IDamageable>();
+        _selfDamageable = this;
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
