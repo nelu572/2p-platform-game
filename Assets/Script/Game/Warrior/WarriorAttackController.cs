@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerController))]
-public class WarriorAttackController : PlayerStat, IAttackController
+public class WarriorAttackController : MonoBehaviour, IAttackController
 {
     [Header("공격 설정")]
     [SerializeField] private float _attackCooltimeMax = 0.8f;
@@ -25,19 +26,23 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
     //델리게이트에 함수를 가져오기 위한 참조 변수
     private PlayerController _playerController;
+    //쿨타임 공격력 가져오는 참조 변수
+    private PlayerStat _playerStat;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
 
     void Awake()
     {
-        // 공격력 설정
-        AttackDamage = 30;
-        SkillDamage = 50;
-        //체력 설정
-        MaxHp = 1000;
-        Hp = MaxHp;
-
+        //스크립트 가져오기
         _playerController = GetComponent<PlayerController>();
+        _playerStat = GetComponent<PlayerStat>();
+
+        // 공격력 설정
+        _playerStat.AttackDamage = 30;
+        _playerStat.SkillDamage = 50;
+        //체력 설정
+        _playerStat.MaxHp = 1000;
+        _playerStat.Hp = _playerStat.MaxHp;
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
@@ -51,15 +56,15 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
     void Update()
     {
-        if (AttackCooltime > 0)
-            AttackCooltime -= Time.deltaTime;
-        if (SkillCooltime > 0)
-            SkillCooltime -= Time.deltaTime;
+        if (_playerStat.AttackCooltime > 0)
+            _playerStat.AttackCooltime -= Time.deltaTime;
+        if (_playerStat.SkillCooltime > 0)
+            _playerStat.SkillCooltime -= Time.deltaTime;
     }
 
     public void Attack()
     {
-        if (AttackCooltime > 0f)
+        if (_playerStat.AttackCooltime > 0f)
             return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
@@ -68,9 +73,9 @@ public class WarriorAttackController : PlayerStat, IAttackController
         //else
         //    _animator.SetTrigger("JumpAttack");
         PerformAttackHit();
-        AttackCooltime = _attackCooltimeMax;
+        _playerStat.AttackCooltime = _attackCooltimeMax;
     }
-
+    
     public void PerformAttackHit()
     {
         bool isFacingRight = transform.localScale.x > 0f;
@@ -86,8 +91,8 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
             if (enemy.TryGetComponent<PlayerStat>(out var damageable))
             {
-                if (damageable.TeamId != TeamId)
-                    damageable.TakeDamage(AttackDamage);
+                if (damageable.TeamId != _playerStat.TeamId)
+                    damageable.TakeDamage(_playerStat.AttackDamage);
             }
         }
         //인터페이스에서 프로퍼티 값으로 적과 자신(아군)을 구별하고 있습니다
@@ -98,14 +103,14 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
     public void Skill()
     {
-        if (SkillCooltime > 0f)
+        if (_playerStat.SkillCooltime > 0f)
             return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator.SetTrigger("Skill");
 
         FireSlashWave();
-        SkillCooltime = _skillCooltimeMax;
+        _playerStat.SkillCooltime = _skillCooltimeMax;
     }
 
     private void FireSlashWave()
@@ -133,7 +138,7 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
         // 검기 초기화
         if (slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
-            slashWave.Initialize(SkillDamage, TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
+            slashWave.Initialize(_playerStat.SkillDamage, _playerStat.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
 
         // 시전자 반동
         _playerController.ApplyKnockback(-direction, _selfKnockbackForce);
