@@ -7,20 +7,15 @@ public class PlayerStat : MonoBehaviour, IDamageable
     ///Hp값을 MaxHp값으로 대입 
     ///그후 죽은 캐릭터는 다시 움직일 수 있게 만들어야됨
 
-    [Header("스탯 설정")]
-    [SerializeField] private int _maxHp = 100;
-    [SerializeField] private int _attackDamage = 20;
-    [SerializeField] private int _skillDamage = 40;
-    [SerializeField] private float _attackCooltimeMax = 0.8f;
-    [SerializeField] private float _skillCooltimeMax = 10f;
+    [SerializeField] private CharacterStatData _statData;
 
     public int Life { get; set; } = 3;
     public int Hp { get; set; }
-    public int MaxHp => _maxHp;
-    public int AttackDamage => _attackDamage;
-    public int SkillDamage => _skillDamage;
-    public float AttackCooltimeMax => _attackCooltimeMax;
-    public float SkillCooltimeMax => _skillCooltimeMax;
+    public int MaxHp => _statData._maxHp;
+    public int AttackDamage => _statData._attackDamage;
+    public int SkillDamage => _statData._skillDamage;
+    public float AttackCooltimeMax => _statData._attackCooltimeMax;
+    public float SkillCooltimeMax => _statData._skillCooltimeMax;
 
     public float AttackCooltime { get; set; } = 0f;
     public float SkillCooltime { get; set; } = 0f;
@@ -28,7 +23,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
 
     void Awake()
     {
-        Hp = _maxHp;
+        Hp = _statData._maxHp;
     }
 
     // 쿨타임 감소는 스탯 자신이 관리
