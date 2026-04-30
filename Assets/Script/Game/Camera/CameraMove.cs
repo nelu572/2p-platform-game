@@ -2,27 +2,30 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
-    private Transform player1;
-    private Transform player2;
+    private Transform _player1Transform;
+    private Transform _player2Transform;
 
-    float z_pos = -10f;
+    private float _zPos = -10f;
 
     public void SetTargets(Transform p1, Transform p2)
     {
-        player1 = p1;
-        player2 = p2;
+        _player1Transform = p1;
+        _player2Transform = p2;
     }
 
     void LateUpdate()
     {
-        if (player1 == null || player2 == null) return;
+        if (_player1Transform == null || _player2Transform == null) return;
 
-        float x_pos = (player1.position.x + player2.position.x) / 2f;
-        float y_pos = (player1.position.y + player2.position.y) / 2f;
+        Vector3 p1Pos = _player1Transform.position;
+        Vector3 p2Pos = _player2Transform.position;
 
-        transform.position = new Vector3(x_pos, y_pos, z_pos);
+        float x_pos = (p1Pos.x + p2Pos.x) / 2f;
+        float y_pos = (p1Pos.y + p2Pos.y) / 2f;
 
-        float distance = Vector2.Distance(player1.position, player2.position);
+        transform.position = new Vector3(x_pos, y_pos, _zPos);
+
+        float distance = Vector2.Distance(p1Pos, p2Pos);
         Camera.main.orthographicSize = Mathf.Max(distance * 0.5f, 6f);
     }
 }

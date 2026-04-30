@@ -56,28 +56,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "c4d0d3fa-eb07-4c1f-9891-9eb3de47ada2",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "eedd85b7-696e-47a5-8912-a9d7dd132cce",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "left",
                     "id": "e0aa4055-e54f-4fb2-a53d-b161a736e764",
                     "path": "<Keyboard>/a",
@@ -188,31 +166,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "9b304a7f-678c-4706-a215-691a5b579bc4",
-                    "path": "<Keyboard>/numpad8",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "a28293ca-3452-4c0c-9bfa-474752b01cde",
-                    "path": "<Keyboard>/numpad5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "left",
                     "id": "575a7d90-2fe5-4dbb-ac86-6665a015f0b0",
-                    "path": "<Keyboard>/numpad4",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -223,7 +179,7 @@
                 {
                     "name": "right",
                     "id": "fe82d67e-d467-4481-b9d3-d8501cf3b2a2",
-                    "path": "<Keyboard>/numpad6",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -234,7 +190,7 @@
                 {
                     "name": "",
                     "id": "c0c82ca6-6d96-496e-b7a7-dd664b313726",
-                    "path": "<Keyboard>/numpad8",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -245,7 +201,7 @@
                 {
                     "name": "",
                     "id": "597450c2-e465-4486-9516-d3f8cd279be5",
-                    "path": "<Keyboard>/comma",
+                    "path": "<Keyboard>/numpad0",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -256,7 +212,7 @@
                 {
                     "name": "",
                     "id": "c2f0f750-0847-4492-bc88-bbf40b920e52",
-                    "path": "<Keyboard>/period",
+                    "path": "<Keyboard>/numpadPeriod",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
