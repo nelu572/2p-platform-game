@@ -45,7 +45,7 @@ public class SlashWave : MonoBehaviour
         // 충돌한 오브젝트의 레이어가 _layerMask에 포함되는지 확인
         if ((_layerMask.value & (1 << col.gameObject.layer)) == 0) return;
 
-        if (col.TryGetComponent<IDamageable>(out var damageable))
+        if (col.TryGetComponent<PlayerStat>(out var damageable))
         {
             // 다른 팀만 적용
             if (damageable.TeamId == _ownerTeamId) return;

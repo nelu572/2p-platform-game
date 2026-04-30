@@ -4,14 +4,12 @@
 public class WarriorAttackController : PlayerStat, IAttackController
 {
     [Header("공격 설정")]
-    //공격력
     [SerializeField] private float _attackCooltimeMax = 0.8f;
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private LayerMask _attackLayerMask;
 
     [Header("스킬 설정 - 검기")]
-    //공격력
     //스킬 쿨타임
     [SerializeField] private float _skillCooltimeMax = 10f;
     // 검기 이동 속도
@@ -25,24 +23,21 @@ public class WarriorAttackController : PlayerStat, IAttackController
     // 검기 크기
     [SerializeField] private Vector2 _slashWaveScale = new Vector2(4.5f, 8f);
 
-    [Header("쿨타임")]
-
     //델리게이트에 함수를 가져오기 위한 참조 변수
     private PlayerController _playerController;
-    //자기 자신에 있는 인터페이스 캐싱용
-    private IDamageable _selfDamageable;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
 
     void Awake()
     {
+        // 공격력 설정
         AttackDamage = 30;
         SkillDamage = 50;
-        MaxHp = 100;
+        //체력 설정
+        MaxHp = 1000;
         Hp = MaxHp;
 
         _playerController = GetComponent<PlayerController>();
-        _selfDamageable = this;
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
@@ -89,9 +84,9 @@ public class WarriorAttackController : PlayerStat, IAttackController
         {
             if (enemy.gameObject == gameObject) continue;
 
-            if (enemy.TryGetComponent<IDamageable>(out var damageable))
+            if (enemy.TryGetComponent<PlayerStat>(out var damageable))
             {
-                if (damageable.TeamId != _selfDamageable.TeamId)
+                if (damageable.TeamId != TeamId)
                     damageable.TakeDamage(AttackDamage);
             }
         }
@@ -138,7 +133,7 @@ public class WarriorAttackController : PlayerStat, IAttackController
 
         // 검기 초기화
         if (slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
-            slashWave.Initialize(SkillDamage, _selfDamageable.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
+            slashWave.Initialize(SkillDamage, TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
 
         // 시전자 반동
         _playerController.ApplyKnockback(-direction, _selfKnockbackForce);
