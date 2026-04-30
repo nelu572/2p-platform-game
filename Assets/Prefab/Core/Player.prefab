@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 493374525097729564}
   - component: {fileID: 6225754125672622147}
   - component: {fileID: 7475279092352623639}
-  - component: {fileID: 7476716162881424604}
+  - component: {fileID: -8609067322250837177}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -374,7 +374,7 @@ PlatformEffector2D:
   m_UseSideFriction: 1
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &7476716162881424604
+--- !u!114 &-8609067322250837177
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
