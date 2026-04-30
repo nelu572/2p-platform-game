@@ -28,6 +28,8 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
 
+    //GC부하를 줄이기 위해 미리 Collider2D[]버퍼 생성
+    private Collider2D[] _hitBuffer = new Collider2D[15];
     void Awake()
     {
         //스크립트 가져오기
@@ -67,16 +69,18 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             ? (Vector2)_attackPoint.position
             : (Vector2)transform.position + new Vector2(isFacingRight ? 0.6f : -0.6f, 0f);
 
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(origin, _attackBoxSize, 0f, _attackLayerMask);
 
-        foreach (Collider2D enemy in hitEnemies)
+        int count = Physics2D.OverlapBoxNonAlloc(origin, _attackBoxSize, 0f, _hitBuffer, _attackLayerMask);
+
+        for (int i = 0; i < count; i++)
         {
+            Collider2D enemy = _hitBuffer[i];
             if (enemy.gameObject == gameObject) continue;
 
-            if (enemy.TryGetComponent<PlayerStat>(out var damageable))
+            if (enemy.TryGetComponent<PlayerStat>(out var enemyStat))
             {
-                if (damageable.TeamId != _playerStat.TeamId)
-                    damageable.TakeDamage(_playerStat.AttackDamage);
+                if (enemyStat.TeamId != _playerStat.TeamId)
+                    enemyStat.TakeDamage(_playerStat.AttackDamage);
             }
         }
         //인터페이스에서 프로퍼티 값으로 적과 자신(아군)을 구별하고 있습니다
