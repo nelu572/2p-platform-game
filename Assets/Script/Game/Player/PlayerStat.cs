@@ -9,7 +9,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
 
     [SerializeField] private CharacterStatData _statData;
 
-    public int Life { get; set; } = 3;
+    public int Life { get => _statData.life; set => _statData.life = value; }
     public int Hp { get; set; }
     public int MaxHp => _statData._maxHp;
     public int AttackDamage => _statData._attackDamage;
