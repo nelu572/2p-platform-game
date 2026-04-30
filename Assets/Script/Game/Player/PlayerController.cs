@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
         while (Mathf.Abs(_rigidbody2D.linearVelocity.x) > 0.1f)
         {
             _rigidbody2D.linearVelocity = new Vector2(
-                Mathf.Lerp(_rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 5f),
+                Mathf.MoveTowards(_rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 25f),
                 _rigidbody2D.linearVelocity.y
             );
             yield return null;
