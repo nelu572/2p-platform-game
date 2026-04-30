@@ -751535,6 +751535,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8245058898763384761}
   _enemy: {fileID: 1344509353}
+  _playerTeamId: 0
+  _enemyTeamId: 0
 --- !u!4 &1332923886
 Transform:
   m_ObjectHideFlags: 0
@@ -751555,6 +751557,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
   m_PrefabInstance: {fileID: 1622746910}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1344509371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344509353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc9fd1e0147d214b986a30879694bf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statData: {fileID: 11400000, guid: c9a186261ab35274b904a3d557f14e29, type: 2}
 --- !u!1 &1484987754
 GameObject:
   m_ObjectHideFlags: 0
@@ -751609,7 +751624,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.805
+      value: 11.22
       objectReference: {fileID: 0}
     - target: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -751651,10 +751666,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1344509371}
   m_SourcePrefab: {fileID: 100100000, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
 --- !u!1001 &7719131723398145601
 PrefabInstance:
@@ -751704,6 +751726,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7708675346070184892, guid: 9d98c48e9d9a48c478430e902931e0b2, type: 3}
+      propertyPath: _statData
+      value: 
+      objectReference: {fileID: 11400000, guid: 30eccd43060c7da47af3fcdd28483c6d, type: 2}
+    - target: {fileID: 9042307272721391682, guid: 9d98c48e9d9a48c478430e902931e0b2, type: 3}
+      propertyPath: _statData
+      value: 
+      objectReference: {fileID: 11400000, guid: 30eccd43060c7da47af3fcdd28483c6d, type: 2}
     - target: {fileID: 9175032816059688736, guid: 9d98c48e9d9a48c478430e902931e0b2, type: 3}
       propertyPath: m_Name
       value: Warrior
