@@ -4,13 +4,17 @@
 [RequireComponent(typeof(PlayerController))]
 public class WarriorAttackController : MonoBehaviour, IAttackController
 {
+    [SerializeField] private int _maxHp = 1000;
+
     [Header("공격 설정")]
+    [SerializeField] private int _damage = 30;
     [SerializeField] private float _attackCooltimeMax = 0.8f;
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private LayerMask _attackLayerMask;
 
     [Header("스킬 설정 - 검기")]
+    [SerializeField] private int _skillDamage = 50;
     //스킬 쿨타임
     [SerializeField] private float _skillCooltimeMax = 10f;
     // 검기 이동 속도
@@ -36,15 +40,10 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         //스크립트 가져오기
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
-
-        // 공격력 설정
-        _playerStat.AttackDamage = 30;
-        _playerStat.SkillDamage = 50;
-        //체력 설정
-        _playerStat.MaxHp = 1000;
-        _playerStat.Hp = _playerStat.MaxHp;
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
+
+        _playerStat.StatInitialize(_damage, _skillDamage, _maxHp, _attackCooltimeMax, _skillCooltimeMax);
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
 
