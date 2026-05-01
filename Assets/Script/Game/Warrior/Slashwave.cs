@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 // 검기 발사체
+[RequireComponent(typeof(Rigidbody2D))]
 public class SlashWave : MonoBehaviour
 {
     //공격력
@@ -18,6 +19,8 @@ public class SlashWave : MonoBehaviour
     //검기에 맞을 레이어
     private LayerMask _layerMask;
 
+    private Rigidbody2D _rb;
+
     [SerializeField] private float _knockbackForce = 8f;
 
     public void Initialize(int damage, int ownerTeamId, Vector2 direction, float speed, float maxDistance, LayerMask layerMask)
@@ -29,12 +32,13 @@ public class SlashWave : MonoBehaviour
         _maxDistance = maxDistance;
         _layerMask = layerMask;
         _startPosition = transform.position;
+
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.linearVelocity = _direction * _speed;
     }
 
     void Update()
     {
-        transform.Translate(_direction * _speed * Time.deltaTime, Space.World);
-
         // 시작 위치로부터 거리 초과 시 제거
         if (Vector2.Distance(transform.position, _startPosition) >= _maxDistance)
             Destroy(gameObject);
@@ -45,7 +49,7 @@ public class SlashWave : MonoBehaviour
         // 충돌한 오브젝트의 레이어가 _layerMask에 포함되는지 확인
         if ((_layerMask.value & (1 << col.gameObject.layer)) == 0) return;
 
-        if (col.TryGetComponent<IDamageable>(out var damageable))
+        if (col.TryGetComponent<PlayerStat>(out var damageable))
         {
             // 다른 팀만 적용
             if (damageable.TeamId == _ownerTeamId) return;

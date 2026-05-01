@@ -4,7 +4,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
+public class PlayerController : MonoBehaviour, IKnockbackable
 {
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -25,8 +25,6 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
     private BoxCollider2D _boxCollider2D;
 
     public bool IsGrounded => _isGrounded;
-    public int TeamId { get; set; }
-    //넉백을 위해 만든 프로퍼티
     public bool IsKnockedBack { get; set; }
 
     void Awake()
@@ -85,11 +83,6 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
         OnSkillHandler?.Invoke();
     }
 
-    public void TakeDamage(int attackDamage)
-    {
-        Debug.Log($"{TeamId} : 체력 감소");
-    }
-
     public void ApplyKnockback(Vector2 direction, float force)
     {
         _rigidbody2D.AddForce(direction * force, ForceMode2D.Impulse);
@@ -102,7 +95,7 @@ public class PlayerController : MonoBehaviour, IDamageable, IKnockbackable
         while (Mathf.Abs(_rigidbody2D.linearVelocity.x) > 0.1f)
         {
             _rigidbody2D.linearVelocity = new Vector2(
-                Mathf.Lerp(_rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 5f),
+                Mathf.MoveTowards(_rigidbody2D.linearVelocity.x, 0f, Time.deltaTime * 25f),
                 _rigidbody2D.linearVelocity.y
             );
             yield return null;
