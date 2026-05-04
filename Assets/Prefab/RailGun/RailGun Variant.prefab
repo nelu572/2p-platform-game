@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &952536464290951008
+--- !u!1001 &6059956624799879204
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,26 +11,22 @@ PrefabInstance:
     - target: {fileID: -8609067322250837177, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: _statData
       value: 
-      objectReference: {fileID: 11400000, guid: 30eccd43060c7da47af3fcdd28483c6d, type: 2}
-    - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-      propertyPath: m_FlipY
-      value: 0
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 31d9a0589f3841749a328e503bfdd7b1, type: 2}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.16862744
       objectReference: {fileID: 0}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.g
-      value: 0.27017164
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.94728273
       objectReference: {fileID: 0}
     - target: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.805
+      value: 11.22
       objectReference: {fileID: 0}
     - target: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -72,50 +68,84 @@ PrefabInstance:
       propertyPath: m_DefaultActionMap
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7476716162881424604, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-      propertyPath: _statData
-      value: 
-      objectReference: {fileID: 11400000, guid: 30eccd43060c7da47af3fcdd28483c6d, type: 2}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Name
-      value: Warrior
+      value: RailGun Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Layer
-      value: 16
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 5799861597956858159}
+      insertIndex: -1
+      addedObject: {fileID: 290028739437716116}
+    - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7339689012018609982}
+    - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2149964436233628424}
   m_SourcePrefab: {fileID: 100100000, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
---- !u!1 &9175032816059688736 stripped
+--- !u!1 &2771155314212984932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-  m_PrefabInstance: {fileID: 952536464290951008}
+  m_PrefabInstance: {fileID: 6059956624799879204}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5799861597956858159
+--- !u!114 &290028739437716116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175032816059688736}
+  m_GameObject: {fileID: 2771155314212984932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76b188086feb14f419a13411e140cdfc, type: 3}
+  m_Script: {fileID: 11500000, guid: b462168efcb92584aa3e163378190b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackBoxSize: {x: 1.2, y: 0.8}
+--- !u!114 &7339689012018609982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2771155314212984932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6b0ff83c714104d884c8ccb7638e3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _attackPoint: {fileID: 0}
   _attackLayerMask:
     serializedVersion: 2
     m_Bits: 983040
-  _slashWaveSpeed: 20
-  _selfKnockbackForce: 4
-  _slashWavePrefab: {fileID: 6742440097368036595, guid: 296793028406c5f4cbe603698c71fabd, type: 3}
-  _slashWaveMaxDistance: 30
-  _slashWaveScale: {x: 4.5, y: 8}
+  _attackSize: {x: 20, y: 2}
+  _maxWidth: 8
+  _maxCharge: 3
+  _chargeDamageMultiplier: 01000000020000000300000004000000
+  _skillAttackSize: {x: 40, y: 4}
+  _skillMaxWidth: 16
+  _skillMaxCharge: 6
+  _laser: {fileID: 0}
+  _laserDuration: 0.5
+  _jumpKnockbackPower: 16
+  _playerKnockbackPower: 2
+  _enemyKnockbackPower: 3
+--- !u!114 &2149964436233628424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2771155314212984932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853ec6c4649953448b60473f9cf44d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserPrefab: {fileID: 8850260750053975397, guid: 688f503224173cc4984688aa0eca35ad, type: 3}
+  initialPoolSize: 3
