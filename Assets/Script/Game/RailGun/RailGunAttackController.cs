@@ -18,9 +18,6 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [SerializeField] private float _maxCharge = 3f;
     [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 4 }; // 0~3단계
 
-
-    [SerializeField] private float _JumpKnockbackPower = 16f;
-
     [Header("스킬")]
     // 스킬은 일반 공격의 2배
     [SerializeField] private Vector2 _skillAttackSize = new Vector2(40f, 4f);
@@ -29,6 +26,11 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
     [Header("레이저 오브젝트")]
     [SerializeField] private GameObject _laserPrefab;
+
+    [Header("넉백")]
+    [SerializeField] private float _jumpKnockbackPower = 16f;
+    [SerializeField] private float _playerKnockbackPower = 2f;
+    [SerializeField] private float _enemyKnockbackPower = 3f;
 
     //델리게이트에 함수를 가져오기 위한 참조 변수
     private PlayerController _playerController;
@@ -124,11 +126,11 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
             {
                 enemyStat.TakeDamage(damage);
                 if (_detectedTarget.TryGetComponent<IKnockbackable>(out var pc))
-                    pc.ApplyKnockback(fireDir, 3f * (level + 1f));
+                    pc.ApplyKnockback(fireDir, _enemyKnockbackPower * (level + 1f));
             }
         }
 
-        _playerController.ApplyKnockback(-fireDir, 2f * level + 1f); // 차징 시간에 비례한 넉백
+        _playerController.ApplyKnockback(-fireDir, _playerKnockbackPower * level + 1f); // 차징 시간에 비례한 넉백
         Debug.Log($"[Railgun] Lv{level} | 데미지: {damage} | 방향: {fireDir}");
     }
 
@@ -156,12 +158,12 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
             enemyStat.TakeDamage(damage);
             if (col.TryGetComponent<IKnockbackable>(out var kb))
-                kb.ApplyKnockback(fireDir, 3f * (level + 1f));
+                kb.ApplyKnockback(fireDir, _enemyKnockbackPower * (level + 1f));
         }
         //속도 초기화
         _playerController.ResetFallSpeed();
         // 차징 시간에 비례한 위쪽 반동
-        _playerController.ApplyKnockback(Vector2.up, 16f * level + 1f);
+        _playerController.ApplyKnockback(Vector2.up, _jumpKnockbackPower * level + 1f);
 
     }
 
@@ -205,11 +207,11 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
             {
                 enemyStat.TakeDamage(damage);
                 if (_skillDetectedTarget.TryGetComponent<IKnockbackable>(out var kb))
-                    kb.ApplyKnockback(fireDir, 3f * (level + 1f) * 2f); // 넉백도 2배
+                    kb.ApplyKnockback(fireDir, _enemyKnockbackPower * (level + 1f) * 2f); // 넉백도 2배
             }
         }
 
-        _playerController.ApplyKnockback(-fireDir, (2f * level + 1f) * 2f); // 반동도 2배
+        _playerController.ApplyKnockback(-fireDir, (_playerKnockbackPower * level + 1f) * 2f); // 반동도 2배
         Debug.Log($"[Railgun Skill] Lv{level} | 데미지: {damage} | 방향: {fireDir}");
     }
 
