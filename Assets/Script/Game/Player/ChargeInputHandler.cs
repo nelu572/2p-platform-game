@@ -4,29 +4,33 @@ using UnityEngine.InputSystem;
 public class ChargeInputHandler : MonoBehaviour
 {
     private IChargeable _chargeable;
-    private InputAction _attackAction;
+    private PlayerInput _playerInput;
 
     void Awake()
     {
         _chargeable = GetComponent<IChargeable>();
-
-        // PlayerInput에서 Attack 액션 직접 가져오기
-        _attackAction = GetComponent<PlayerInput>().actions["Attack"];
+        _playerInput = GetComponent<PlayerInput>();
     }
+
     void OnEnable()
     {
-        _attackAction.canceled += OnAttack;
+        if (_chargeable == null) return;
+
+        // IChargeable을 구현한 경우에만 모든 액션 canceled 구독
+        foreach (var action in _playerInput.actions)
+            action.canceled += OnActionCanceled;
     }
 
     void OnDisable()
     {
-        _attackAction.canceled -= OnAttack;
+        if (_playerInput == null) return;
+
+        foreach (var action in _playerInput.actions)
+            action.canceled -= OnActionCanceled;
     }
 
-    // 공격키 해재시 발동
-    public void OnAttack(InputAction.CallbackContext context)   
+    private void OnActionCanceled(InputAction.CallbackContext ctx)
     {
-        if (context.canceled)
-            _chargeable.ReleaseAttack();
+        _chargeable?.ReleaseCharge(ctx.action.name);
     }
 }

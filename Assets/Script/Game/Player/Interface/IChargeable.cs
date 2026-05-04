@@ -1,4 +1,4 @@
 public interface IChargeable
 {
-    public void ReleaseAttack();
+    void ReleaseCharge(string actionName);
 }
