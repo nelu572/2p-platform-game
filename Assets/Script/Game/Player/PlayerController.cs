@@ -89,10 +89,10 @@ public class PlayerController : MonoBehaviour, IKnockbackable
 
     private void HandleKnockback()
     {
-        float vx = _rigidbody2D.linearVelocity.x;
-        vx = Mathf.MoveTowards(vx, 0f, Time.fixedDeltaTime * _knockbackDeceleration);
-        _rigidbody2D.linearVelocity = new Vector2(vx, _rigidbody2D.linearVelocity.y);
-        if (Mathf.Abs(vx) <= 0.1f)
+        float playerLinearVelocityX = _rigidbody2D.linearVelocity.x;
+        playerLinearVelocityX = Mathf.MoveTowards(playerLinearVelocityX, 0f, Time.fixedDeltaTime * _knockbackDeceleration);
+        _rigidbody2D.linearVelocity = new Vector2(playerLinearVelocityX, _rigidbody2D.linearVelocity.y);
+        if (Mathf.Abs(playerLinearVelocityX) <= 0.1f)
         {
             _rigidbody2D.linearVelocity = new Vector2(0f, _rigidbody2D.linearVelocity.y);
             _isKnockback = false;
