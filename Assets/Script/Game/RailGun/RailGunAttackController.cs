@@ -1,35 +1,42 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStat))]
-public class RailGunAttackController : MonoBehaviour, IAttackController
+[RequireComponent(typeof(ChargeInputHandler))]
+public class RailGunAttackController : MonoBehaviour, IAttackController, IChargeable
 {
-    [Header("°ø°İ ¼³Á¤")]
+    [Header("ê³µê²©")]
+    //ê³µê²© ìœ„ì¹˜(ì¸ìŠ¤í™í„°ì—ì„œ ë§Œì§€ì§€ ë§ì•„ì•¼ ì œëŒ€ë¡œ ëœ ê³µê²© ìœ„ì¹˜ê°€ë¨)
     [SerializeField] private Transform _attackPoint;
+    //ê°ì§€í•  ëŒ€ìƒì˜ ë ˆì´ì–´
     [SerializeField] private LayerMask _attackLayerMask;
+    //ê³µê²© í¬ê¸°
     [SerializeField] private Vector2 _attackSize = new Vector2(20f, 2f);
 
-    [Header("Â÷Â¡ ¼³Á¤")]
+    [Header("ì°¨ì§• ì„¤ì •")]
     [SerializeField] private float _maxCharge = 3f;
-    [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 4 }; // 0~3´Ü°è
+    [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 4 }; // 0~3ë‹¨ê³„
 
-    [Header("°¨Áö ¼³Á¤")]
-    [SerializeField] private float _triangleAngle = 45f;  // Â÷Â¡ 0%ÀÏ¶§ °¢µµ
-    [SerializeField] private float _detectionRange = 15f;
+    [Header("ê°ì§€ ì„¤ì •")]
+    [SerializeField] private float _maxWidth = 8f;  // ì°¨ì§• 0%ì¼ë•Œ ê°ì§€ ë²”ìœ„ yê°’
+    //ë ˆì´ì € ì˜¤ë¸Œì íŠ¸
+    [SerializeField] private GameObject _laserPrefab;
 
-    [Header("Input")]
-    [SerializeField] private InputActionReference _attackActionRef; // Inspector¿¡¼­ Attack ¾×¼Ç ¿¬°á
-
+    //ë¸ë¦¬ê²Œì´íŠ¸ì— í•¨ìˆ˜ë¥¼ ê°€ì ¸ì˜¤ê¸° ìœ„í•œ ì°¸ì¡° ë³€ìˆ˜
     private PlayerController _playerController;
+    //ì¿¨íƒ€ì„ ê³µê²©ë ¥ ê°€ì ¸ì˜¤ëŠ” ì°¸ì¡° ë³€ìˆ˜
     private PlayerStat _playerStat;
+    // ì• ë‹ˆë©”ì´ì…˜ì´ ìƒê¸´ë‹¤ë©´ ì£¼ì„ì²˜ë¦¬ë¥¼ í•´ì œí•  ê²ƒì…ë‹ˆë‹¤
+    //private Animator _animator;
 
     private float _chargeTimer = 0f;
     private bool _isCharging = false;
     private Transform _detectedTarget = null;
-    [SerializeField] private GameObject _laserPrefab;
 
+    //GCë¶€í•˜ë¥¼ ì¤„ì´ê¸° ìœ„í•´ ë¯¸ë¦¬ Collider2D<>ë²„í¼ ìƒì„±
+    //ë¦¬ìŠ¤íŠ¸ë„ ë™ì  ë°°ì—´ì´ë¼ì„œ í¬ê¸°ê°€ ë³€ê²½ë˜ë©´ ì¬í• ë‹¹ì´ ë°œìƒí•˜ì§€ë§Œ
+    //ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ë¥¼ ì‚¬ìš©í•˜ê¸°ì— OverlapBoxAllë³´ë‹¤ëŠ” ì„±ëŠ¥ë©´ì—ì„œëŠ” ì¢‹ë‹¤
     List<Collider2D> _hitBuffer = new List<Collider2D>(15);
     private ContactFilter2D _contactFilter;
 
@@ -38,7 +45,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
 
-        _playerController.OnAttackHandler = Attack; // ±âÁ¸ Èå¸§ À¯Áö (Â÷Â¡ ½ÃÀÛ)
+        _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
 
         _contactFilter = new ContactFilter2D();
@@ -46,29 +53,21 @@ public class RailGunAttackController : MonoBehaviour, IAttackController
         _contactFilter.useTriggers = true;
     }
 
-    void OnEnable()
-    {
-        // ¶¿ ¶§(canceled)¸¸ Á÷Á¢ ±¸µ¶ ¡æ ¹ß»ç Ã³¸®
-        _attackActionRef.action.canceled += OnAttackReleased;
-    }
-
-    void OnDisable()
-    {
-        _attackActionRef.action.canceled -= OnAttackReleased;
-    }
-
-    // PlayerController ¡æ ´©¸¦ ¶§ È£ÃâµÊ ¡æ Â÷Â¡ ½ÃÀÛ
+    // PlayerController â†’ ëˆ„ë¥¼ ë•Œ í˜¸ì¶œë¨ â†’ ì°¨ì§• ì‹œì‘
     public void Attack()
     {
         if (_playerStat.AttackCooltime > 0f) return;
+
+        // ì• ë‹ˆë©”ì´ì…˜ì´ ìƒê¸´ë‹¤ë©´ ì£¼ì„ì²˜ë¦¬ë¥¼ í•´ì œí•  ê²ƒì…ë‹ˆë‹¤
+        //_animator.SetTrigger("NormalAttack");
 
         _isCharging = true;
         _chargeTimer = 0f;
     }
 
-    // canceled Äİ¹é ¡æ ¶¿ ¶§ ¡æ ¹ß»ç
-    private void OnAttackReleased(InputAction.CallbackContext ctx)
-    {
+    public void ReleaseAttack()
+    {//ChargeInputControllerì—ì„œ ì œì–´
+        Debug.Log($"[Railgun] ReleaseAttack í˜¸ì¶œë¨"); // í™•ì¸ìš©
         if (!_isCharging) return;
 
         if (_playerController.IsGrounded)
@@ -79,57 +78,50 @@ public class RailGunAttackController : MonoBehaviour, IAttackController
         _isCharging = false;
         _chargeTimer = 0f;
         _detectedTarget = null;
-
         _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
     }
 
     void Update()
     {
         if (!_isCharging) return;
-
+        //ì°¨ì§• ìƒíƒœì¼ë•Œë§Œ ì‘ë™
         _chargeTimer = Mathf.Clamp(_chargeTimer + Time.deltaTime, 0f, _maxCharge);
         _detectedTarget = DetectEnemy();
     }
 
-    // ¦¡¦¡ °¨Áö ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
-    Transform DetectEnemy()
+    private Transform DetectEnemy()
     {
         float chargeRatio = _chargeTimer / _maxCharge;
-        float currentAngle = Mathf.Lerp(_triangleAngle, 0f, chargeRatio); // »ï°¢Çü ¡æ Á÷¼±
+        float attackSizeY = Mathf.Lerp(_maxWidth, _attackSize.y, chargeRatio); // ê°ì§€ ë²”ìœ„ yê°’ ì¶•ì†Œ
         Vector2 facingDir = GetFacingDirection();
 
-        Physics2D.OverlapCircle(transform.position, _detectionRange, _contactFilter, _hitBuffer);
+        // ë°•ìŠ¤ ì¤‘ì‹¬ì„ ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ ì˜¤í”„ì…‹
+        Vector2 boxCenter = (Vector2)transform.position + facingDir * (_attackSize.x / 2f);
+        Physics2D.OverlapBox(boxCenter, new Vector2(_attackSize.x, attackSizeY), 0f, _contactFilter, _hitBuffer);
 
         Transform closest = null;
-        float closestDist = Mathf.Infinity;
+        float closestDist = Mathf.Infinity; //ê°€ì¥ ê°€ê¹Œìš´ ì ì˜ ê±°ë¦¬
 
         foreach (var col in _hitBuffer)
         {
-            if (col.gameObject == gameObject) continue;
-            if (!col.TryGetComponent<PlayerStat>(out var stat)) continue;
-            if (stat.TeamId == _playerStat.TeamId) continue;
+            if (col.gameObject == gameObject) continue; // ìê¸° ìì‹ ì€ ì œì™¸
+            if (!col.TryGetComponent<PlayerStat>(out var stat)) continue; //PlayerStatì—†ì„ ì‹œ ì œì™¸
+            if (stat.TeamId == _playerStat.TeamId) continue; //ê°™ì€ íŒ€ ì œì™¸
 
-            Vector2 toEnemy = (col.transform.position - transform.position).normalized;
-            float angle = Vector2.Angle(facingDir, toEnemy);
-
-            if (angle <= currentAngle / 2f)
+            float dist = Vector2.Distance(transform.position, col.transform.position);
+            if (dist < closestDist)
             {
-                float dist = Vector2.Distance(transform.position, col.transform.position);
-                if (dist < closestDist)
-                {
-                    closestDist = dist;
-                    closest = col.transform;
-                }
+                closestDist = dist;
+                closest = col.transform;
             }
         }
 
         return closest;
     }
 
-    // ¦¡¦¡ ¹ß»ç ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
     public void NormalAttack()
     {
-        int level = Mathf.Clamp(Mathf.FloorToInt(_chargeTimer), 1, _chargeDamageMultiplier.Length - 1);
+        int level = Mathf.Clamp(Mathf.FloorToInt(_chargeTimer), 0, _chargeDamageMultiplier.Length - 1);
         int damage = _playerStat.AttackDamage * _chargeDamageMultiplier[level];
 
         Vector2 fireDir = _detectedTarget != null
@@ -142,44 +134,35 @@ public class RailGunAttackController : MonoBehaviour, IAttackController
             if (enemyStat.TeamId != _playerStat.TeamId)
                 enemyStat.TakeDamage(damage);
 
-        Debug.Log($"[Railgun] Lv{level} | µ¥¹ÌÁö: {damage} | ¹æÇâ: {fireDir}");
+        Debug.Log($"[Railgun] Lv{level} | ë°ë¯¸ì§€: {damage} | ë°©í–¥: {fireDir}");
     }
 
     public void JumpAttack() { }
 
     public void Skill() { }
 
-    // ¦¡¦¡ ½ºÇÁ¶óÀÌÆ® »ı¼º ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
-    void SpawnRailSprite(Vector2 direction)
+    private void SpawnRailSprite(Vector2 direction)
     {
-        // _attackPoint ¾øÀ¸¸é ÀÚ±â À§Ä¡ ±âÁØ
+        // _attackPoint ì—†ìœ¼ë©´ ìê¸° ìœ„ì¹˜ ê¸°ì¤€
         Vector2 origin = _attackPoint != null
             ? (Vector2)_attackPoint.position
             : (Vector2)transform.position;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // ½ºÇÁ¶óÀÌÆ® Áß½ÉÀÌ origin¿¡¼­ Àı¹İ ±æÀÌ¸¸Å­ ¾Õ¿¡ ¿Àµµ·Ï
+        // ìŠ¤í”„ë¼ì´íŠ¸ ì¤‘ì‹¬ì´ originì—ì„œ ì ˆë°˜ ê¸¸ì´ë§Œí¼ ì•ì— ì˜¤ë„ë¡
         Vector2 spawnPos = origin + direction * (_attackSize.x / 2f);
 
-        GameObject rail = new GameObject("Laser");
-        rail.transform.position = spawnPos;
-        rail.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        GameObject rail = Instantiate(_laserPrefab, spawnPos, Quaternion.Euler(0f, 0f, angle));
+        //í¬ê¸° ì„¤ì •
         rail.transform.localScale = new Vector3(_attackSize.x, _attackSize.y, 1f);
 
-        // ½ºÇÁ¶óÀÌÆ® ·»´õ·¯ ÀÚµ¿ Ãß°¡
-        var sr = rail.AddComponent<SpriteRenderer>();
-        sr.sprite = GetComponent<SpriteRenderer>()?.sprite; // ÀÓ½Ã: º»ÀÎ ½ºÇÁ¶óÀÌÆ® »ç¿ë
-        // TODO: ·¹ÀÏ°Ç Àü¿ë ½ºÇÁ¶óÀÌÆ® ¿¡¼Â ¿¬°á
-
-        Destroy(rail, 0.15f);
+        Destroy(rail, 0.5f);
     }
 
-    // ¦¡¦¡ À¯Æ¿ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
     Vector2 GetFacingDirection()
     {
-        bool isFacingRight = transform.localScale.x > 0f;
-        return isFacingRight ? Vector2.right : Vector2.left;
+        return transform.localScale.x > 0f ? Vector2.right : Vector2.left;
     }
 
 #if UNITY_EDITOR
@@ -188,15 +171,20 @@ public class RailGunAttackController : MonoBehaviour, IAttackController
         if (!Application.isPlaying) return;
 
         float chargeRatio = _chargeTimer / _maxCharge;
-        float currentAngle = Mathf.Lerp(_triangleAngle, 0f, chargeRatio);
+        float attackSizeY = Mathf.Lerp(_maxWidth, _attackSize.y, chargeRatio); // ê°ì§€ ë²”ìœ„ yê°’ ì¶•ì†Œ
         Vector2 facing = GetFacingDirection();
 
-        Gizmos.color = new Color(1f, 1f, 0f, 0.5f);
-        Vector3 left = Quaternion.Euler(0, 0, currentAngle / 2f) * (Vector3)facing;
-        Vector3 right = Quaternion.Euler(0, 0, -currentAngle / 2f) * (Vector3)facing;
-        Gizmos.DrawRay(transform.position, left * _detectionRange);
-        Gizmos.DrawRay(transform.position, right * _detectionRange);
+        // ë°•ìŠ¤ ì¤‘ì‹¬ì„ ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ ì˜¤í”„ì…‹
+        Vector3 boxCenter = transform.position + (Vector3)(facing * (_attackSize.x / 2f));
+        Vector3 boxSize = new Vector3(_attackSize.x, attackSizeY, 0f);
 
+        // ê°ì§€ ë²”ìœ„ ë°•ìŠ¤ (ë…¸ë€ìƒ‰)
+        Gizmos.color = new Color(1f, 1f, 0f, 0.35f);
+        Gizmos.DrawCube(boxCenter, boxSize);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(boxCenter, boxSize);
+
+        // ê°ì§€ëœ ì  (ë¹¨ê°„ì„ )
         if (_detectedTarget != null)
         {
             Gizmos.color = Color.red;
