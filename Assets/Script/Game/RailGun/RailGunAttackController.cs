@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(ChargeInputHandler))]
+[RequireComponent(typeof(CreateLaser))]
 public class RailGunAttackController : MonoBehaviour, IAttackController, IChargeable
 {
     [Header("일반 공격")]
@@ -24,8 +25,11 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [SerializeField] private float _skillMaxWidth = 16f;
     [SerializeField] private float _skillMaxCharge = 6f;
 
-    [Header("레이저 오브젝트")]
-    [SerializeField] private GameObject _laserPrefab;
+    [Header("레이저")]
+    [SerializeField] private GameObject _laser;
+    [SerializeField] private float _laserDuration = 0.5f;
+    private bool _laserActive = false;
+    private float _laserTimer = 0f;
 
     [Header("넉백")]
     [SerializeField] private float _jumpKnockbackPower = 16f;
@@ -36,6 +40,8 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     private PlayerController _playerController;
     //쿨타임 공격력 가져오는 참조 변수
     private PlayerStat _playerStat;
+    //레이저 생성 클래스
+    private CreateLaser _createLaser;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
 
@@ -52,6 +58,8 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
     void Awake()
     {
+
+        _createLaser = GetComponent<CreateLaser>();
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
 
@@ -65,6 +73,19 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
     void Update()
     {
+        if (_laserActive)
+        {
+            _laserTimer += Time.deltaTime;
+        }
+
+        if(_laserTimer >= _laserDuration)
+        {
+            _createLaser.Return(_laser); // 반납
+            _laser = null;//레이저 초기화
+            _laserActive = false;
+            _laserTimer = 0f;
+        }
+
         // 일반 차징
         if (_isCharging)
         {
@@ -269,11 +290,14 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         // 스프라이트 중심이 origin에서 절반 길이만큼 앞에 오도록
         Vector2 spawnPos = origin + direction * (sizeX / 2f);
 
-        GameObject rail = Instantiate(_laserPrefab, spawnPos, Quaternion.Euler(0f, 0f, angle));
+        _laser = _createLaser.GetObject();
+        _laserActive = true;
+        _laser.SetActive(_laserActive);// 레이저 오브젝트 활성화
+        _laserTimer = 0f;
+        _laser.transform.position = spawnPos;
+        _laser.transform.rotation = Quaternion.Euler(0f, 0f, angle);
         //크기 설정
-        rail.transform.localScale = new Vector3(sizeX, sizeY, 1f);
-
-        Destroy(rail, 0.5f);
+        _laser.transform.localScale = new Vector3(sizeX, sizeY, 1f);
     }
 
     private Vector2 GetFacingDirection()
