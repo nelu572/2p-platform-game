@@ -74,7 +74,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             ? (Vector2)_attackPoint.position
             : (Vector2)transform.position + new Vector2(isFacingRight ? 0.6f : -0.6f, 0f);
 
-
+        _hitBuffer.Clear();
         Physics2D.OverlapBox(origin, _attackBoxSize, 0f, _contactFilter, _hitBuffer);
 
         for (int i = 0; i < _hitBuffer.Count; i++)

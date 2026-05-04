@@ -45,9 +45,6 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     private bool _isSkillCharging = false;
     private Transform _skillDetectedTarget = null;
 
-    //GC부하를 줄이기 위해 미리 Collider2D<>버퍼 생성
-    //리스트도 동적 배열이라서 크기가 변경되면 재할당이 발생하지만
-    //이미 존재하는 리스트를 사용하기에 OverlapBoxAll보다는 성능면에서는 좋다
     List<Collider2D> _hitBuffer = new List<Collider2D>(15);
     private ContactFilter2D _contactFilter;
 
@@ -147,6 +144,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         // 아래 방향 감지 (점프공격은 별도 감지 없이 바로 아래 OverlapBox)
         Vector2 boxCenter = (Vector2)transform.position + Vector2.down * (_attackSize.x / 2f);
+        _hitBuffer.Clear();
         Physics2D.OverlapBox(boxCenter, new Vector2(_attackSize.y, _attackSize.x), 0f, _contactFilter, _hitBuffer);
         // attackSize를 90도 회전 → x,y 반전 (세로로 긴 박스)
 
@@ -232,6 +230,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         // 박스 중심을 바라보는 방향으로 오프셋
         Vector2 boxCenter = (Vector2)transform.position + facingDir * (sizeX / 2f);
+        _hitBuffer.Clear();
         Physics2D.OverlapBox(boxCenter, new Vector2(sizeX, attackSizeY), 0f, _contactFilter, _hitBuffer);
 
         Transform closest = null;
@@ -244,10 +243,10 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
             if (!col.TryGetComponent<PlayerStat>(out var stat)) continue; //PlayerStat없을 시 제외
             if (stat.TeamId == _playerStat.TeamId) continue; //같은 팀 제외
 
-            float dist = Vector2.Distance(transform.position, col.transform.position);
-            if (dist < closestDist)
+            float distSqr = ((Vector2)transform.position - (Vector2)col.transform.position).sqrMagnitude;
+            if (distSqr < closestDist)
             {
-                closestDist = dist;
+                closestDist = distSqr;
                 closest = col.transform;
             }
         }
