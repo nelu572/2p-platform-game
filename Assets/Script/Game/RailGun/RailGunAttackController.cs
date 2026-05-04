@@ -18,6 +18,9 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [SerializeField] private float _maxCharge = 3f;
     [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 4 }; // 0~3단계
 
+
+    [SerializeField] private float _JumpKnockbackPower = 16f;
+
     [Header("스킬")]
     // 스킬은 일반 공격의 2배
     [SerializeField] private Vector2 _skillAttackSize = new Vector2(40f, 4f);
@@ -83,8 +86,10 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     {
         if (_playerStat.AttackCooltime > 0f) return;
 
-        // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
-        //_animator.SetTrigger("NormalAttack");
+        //if (_playerController.IsGrounded)
+            //_animator.SetTrigger("NormalAttack");
+        //else
+            //_animator.SetTrigger("JumpAttack");
 
         _isCharging = true;
         _chargeTimer = 0f;
@@ -130,7 +135,37 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         Debug.Log($"[Railgun] Lv{level} | 데미지: {damage} | 방향: {fireDir}");
     }
 
-    public void JumpAttack() { }
+    public void JumpAttack()
+    {
+        int level = Mathf.Clamp(Mathf.FloorToInt(_chargeTimer), 0, _chargeDamageMultiplier.Length - 1);
+        int damage = _playerStat.AttackDamage * _chargeDamageMultiplier[level];
+
+        // 무조건 아래 방향
+        Vector2 fireDir = Vector2.down;
+
+        SpawnRailSprite(fireDir, _attackSize.x, _attackSize.y);
+
+        // 아래 방향 감지 (점프공격은 별도 감지 없이 바로 아래 OverlapBox)
+        Vector2 boxCenter = (Vector2)transform.position + Vector2.down * (_attackSize.x / 2f);
+        Physics2D.OverlapBox(boxCenter, new Vector2(_attackSize.y, _attackSize.x), 0f, _contactFilter, _hitBuffer);
+        // attackSize를 90도 회전 → x,y 반전 (세로로 긴 박스)
+
+        foreach (var col in _hitBuffer)
+        {
+            if (col.gameObject == gameObject) continue; // 자기 자신은 제외
+            if (!col.TryGetComponent<PlayerStat>(out var enemyStat)) continue; //PlayerStat없을 시 제외
+            if (enemyStat.TeamId == _playerStat.TeamId) continue; //같은 팀 제외
+
+            enemyStat.TakeDamage(damage);
+            if (col.TryGetComponent<IKnockbackable>(out var kb))
+                kb.ApplyKnockback(fireDir, 3f * (level + 1f));
+        }
+        //속도 초기화
+        _playerController.ResetFallSpeed();
+        // 차징 시간에 비례한 위쪽 반동
+        _playerController.ApplyKnockback(Vector2.up, 16f * level + 1f);
+
+    }
 
     public void Skill()
     {
@@ -181,7 +216,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     }
 
     public void ReleaseCharge(string actionName)
-    {
+    {//어떤 공격 액션키를 사용했는지 확인하고 그에 맞는 함수를 호출
         switch (actionName)
         {
             case "Attack": ReleaseAttack(); break;
