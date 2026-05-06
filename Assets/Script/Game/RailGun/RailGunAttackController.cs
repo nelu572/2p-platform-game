@@ -79,14 +79,14 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         if (_laserActive)
         {
             _laserTimer += Time.deltaTime;
-        }
 
-        if(_laserTimer >= _laserDuration)
-        {
-            _objectPoolManager.Return(_laserKey, _laser); // 반납
-            _laser = null;//레이저 초기화
-            _laserActive = false;
-            _laserTimer = 0f;
+            if (_laserTimer >= _laserDuration)
+            {
+                _objectPoolManager.Return(_laserKey, _laser); // null 위험 없음, 시간이 지나면 오브젝트 풀에 반환
+                _laser = null;// 참조 해제
+                _laserActive = false;
+                _laserTimer = 0f;
+            }
         }
 
         // 일반 차징
@@ -282,26 +282,23 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
     private void SpawnRailSprite(Vector2 direction, float sizeX, float sizeY)
     {
-        // _attackPoint 없으면 자기 위치 기준
         Vector2 origin = _attackPoint != null
             ? (Vector2)_attackPoint.position
             : (Vector2)transform.position;
 
-        //회전 각도 저장변수
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // 스프라이트 중심이 origin에서 절반 길이만큼 앞에 오도록
         Vector2 spawnPos = origin + direction * (sizeX / 2f);
 
-        //레이저 키값을 통해 레이저 오브젝트 활성화
+        //레이저가 널일 경우를 대비
         _laser = _objectPoolManager.Get(_laserKey);
-        _laserActive = true;
-        _laser.SetActive(_laserActive);// 레이저 오브젝트 활성화
-        _laserTimer = 0f;
+
         _laser.transform.position = spawnPos;
         _laser.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-        //크기 설정
         _laser.transform.localScale = new Vector3(sizeX, sizeY, 1f);
+        // SetActive 중복 제거 → Get() 내부에서 처리
+
+        _laserActive = true;
+        _laserTimer = 0f;
     }
 
     private Vector2 GetFacingDirection()

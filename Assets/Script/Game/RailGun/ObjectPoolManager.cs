@@ -46,6 +46,10 @@ public class ObjectPoolManager : MonoBehaviour
             : CreateNew(key);
 
         obj.SetActive(true);
+
+        if (obj.TryGetComponent<PooledObject>(out var pooled))
+            pooled.Init(key, this);
+        
         return obj;
     }
 
