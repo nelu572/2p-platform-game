@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(ChargeInputHandler))]
-[RequireComponent(typeof(CreateLaser))]
+[RequireComponent(typeof(ObjectPoolManager))]
 public class RailGunAttackController : MonoBehaviour, IAttackController, IChargeable
 {
     [Header("일반 공격")]
@@ -28,6 +28,9 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [Header("레이저")]
     [SerializeField] private GameObject _laser;
     [SerializeField] private float _laserDuration = 0.5f;
+    // 오브젝트 폴링에 넘길 key값
+    // 이 오브젝트로 생성할 오브젝트를 찾은후 오브젝트 활성화
+    [SerializeField] private string _laserKey;
     private bool _laserActive = false;
     private float _laserTimer = 0f;
 
@@ -41,12 +44,12 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     //쿨타임 공격력 가져오는 참조 변수
     private PlayerStat _playerStat;
     //레이저 생성 클래스
-    private CreateLaser _createLaser;
+    private ObjectPoolManager _objectPoolManager;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
 
     private float _chargeTimer = 0f;
-    private bool _isCharging = false;
+    public bool IsCharging { get; set; }
     private Transform _detectedTarget = null;
 
     private float _skillChargeTimer = 0f;
@@ -59,7 +62,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     void Awake()
     {
 
-        _createLaser = GetComponent<CreateLaser>();
+        _objectPoolManager= GetComponent<ObjectPoolManager>();
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
 
@@ -80,14 +83,14 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         if(_laserTimer >= _laserDuration)
         {
-            _createLaser.Return(_laser); // 반납
+            _objectPoolManager.Return(_laserKey, _laser); // 반납
             _laser = null;//레이저 초기화
             _laserActive = false;
             _laserTimer = 0f;
         }
 
         // 일반 차징
-        if (_isCharging)
+        if (IsCharging)
         {
             _chargeTimer = Mathf.Clamp(_chargeTimer + Time.deltaTime, 0f, _maxCharge);
             _detectedTarget = DetectEnemy(_attackSize.x, _maxWidth, _attackSize.y, _maxCharge, _chargeTimer);
@@ -107,24 +110,24 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         if (_playerStat.AttackCooltime > 0f) return;
 
         //if (_playerController.IsGrounded)
-            //_animator.SetTrigger("NormalAttack");
+        //_animator.SetTrigger("NormalAttack");
         //else
-            //_animator.SetTrigger("JumpAttack");
+        //_animator.SetTrigger("JumpAttack");
 
-        _isCharging = true;
+        IsCharging = true;
         _chargeTimer = 0f;
     }
 
     private void ReleaseAttack()
     {   //공격키 해제시 호출됨
-        if (!_isCharging) return;
+        if (!IsCharging) return;
 
         if (_playerController.IsGrounded)
             NormalAttack();
         else
             JumpAttack();
 
-        _isCharging = false;
+        IsCharging = false;
         _chargeTimer = 0f;
         _detectedTarget = null;
         _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
@@ -290,7 +293,8 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         // 스프라이트 중심이 origin에서 절반 길이만큼 앞에 오도록
         Vector2 spawnPos = origin + direction * (sizeX / 2f);
 
-        _laser = _createLaser.GetObject();
+        //레이저 키값을 통해 레이저 오브젝트 활성화
+        _laser = _objectPoolManager.Get(_laserKey);
         _laserActive = true;
         _laser.SetActive(_laserActive);// 레이저 오브젝트 활성화
         _laserTimer = 0f;
@@ -313,7 +317,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         Vector2 facing = GetFacingDirection();
 
         // 일반 공격 감지 범위 (노란색)
-        if (_isCharging)
+        if (IsCharging)
         {
             float chargeRatio = _chargeTimer / _maxCharge;
             float attackSizeY = Mathf.Lerp(_maxWidth, _attackSize.y, chargeRatio); // 감지 범위 y값 축소
