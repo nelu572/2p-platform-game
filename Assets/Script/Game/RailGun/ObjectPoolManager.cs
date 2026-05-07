@@ -11,6 +11,10 @@ public class ObjectPoolManager : MonoBehaviour
         public GameObject prefab;
         public int initialSize = 3;
     }
+
+    //싱글톤 패턴 적용
+    public static ObjectPoolManager Instance { get; private set; }
+
     //미리 생성할 오브젝트들
     [SerializeField] private List<PoolEntry> _entries;
 
@@ -22,6 +26,12 @@ public class ObjectPoolManager : MonoBehaviour
 
     private void Awake()
     {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         //미리 생성할 오브젝트
         foreach (var entry in _entries)
         {

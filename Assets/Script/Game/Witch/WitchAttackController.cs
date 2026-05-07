@@ -32,7 +32,7 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
     {
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
-        _objectPoolManager = GameObject.Find("PoolManager").GetComponent<ObjectPoolManager>();
+        _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
 
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;

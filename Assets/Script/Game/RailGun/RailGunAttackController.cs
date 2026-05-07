@@ -61,7 +61,8 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     void Awake()
     {
 
-        _objectPoolManager = GameObject.Find("PoolManager").GetComponent<ObjectPoolManager>();
+        _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
+
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
 
