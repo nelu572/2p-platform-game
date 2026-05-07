@@ -30,7 +30,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [SerializeField] private float _laserDuration = 0.5f;
     // 오브젝트 폴링에 넘길 key값
     // 이 오브젝트로 생성할 오브젝트를 찾은후 오브젝트 활성화
-    [SerializeField] private string _laserKey;
+    [SerializeField] private string _laserKey = "Laser";
     private bool _laserActive = false;
     private float _laserTimer = 0f;
 
