@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: RailGunStatData
   m_EditorClassIdentifier: 
   life: 3
-  _maxHp: 100
+  _maxHp: 500
   _attackDamage: 50
   _attackCooltimeMax: 2
   _skillDamage: 100
-  _skillCooltimeMax: 20
+  _skillCooltimeMax: 35
+  _moveSpeed: 5

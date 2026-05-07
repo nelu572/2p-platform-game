@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: WitchStatData
   m_EditorClassIdentifier: 
   life: 3
-  _maxHp: 100
-  _attackDamage: 20
-  _attackCooltimeMax: 0.8
-  _skillDamage: 40
-  _skillCooltimeMax: 10
+  _maxHp: 1000
+  _attackDamage: 40
+  _attackCooltimeMax: 1.5
+  _skillDamage: 0
+  _skillCooltimeMax: 0
+  _moveSpeed: 5
