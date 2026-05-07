@@ -3,10 +3,8 @@ using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IKnockbackable
+public class PlayerController : PlayerStat, IKnockbackable
 {
-    [Header("이동")]
-    [SerializeField] private float _moveSpeed = 5f;
     [Header("점프")]
     [SerializeField] private float _jumpForce = 10f;
     [Header("지면 감지")]
@@ -54,7 +52,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     {
         if (IsKnockedBack) return;
         _rigidbody2D.linearVelocity = new Vector2(
-            input.x * _moveSpeed,
+            input.x * MoveSpeed,
             _rigidbody2D.linearVelocity.y  // ← 현재 y velocity 유지
         );
         if (input.x > 0.01f)

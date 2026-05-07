@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: _statData
       value: 
       objectReference: {fileID: 11400000, guid: 31d9a0589f3841749a328e503bfdd7b1, type: 2}
+    - target: {fileID: -7592069465267567888, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: _statData
+      value: 
+      objectReference: {fileID: 11400000, guid: 31d9a0589f3841749a328e503bfdd7b1, type: 2}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.b
       value: 0.16862744
@@ -76,7 +80,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8609067322250837177, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -132,6 +137,7 @@ MonoBehaviour:
   _skillMaxCharge: 6
   _laser: {fileID: 0}
   _laserDuration: 0.5
+  _laserKey: Laser
   _jumpKnockbackPower: 16
   _playerKnockbackPower: 2
   _enemyKnockbackPower: 3
@@ -147,5 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 853ec6c4649953448b60473f9cf44d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserPrefab: {fileID: 8850260750053975397, guid: 688f503224173cc4984688aa0eca35ad, type: 3}
-  initialPoolSize: 3
+  _entries: []

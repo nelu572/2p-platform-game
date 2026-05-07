@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 493374525097729564}
   - component: {fileID: 6225754125672622147}
   - component: {fileID: 7475279092352623639}
-  - component: {fileID: -8609067322250837177}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -179,12 +178,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0889c3648185c0b438c77eab93396f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _statData: {fileID: 11400000, guid: c9a186261ab35274b904a3d557f14e29, type: 2}
   _moveSpeed: 5
   _jumpForce: 25
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
   _isGrounded: 0
+  _knockbackDeceleration: 25
 --- !u!114 &493374525097729564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,16 +375,3 @@ PlatformEffector2D:
   m_UseSideFriction: 1
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &-8609067322250837177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8245058897444931648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bc9fd1e0147d214b986a30879694bf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _statData: {fileID: 11400000, guid: c9a186261ab35274b904a3d557f14e29, type: 2}

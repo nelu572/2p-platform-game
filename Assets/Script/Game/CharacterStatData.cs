@@ -15,5 +15,8 @@ public class CharacterStatData : ScriptableObject
 
     [Header("스킬")]
     public int _skillDamage = 40;
-    public float _skillCooltimeMax = 10f; 
+    public float _skillCooltimeMax = 10f;
+
+    [Header("이동")]
+    public float _moveSpeed = 5f;
 }
