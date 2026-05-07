@@ -19,7 +19,9 @@ public class PlayerStat : MonoBehaviour, IDamageable
 
     public float AttackCooltime { get; set; } = 0f;
     public float SkillCooltime { get; set; } = 0f;
-    public float MoveSpeed { get => _statData._moveSpeed; set => _statData._moveSpeed = value; }
+
+    private float _currentMoveSpeed;
+    public float MoveSpeed { get => _currentMoveSpeed; set => _currentMoveSpeed = value; }
 
     // 포션 디버프들
     public bool IsSlowed { get; set; }
@@ -30,6 +32,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
     protected void OnAwake()
     {
         Hp = _statData._maxHp;
+        _currentMoveSpeed = _statData._moveSpeed;
     }
 
     // 쿨타임 감소는 스탯 자신이 관리
