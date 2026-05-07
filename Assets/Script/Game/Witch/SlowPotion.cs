@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class SlowPotion : Potion
@@ -13,13 +13,14 @@ public class SlowPotion : Potion
             if (target.TeamId != _playerStat.TeamId)
             {
                 target.StartCoroutine(ApplySlow(target));
+                Debug.Log("ì†ë„ ê°ì†Œ");
             }
         }
     }
 
     private IEnumerator ApplySlow(PlayerController target)
     {
-        // ÀÌ¹Ì ½½·Î¿ì ÁßÀÌ¸é Áßº¹ Àû¿ë ¾ÈÇÔ
+        // ì´ë¯¸ ìŠ¬ë¡œìš° ì¤‘ì´ë©´ ì¤‘ë³µ ì ìš© ì•ˆí•¨
         if (target.IsSlowed) yield break;
 
         target.IsSlowed = true;

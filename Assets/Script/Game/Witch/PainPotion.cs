@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class PainPotion : MonoBehaviour
+public class PainPotion : Potion
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override void ApplyEffect(Collider2D hit)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (hit.TryGetComponent<PlayerStat>(out var target))
+        {
+            if (target.TeamId != _playerStat.TeamId)
+            {
+                target.TakeDamage(_playerStat.AttackDamage);
+                Debug.Log($"PainPotion applied to {target.gameObject.name} for {_playerStat.AttackDamage} damage.");
+            }
+        }
     }
 }
