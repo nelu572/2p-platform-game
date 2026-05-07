@@ -1,13 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public abstract class Potion : MonoBehaviour
 {
     [SerializeField] private PooledObject _pooled;
-    [SerializeField] protected PlayerStat PlayerStat;
-    [SerializeField] protected LayerMask AttackLayerMask;
+    //ë°ë¯¸ì§€ëŠ” í¬ì…˜ì´ ë„£ê¸° ë–„ë¬¸ì— PlayerStatì´ ì—¬ê¸°ë„ ì™€ì•„í•©ë‹ˆë‹¤
+    [SerializeField] protected PlayerStat _playerStat;
+    [SerializeField] protected LayerMask _attackLayerMask;
 
-    [Header("°ø°İ °¨Áö")]
-    [SerializeField] private Vector2 _overlapSize = new Vector2(1f, 1f);
+    [Header("ê³µê²© ê°ì§€")]
+    [SerializeField] private Vector2 _overlapSize = new Vector2(2f, 1f);
 
     private void Awake()
     {
@@ -15,13 +16,13 @@ public abstract class Potion : MonoBehaviour
         OnAwake();
     }
 
-    // ÀÚ½Ä Å¬·¡½º¿¡¼­ Awake Ãß°¡ ÃÊ±âÈ­°¡ ÇÊ¿äÇÏ¸é ¿À¹ö¶óÀÌµå
+    // ìì‹ í´ë˜ìŠ¤ì—ì„œ Awake ì¶”ê°€ ì´ˆê¸°í™”ê°€ í•„ìš”í•˜ë©´ ì˜¤ë²„ë¼ì´ë“œ
     protected virtual void OnAwake() { }
 
     public void Initialize(PlayerStat stat, LayerMask layerMask)
     {
-        PlayerStat = stat;
-        AttackLayerMask = layerMask;
+        _playerStat = stat;
+        _attackLayerMask = layerMask;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -30,7 +31,7 @@ public abstract class Potion : MonoBehaviour
             transform.position,
             _overlapSize,
             0f,
-            AttackLayerMask
+            _attackLayerMask
         );
 
         foreach (var hit in hits)
@@ -41,7 +42,7 @@ public abstract class Potion : MonoBehaviour
         _pooled.ReturnToPool();
     }
 
-    // ÀÚ½Ä Å¬·¡½º¿¡¼­ È¿°ú ±¸Çö
+    // ìì‹ í´ë˜ìŠ¤ì—ì„œ íš¨ê³¼ êµ¬í˜„
     protected abstract void ApplyEffect(Collider2D hit);
 
     private void OnDrawGizmosSelected()

@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStat))]
@@ -6,29 +6,29 @@ using UnityEngine;
 [RequireComponent(typeof(ObjectPoolManager))]
 public class WitchAttackWarrior : MonoBehaviour, IAttackController, IChargeable
 {
-    [Header("ÀÏ¹İ °ø°İ")]
+    [Header("ì¼ë°˜ ê³µê²©")]
     [SerializeField] private float _throwPower = 0;
     [SerializeField] private float _throwMaxPower = 10f;
     [SerializeField] private string[] _posions = { "Pain", "Poison", "Slow" };
     [SerializeField] private GameObject _posionObject;
     public bool IsCharging { get; set; }
-    [Header("½ºÅ³")]
-    // 1¹øÀº °íÅë, 2¹øÀº µ¶, 3¹øÀº ±¸¼Ó
+    [Header("ìŠ¤í‚¬")]
+    // 1ë²ˆì€ ê³ í†µ, 2ë²ˆì€ ë…, 3ë²ˆì€ êµ¬ì†
     [SerializeField] private int _posionIndex;
     [SerializeField] private int _postionMaxIndex = 3;
 
     [SerializeField] private LayerMask _attackLayerMask;
     private PlayerController _playerController;
     private PlayerStat _playerStat;
-    private ObjectPoolManager _objectPoolManager;// ¿ÀºêÁ§Æ® Ç®¸µ ½ºÅ©¸³Æ®
-    // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ »ı±ä´Ù¸é ÁÖ¼®Ã³¸®¸¦ ÇØÁ¦ÇÒ °ÍÀÔ´Ï´Ù
+    private ObjectPoolManager _objectPoolManager;// ì˜¤ë¸Œì íŠ¸ í’€ë§ ìŠ¤í¬ë¦½íŠ¸
+    // ì• ë‹ˆë©”ì´ì…˜ì´ ìƒê¸´ë‹¤ë©´ ì£¼ì„ì²˜ë¦¬ë¥¼ í•´ì œí•  ê²ƒì…ë‹ˆë‹¤
     //private Animator _animator;
     void Awake()
     {
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
         _objectPoolManager = GetComponent<ObjectPoolManager>();
-        // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ »ı±ä´Ù¸é ÁÖ¼®Ã³¸®¸¦ ÇØÁ¦ÇÒ °ÍÀÔ´Ï´Ù
+        // ì• ë‹ˆë©”ì´ì…˜ì´ ìƒê¸´ë‹¤ë©´ ì£¼ì„ì²˜ë¦¬ë¥¼ í•´ì œí•  ê²ƒì…ë‹ˆë‹¤
         //_animator = GetComponent<Animator>();
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
@@ -38,8 +38,8 @@ public class WitchAttackWarrior : MonoBehaviour, IAttackController, IChargeable
     {
         if (IsCharging)
         {
-            _throwPower += Time.deltaTime; // ÃæÀü ¼Óµµ Á¶Àı
-            _throwPower = Mathf.Min(_throwPower, _throwMaxPower); // ÃÖ´ë ÃæÀü Á¦ÇÑ
+            _throwPower += Time.deltaTime; // ì¶©ì „ ì†ë„ ì¡°ì ˆ
+            _throwPower = Mathf.Min(_throwPower, _throwMaxPower); // ìµœëŒ€ ì¶©ì „ ì œí•œ
         }
     }
 
@@ -52,7 +52,7 @@ public class WitchAttackWarrior : MonoBehaviour, IAttackController, IChargeable
         }
         else
         {
-            //_animator.SetTrigger("JumpAction");
+            //_animator.SetTrigger("JumpAttack");
             JumpAttack();
         }
     }
@@ -61,7 +61,7 @@ public class WitchAttackWarrior : MonoBehaviour, IAttackController, IChargeable
     {
         IsCharging = false;
         _objectPoolManager.Get(_posions[_posionIndex]);
-        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax; // °ø°İ ÄğÅ¸ÀÓ ÃÊ±âÈ­
+        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax; // ê³µê²© ì¿¨íƒ€ì„ ì´ˆê¸°í™”
         
     }
 
@@ -73,7 +73,7 @@ public class WitchAttackWarrior : MonoBehaviour, IAttackController, IChargeable
     public void Skill()
     {
         _posionIndex++;
-        _posionIndex = Mathf.Min(_posionIndex, _postionMaxIndex); // ÃÖ´ë Æ÷¼Ç ÀÎµ¦½º Á¦ÇÑ
+        _posionIndex = Mathf.Min(_posionIndex, _postionMaxIndex); // ìµœëŒ€ í¬ì…˜ ì¸ë±ìŠ¤ ì œí•œ
     }
 
     public void ReleaseCharge(string actionName)
