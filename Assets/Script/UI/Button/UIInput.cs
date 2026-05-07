@@ -9,18 +9,31 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class UIInput : MonoBehaviour
 {
-    [Header("Selection")]
-    [SerializeField] private UIButton _defaultButton;
-
     [Header("Repeat")]
     [SerializeField] private float _firstRepeatDelay = 0.25f;
     [SerializeField] private float _repeatInterval = 0.12f;
 
+    // UIInpu의 중복 생성을 막기위한 필드
+    private static UIInput _persistentInstance;
+
+    private UIButton _defaultButton;
     private UIButton _currentButton;
     private Vector2 _moveInput;
     private Vector2 _lastMoveDirection;
     private float _nextMoveTime;
     private bool _inputEnabled = true;
+
+    void Awake()
+    {
+        if (_persistentInstance != null && _persistentInstance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _persistentInstance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     void OnEnable()
     {
@@ -86,6 +99,11 @@ public class UIInput : MonoBehaviour
         }
 
         // 나중에 외부 전환 코드나 팝업 닫기 로직을 붙일 자리.
+    }
+
+    public void SetDefaultButton(UIButton defaultButton)
+    {
+        _defaultButton = defaultButton;
     }
 
     public void EnableInput()
