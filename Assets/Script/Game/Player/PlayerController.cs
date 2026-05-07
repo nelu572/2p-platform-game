@@ -3,10 +3,8 @@ using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
-public class PlayerController : MonoBehaviour, IKnockbackable
+public class PlayerController : PlayerStat, IKnockbackable
 {
-    [Header("이동")]
-    [SerializeField] private float _moveSpeed = 5f;
     [Header("점프")]
     [SerializeField] private float _jumpForce = 10f;
     [Header("지면 감지")]
@@ -31,8 +29,13 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rigidbody2D.freezeRotation = true;
+        //높은 속도로 이동할때 땅을 뚫고 지나가는 현상을 줄이기 위해 Continuous로 설정
+        _rigidbody2D.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // 고속 이동 시 충돌 감지 개선
         _boxCollider2D = GetComponent<BoxCollider2D>();
         boxSize = _boxCollider2D.size;
+
+        //Awake에서 PlayerStat의 초기화 하기 위한 방법
+        OnAwake();
     }
 
     void FixedUpdate()
@@ -54,7 +57,7 @@ public class PlayerController : MonoBehaviour, IKnockbackable
     {
         if (IsKnockedBack) return;
         _rigidbody2D.linearVelocity = new Vector2(
-            input.x * _moveSpeed,
+            input.x * MoveSpeed,
             _rigidbody2D.linearVelocity.y  // ← 현재 y velocity 유지
         );
         if (input.x > 0.01f)
