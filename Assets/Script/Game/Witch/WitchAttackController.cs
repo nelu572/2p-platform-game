@@ -3,7 +3,7 @@
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(ChargeInputHandler))]
-public class WitchAttackCont : MonoBehaviour, IAttackController, IChargeable
+public class WitchAttackController : MonoBehaviour, IAttackController, IChargeable
 {
     [Header("일반 공격")]
     [SerializeField] private float _throwPower = 1f;
