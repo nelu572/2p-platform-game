@@ -13,6 +13,10 @@ public class UIButtonEditor : ButtonEditor
     private SerializedProperty _enablePanel;
     private SerializedProperty _disablePanel;
     private SerializedProperty _nextSceneName;
+    private SerializedProperty _upButton;
+    private SerializedProperty _downButton;
+    private SerializedProperty _leftButton;
+    private SerializedProperty _rightButton;
 
     protected override void OnEnable()
     {
@@ -25,6 +29,10 @@ public class UIButtonEditor : ButtonEditor
         _enablePanel = serializedObject.FindProperty("_enablePanel");
         _disablePanel = serializedObject.FindProperty("_disablePanel");
         _nextSceneName = serializedObject.FindProperty("_nextSceneName");
+        _upButton = serializedObject.FindProperty("_upButton");
+        _downButton = serializedObject.FindProperty("_downButton");
+        _leftButton = serializedObject.FindProperty("_leftButton");
+        _rightButton = serializedObject.FindProperty("_rightButton");
     }
 
     public override void OnInspectorGUI()
@@ -67,6 +75,13 @@ public class UIButtonEditor : ButtonEditor
                 EditorGUILayout.HelpBox("게임 종료 버튼", MessageType.None);
                 break;
         }
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Directional Navigation", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(_upButton);
+        EditorGUILayout.PropertyField(_downButton);
+        EditorGUILayout.PropertyField(_leftButton);
+        EditorGUILayout.PropertyField(_rightButton);
 
         serializedObject.ApplyModifiedProperties();
 

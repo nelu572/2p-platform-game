@@ -535,6 +535,10 @@ MonoBehaviour:
   _enablePanel: {fileID: 0}
   _disablePanel: {fileID: 0}
   _nextSceneName: 
+  _upButton: {fileID: 720682773}
+  _downButton: {fileID: 0}
+  _leftButton: {fileID: 0}
+  _rightButton: {fileID: 0}
 --- !u!1 &720682768
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,6 +666,10 @@ MonoBehaviour:
   _enablePanel: {fileID: 0}
   _disablePanel: {fileID: 0}
   _nextSceneName: OptionScene
+  _upButton: {fileID: 893282073}
+  _downButton: {fileID: 477032351}
+  _leftButton: {fileID: 0}
+  _rightButton: {fileID: 0}
 --- !u!1 &766041095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,6 +1208,10 @@ MonoBehaviour:
   _enablePanel: {fileID: 0}
   _disablePanel: {fileID: 0}
   _nextSceneName: ModSelectScene
+  _upButton: {fileID: 0}
+  _downButton: {fileID: 720682773}
+  _leftButton: {fileID: 0}
+  _rightButton: {fileID: 0}
 --- !u!1 &1055988866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,6 +1303,7 @@ GameObject:
   - component: {fileID: 1177410049}
   - component: {fileID: 1177410047}
   - component: {fileID: 1177410051}
+  - component: {fileID: 1177410052}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1381,6 +1394,22 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &1177410052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177410046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4be6a3e3b3404db281cc12b3d5fd67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultButton: {fileID: 893282073}
+  _autoSelectOnEnable: 1
+  _firstRepeatDelay: 0.25
+  _repeatInterval: 0.12
 --- !u!1 &1405327813
 GameObject:
   m_ObjectHideFlags: 0
