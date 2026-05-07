@@ -91,9 +91,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7339689012018609982}
-    - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2149964436233628424}
   m_SourcePrefab: {fileID: 100100000, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
 --- !u!1 &2771155314212984932 stripped
 GameObject:
@@ -135,22 +132,9 @@ MonoBehaviour:
   _skillAttackSize: {x: 40, y: 4}
   _skillMaxWidth: 16
   _skillMaxCharge: 6
-  _laser: {fileID: 0}
+  _laser: {fileID: 8850260750053975397, guid: 688f503224173cc4984688aa0eca35ad, type: 3}
   _laserDuration: 0.5
   _laserKey: Laser
   _jumpKnockbackPower: 16
   _playerKnockbackPower: 2
   _enemyKnockbackPower: 3
---- !u!114 &2149964436233628424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2771155314212984932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 853ec6c4649953448b60473f9cf44d81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _entries: []
