@@ -20,6 +20,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
     public float AttackCooltime { get; set; } = 0f;
     public float SkillCooltime { get; set; } = 0f;
     public float MoveSpeed { get => _statData._moveSpeed; set => _statData._moveSpeed = value; }
+    public bool IsSlowed { get; set; }
     public int TeamId { get; set; }
 
     void Awake()
