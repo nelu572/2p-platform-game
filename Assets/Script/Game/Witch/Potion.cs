@@ -41,14 +41,15 @@ public abstract class Potion : MonoBehaviour
     {
         if (collision.gameObject == _playerStat.gameObject) return;
 
-        Physics2D.OverlapBox(
+        _hitBuffer.Clear();
+        int count = Physics2D.OverlapBox(
             transform.position, _overlapSize,
             0f, _contactFilter, _hitBuffer
         );
 
-        foreach (var hit in _hitBuffer)
+        for (int i = 0; i < count; i++)
         {
-            ApplyEffect(hit);
+            ApplyEffect(_hitBuffer[i]);
         }
 
         _pooled.ReturnToPool();
