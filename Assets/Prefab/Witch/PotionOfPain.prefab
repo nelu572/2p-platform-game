@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8881889410708251412}
   - component: {fileID: 2258881469647358654}
   m_Layer: 0
-  m_Name: PotionOfHarming
+  m_Name: PotionOfPain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
