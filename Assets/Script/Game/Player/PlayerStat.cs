@@ -20,10 +20,14 @@ public class PlayerStat : MonoBehaviour, IDamageable
     public float AttackCooltime { get; set; } = 0f;
     public float SkillCooltime { get; set; } = 0f;
     public float MoveSpeed { get => _statData._moveSpeed; set => _statData._moveSpeed = value; }
+
+    // 포션 디버프들
     public bool IsSlowed { get; set; }
+    public bool IsPoisoned { get; set; }
+
     public int TeamId { get; set; }
 
-    void Awake()
+    protected void OnAwake()
     {
         Hp = _statData._maxHp;
     }
@@ -39,5 +43,6 @@ public class PlayerStat : MonoBehaviour, IDamageable
     {
         Hp -= attackDamage;
         if (Hp < 0) Hp = 0;
+        Debug.Log($"{attackDamage} 만큼 피해를 입었습니다, 남은HP: {Hp}");
     }
 }
