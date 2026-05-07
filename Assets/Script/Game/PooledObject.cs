@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PooledObject : MonoBehaviour
-{//ÃÑ¾ËÀÌ³ª ÅõÃ´·ù°°Àº ¿ÀºêÁ§Æ®µéÀÌ »ç¿ëÇÒ ½ºÅ©¸³Æ®ÀÔ´Ï´Ù. ·¹ÀÏ°ÇÀÇ ·¹ÀÌÁ® °°Àº °æ¿ì´Â ÄÁÆ®·Ñ·¯¿¡¼­ Çàµ¿ÇÏ±â¿¡ ÀÌ ½ºÅ©¸³Æ®¸¦ »ç¿ëÇÏÁö ¾Ê½À´Ï´Ù.
+{//ì´ì•Œì´ë‚˜ íˆ¬ì²™ë¥˜ê°™ì€ ì˜¤ë¸Œì íŠ¸ë“¤ì´ ì‚¬ìš©í•  ìŠ¤í¬ë¦½íŠ¸ì…ë‹ˆë‹¤. ë ˆì¼ê±´ì˜ ë ˆì´ì ¸ ê°™ì€ ê²½ìš°ëŠ” ì»¨íŠ¸ë¡¤ëŸ¬ì—ì„œ í–‰ë™í•˜ê¸°ì— ì´ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì‚¬ìš©í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
     public string PoolKey { get; private set; }
     public ObjectPoolManager PoolManager { get; private set; }
 
-    // Ç®¿¡¼­ ²¨³¾ ¶§ PoolGroupÀÌ ÃÊ±âÈ­ÇØÁÜ
+    // í’€ì—ì„œ êº¼ë‚¼ ë•Œ PoolGroupì´ ì´ˆê¸°í™”í•´ì¤Œ
     public void Init(string key, ObjectPoolManager poolManager)
     {
         PoolKey = key;

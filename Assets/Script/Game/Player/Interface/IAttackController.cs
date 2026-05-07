@@ -1,4 +1,4 @@
-public interface IAttackController
+﻿public interface IAttackController
 {
     public void Attack();
     public void Skill();

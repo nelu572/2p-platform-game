@@ -1,9 +1,9 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class PoisonPotion : Potion
 {
-    [SerializeField] private float _poisonDuration = 5f; // Áö¼Ó ½Ã°£
+    [SerializeField] private float _poisonDuration = 5f; // ì§€ì† ì‹œê°„
 
     protected override void ApplyEffect(Collider2D hit)
     {
@@ -19,14 +19,14 @@ public class PoisonPotion : Potion
 
     private IEnumerator ApplyPoison(PlayerStat targetStat)
     {
-        if (targetStat.IsPoisoned) yield break; // Áßº¹ ¹æÁö
+        if (targetStat.IsPoisoned) yield break; // ì¤‘ë³µ ë°©ì§€
 
         targetStat.IsPoisoned = true;
 
         float elapsed = 0f;
         while (elapsed < _poisonDuration)
         {
-            targetStat.TakeDamage(_playerStat.AttackDamage / 2); // ÃÊ´ç °ø°İ·Â 1/2 µ¥¹ÌÁö
+            targetStat.TakeDamage(_playerStat.AttackDamage / 2); // ì´ˆë‹¹ ê³µê²©ë ¥ 1/2 ë°ë¯¸ì§€
             elapsed += 1f;
             yield return new WaitForSeconds(1f);
         }

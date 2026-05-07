@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPoolManager : MonoBehaviour
@@ -12,16 +12,16 @@ public class ObjectPoolManager : MonoBehaviour
         public int initialSize = 3;
     }
 
-    //½Ì±ÛÅæ ÆĞÅÏ Àû¿ë
+    //ì‹±ê¸€í†¤ íŒ¨í„´ ì ìš©
     public static ObjectPoolManager Instance { get; private set; }
 
-    //¹Ì¸® »ı¼ºÇÒ ¿ÀºêÁ§Æ®µé
+    //ë¯¸ë¦¬ ìƒì„±í•  ì˜¤ë¸Œì íŠ¸ë“¤
     [SerializeField] private List<PoolEntry> _entries;
 
-    // Å°°ªÀ¸·Î Queue¸¦ ±¸º°ÇÏ´Â µñ¼Å³Ê¸® »ı¼º
+    // í‚¤ê°’ìœ¼ë¡œ Queueë¥¼ êµ¬ë³„í•˜ëŠ” ë”•ì…”ë„ˆë¦¬ ìƒì„±
     private Dictionary<string, Queue<GameObject>> _pools = new Dictionary<string, Queue<GameObject>>();
 
-    //Å°°ªÀ¸·Î ¹Ì¸® »ı¼ºÇÑ ¿ÀºêÁ§Æ®µé ±¸º° & °ü¸®ÇÏ´Â µñ¼Å³Ê¸® »ı¼º
+    //í‚¤ê°’ìœ¼ë¡œ ë¯¸ë¦¬ ìƒì„±í•œ ì˜¤ë¸Œì íŠ¸ë“¤ êµ¬ë³„ & ê´€ë¦¬í•˜ëŠ” ë”•ì…”ë„ˆë¦¬ ìƒì„±
     private Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
 
     private void Awake()
@@ -32,12 +32,12 @@ public class ObjectPoolManager : MonoBehaviour
             return;
         }
         Instance = this;
-        //¹Ì¸® »ı¼ºÇÒ ¿ÀºêÁ§Æ®
+        //ë¯¸ë¦¬ ìƒì„±í•  ì˜¤ë¸Œì íŠ¸
         foreach (var entry in _entries)
         {
             _pools[entry.key] = new Queue<GameObject>();
             _prefabs[entry.key] = entry.prefab;
-            //¿ÀºêÁ§Æ® »ı¼º
+            //ì˜¤ë¸Œì íŠ¸ ìƒì„±
             for (int i = 0; i < entry.initialSize; i++)
                 _pools[entry.key].Enqueue(CreateNew(entry.key));
         }
@@ -47,7 +47,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!_pools.ContainsKey(key))
         {
-            Debug.LogError($"[Pool] Å° ¾øÀ½: {key}");
+            Debug.LogError($"[Pool] í‚¤ ì—†ìŒ: {key}");
             return null;
         }
 
@@ -67,7 +67,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!_pools.ContainsKey(key))
         {
-            Debug.LogWarning($"[Pool] Å° ¾øÀ½: {key}");
+            Debug.LogWarning($"[Pool] í‚¤ ì—†ìŒ: {key}");
             Destroy(obj);
             return;
         }
