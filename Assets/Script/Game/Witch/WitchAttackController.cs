@@ -26,12 +26,15 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
     private PlayerController _playerController;
     private PlayerStat _playerStat;
     private ObjectPoolManager _objectPoolManager;
+    private BoxCollider2D _boxCollider2D;
     //private Animator _animator;
 
     void Awake()
     {
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
+        //PlayerController에 RequireComponent로 되어있음
+        _boxCollider2D = GetComponent<BoxCollider2D>();
         _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
 
         _playerController.OnAttackHandler = Attack;
@@ -117,7 +120,7 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
         GameObject obj = _objectPoolManager.Get(_windPotionKey);
         if (obj == null) return;
 
-        float offsetY = GetComponent<BoxCollider2D>().size.y * 0.5f;
+        float offsetY = _boxCollider2D.size.y * 0.5f;
         obj.transform.position = (Vector2)transform.position + Vector2.down * offsetY;
 
         if (obj.TryGetComponent<Rigidbody2D>(out var rb))
