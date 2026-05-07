@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(ChargeInputHandler))]
-[RequireComponent(typeof(ObjectPoolManager))]
 public class RailGunAttackController : MonoBehaviour, IAttackController, IChargeable
 {
     [Header("일반 공격")]
@@ -62,7 +61,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     void Awake()
     {
 
-        _objectPoolManager= GetComponent<ObjectPoolManager>();
+        _objectPoolManager = GameObject.Find("PoolManager").GetComponent<ObjectPoolManager>();
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
 
