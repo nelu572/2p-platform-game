@@ -2,7 +2,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(ChargeInputHandler))]
 public class RailGunAttackController : MonoBehaviour, IAttackController, IChargeable
 {
@@ -16,7 +15,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     // 차징 0%일때 감지 범위 y값
     [SerializeField] private float _maxWidth = 8f;
     [SerializeField] private float _maxCharge = 3f;
-    [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 4 }; // 0~3단계
+    [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 5 }; // 0~3단계
 
     [Header("스킬")]
     // 스킬은 일반 공격의 2배
@@ -60,9 +59,6 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
     void Awake()
     {
-
-        _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
-
         _playerController = GetComponent<PlayerController>();
         _playerStat = GetComponent<PlayerStat>();
 
@@ -72,6 +68,11 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         _contactFilter = new ContactFilter2D();
         _contactFilter.SetLayerMask(_attackLayerMask);
         _contactFilter.useTriggers = true;
+    }
+    void Start()
+    {
+        //Awake에서 ObjectPoolManager가 싱글톤이 되기에 Start에서 참조하는 것이 안전합니다.
+        _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
     }
 
     void Update()
