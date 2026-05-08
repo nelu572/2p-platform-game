@@ -17,7 +17,7 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     [Header("스킬")]
     //기본값으로 50%의 배율로 설정
     [SerializeField] private float _speedUpScale = 0.5f;
-    private float _NormalMoveSpeed;
+    private float _plusMoveSpeed;
     //10초를 기준으로
     [SerializeField] private float _duration = 10f;
     [SerializeField] private bool _isSpeedUp = false;
@@ -45,11 +45,6 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
         _contactFilter.useTriggers = true;
     }
 
-    void Start()
-    {
-        _NormalMoveSpeed = _playerStat.MoveSpeed;
-    }
-
     void Update()
     {
         if (IsCharging)
@@ -65,7 +60,7 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
             else
             {
                 _isSpeedUp = false;
-                _playerStat.MoveSpeed = _NormalMoveSpeed;
+                _playerStat.MoveSpeed -= _plusMoveSpeed;
             }
         }
     }
@@ -127,7 +122,7 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     {
         if(_playerStat.SkillCooltime > 0f) return;
         _duration = 10f;
-        float _plusMoveSpeed = _playerStat.MoveSpeed * _speedUpScale;
+        _plusMoveSpeed = _playerStat.MoveSpeed * _speedUpScale;
         _playerStat.MoveSpeed += _plusMoveSpeed;// player의 속도 배율은 1 + _speedUpScale
         _isSpeedUp = true;
         _playerStat.SkillCooltime = _playerStat.SkillCooltimeMax;
