@@ -24,7 +24,7 @@ public class SlowPotion : Potion
         if (target.IsSlowed) yield break;
 
         target.IsSlowed = true;
-        float reduceSpeed = target.MoveSpeed * -_slowMagnitude; // 원래 속도 저장
+        float reduceSpeed = target.MoveSpeed * -_slowMagnitude;// 감소된 속도
         target.MoveSpeed -= reduceSpeed;
 
         yield return new WaitForSeconds(_slowDuration);
