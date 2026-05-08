@@ -1,12 +1,11 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(ChargeInputHandler))]
 public class BatManAttackController : MonoBehaviour, IAttackController, IChargeable
 {
-    [Header("ÀÏ¹İ °ø°İ")]
-    [SerializeField] private Transform _attackPoint;
+    [Header("ì¼ë°˜ ê³µê²©")]
     [SerializeField] private float _chargingTime = 0f;
     [SerializeField] private float _chargingMaxTime = 3f;
     [SerializeField] private float _knockbackPower = 10f;
@@ -14,11 +13,11 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     [SerializeField] private LayerMask _attackLayerMask;
     [SerializeField] private int[] _chargeMultiplier = { 1, 2, 3, 4 };
     [SerializeField] private BoxCollider2D _attackOffset;
-    [Header("½ºÅ³")]
-    //±âº»°ªÀ¸·Î 50%ÀÇ ¹èÀ²·Î ¼³Á¤
+    [Header("ìŠ¤í‚¬")]
+    //ê¸°ë³¸ê°’ìœ¼ë¡œ 50%ì˜ ë°°ìœ¨ë¡œ ì„¤ì •
     [SerializeField] private float _speedUpScale = 0.5f;
     private float _plusMoveSpeed;
-    //10ÃÊ¸¦ ±âÁØÀ¸·Î
+    //10ì´ˆë¥¼ ê¸°ì¤€ìœ¼ë¡œ
     [SerializeField] private float _duration = 10f;
     [SerializeField] private bool _isSpeedUp = false;
 
@@ -68,7 +67,7 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     public void Attack()
     {
         if (IsCharging) return;
-        if (_playerStat.AttackCooltime > 0f) return; // Ãß°¡
+        if (_playerStat.AttackCooltime > 0f) return; // ì¶”ê°€
 
         IsCharging = true;
         //_animator.SetTrigger("Chargeing");
@@ -123,7 +122,7 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
         if(_playerStat.SkillCooltime > 0f) return;
         _duration = 10f;
         _plusMoveSpeed = _playerStat.MoveSpeed * _speedUpScale;
-        _playerStat.MoveSpeed += _plusMoveSpeed;// playerÀÇ ¼Óµµ ¹èÀ²Àº 1 + _speedUpScale
+        _playerStat.MoveSpeed += _plusMoveSpeed;// playerì˜ ì†ë„ ë°°ìœ¨ì€ 1 + _speedUpScale
         _isSpeedUp = true;
         _playerStat.SkillCooltime = _playerStat.SkillCooltimeMax;
     }
