@@ -10,14 +10,14 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     [SerializeField] private float _chargingTime = 0f;
     [SerializeField] private float _chargingMaxTime = 3f;
     [SerializeField] private float _knockbackPower = 10f;
-    [SerializeField] private float _knockbackMaxPower = 40f;
     [SerializeField] private Vector2 _attackSize = new Vector2(3f, 2f);
     [SerializeField] private LayerMask _attackLayerMask;
-    [SerializeField] private int[] _chargeDamageMultiplier = { 1, 2, 3, 4 };
+    [SerializeField] private int[] _chargeMultiplier = { 1, 2, 3, 4 };
     [SerializeField] private BoxCollider2D _attackOffset;
     [Header("스킬")]
     //기본값으로 50%의 배율로 설정
-    [SerializeField] private float _speedUpScale = 1.5f;
+    [SerializeField] private float _speedUpScale = 0.5f;
+    private float _NormalMoveSpeed;
     //10초를 기준으로
     [SerializeField] private float _duration = 10f;
     [SerializeField] private bool _isSpeedUp = false;
@@ -45,19 +45,28 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
         _contactFilter.useTriggers = true;
     }
 
+    void Start()
+    {
+        _NormalMoveSpeed = _playerStat.MoveSpeed;
+    }
+
     void Update()
     {
         if (IsCharging)
         {
             _chargingTime += Time.deltaTime;
             _chargingTime = Mathf.Min(_chargingTime, _chargingMaxTime);
-            _knockbackPower += Time.deltaTime * 3;
-            _knockbackPower = Mathf.Min(_knockbackPower, _knockbackMaxPower);
         }
 
         if(_isSpeedUp)
         {
-
+            if(_duration > 0f)
+                _duration -= Time.deltaTime;
+            else
+            {
+                _isSpeedUp = false;
+                _playerStat.MoveSpeed = _NormalMoveSpeed;
+            }
         }
     }
 
@@ -74,8 +83,9 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     {
         if (!IsCharging) return;
         
-        int level = Mathf.Clamp(Mathf.FloorToInt(_chargingTime), 0, _chargeDamageMultiplier.Length - 1);
-        int damage = _playerStat.AttackDamage * _chargeDamageMultiplier[level];
+        int level = Mathf.Clamp(Mathf.FloorToInt(_chargingTime), 0, _chargeMultiplier.Length - 1);
+        int damage = _playerStat.AttackDamage * _chargeMultiplier[level];
+        float knockback = _knockbackPower * _chargeMultiplier[level];
 
         Vector2 facingDir = transform.localScale.x > 0f ? Vector2.right : Vector2.left;
         float offsetX = (_attackOffset.offset.x + _attackOffset.size.x / 2f + _attackSize.x / 2f) * facingDir.x;
@@ -97,12 +107,11 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
             }
 
             if (enemy.TryGetComponent<IKnockbackable>(out var kb))
-                kb.ApplyKnockback(facingDir, _knockbackPower);
+                kb.ApplyKnockback(facingDir, knockback);
         }
 
         IsCharging = false;
-        _chargingTime = 0f;
-        _knockbackPower = 3f; 
+        _chargingTime = 0f; 
         _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
     }
 
@@ -117,7 +126,10 @@ public class BatManAttackController : MonoBehaviour, IAttackController, IChargea
     public void Skill()
     {
         if(_playerStat.SkillCooltime > 0f) return;
-
+        _duration = 10f;
+        float _plusMoveSpeed = _playerStat.MoveSpeed * _speedUpScale;
+        _playerStat.MoveSpeed += _plusMoveSpeed;// player의 속도 배율은 1 + _speedUpScale
+        _isSpeedUp = true;
         _playerStat.SkillCooltime = _playerStat.SkillCooltimeMax;
     }
 
