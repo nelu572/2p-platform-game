@@ -24,12 +24,12 @@ public class SlowPotion : Potion
         if (target.IsSlowed) yield break;
 
         target.IsSlowed = true;
-        float targetOriginalSpeed = target.MoveSpeed; // 원래 속도 저장
-        target.MoveSpeed *= _slowMagnitude;
+        float reduceSpeed = target.MoveSpeed * -_slowMagnitude; // 원래 속도 저장
+        target.MoveSpeed -= reduceSpeed;
 
         yield return new WaitForSeconds(_slowDuration);
 
-        target.MoveSpeed = targetOriginalSpeed;
+        target.MoveSpeed += reduceSpeed;
         target.IsSlowed = false;
     }
 }
