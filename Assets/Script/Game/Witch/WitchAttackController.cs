@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(ChargeInputHandler))]
 public class WitchAttackController : MonoBehaviour, IAttackController, IChargeable
 {
@@ -35,10 +34,16 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
         _playerStat = GetComponent<PlayerStat>();
         //PlayerController에 RequireComponent로 되어있음
         _boxCollider2D = GetComponent<BoxCollider2D>();
-        _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
+        
 
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
+    }
+
+    void Start()
+    {
+        //Awake에서 ObjectPoolManager가 싱글톤이 되기에 Start에서 참조하는 것이 안전합니다.
+        _objectPoolManager = ObjectPoolManager.Instance;
     }
 
     void Update()

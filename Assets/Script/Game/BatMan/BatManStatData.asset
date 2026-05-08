@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85838a86aa3b58945a26a4a670ca28ac, type: 3}
-  m_Name: RailGunStatData
+  m_Name: BatManStatData
   m_EditorClassIdentifier: 
   life: 3
-  _maxHp: 750
-  _attackDamage: 50
-  _attackCooltimeMax: 2
-  _skillDamage: 100
-  _skillCooltimeMax: 35
+  _maxHp: 1250
+  _attackDamage: 70
+  _attackCooltimeMax: 1
+  _skillDamage: 0
+  _skillCooltimeMax: 15
   _moveSpeed: 5

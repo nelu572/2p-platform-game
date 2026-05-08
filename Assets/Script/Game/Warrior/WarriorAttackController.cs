@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerStat))]
 [RequireComponent(typeof(PlayerController))]
 public class WarriorAttackController : MonoBehaviour, IAttackController
 {
@@ -29,6 +28,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     private PlayerStat _playerStat;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
+    private BoxCollider2D _attackOffset;
 
     //GC부하를 줄이기 위해 미리 Collider2D<>버퍼 생성
     //리스트도 동적 배열이라서 크기가 변경되면 재할당이 발생하지만
@@ -43,6 +43,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         _playerStat = GetComponent<PlayerStat>();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
+        _attackOffset = GetComponent<BoxCollider2D>();
 
         _playerController.OnAttackHandler = Attack;
         _playerController.OnSkillHandler = Skill;
@@ -69,10 +70,9 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     
     public void PerformAttackHit()
     {
-        bool isFacingRight = transform.localScale.x > 0f;
-        Vector2 origin = _attackPoint != null
-            ? (Vector2)_attackPoint.position
-            : (Vector2)transform.position + new Vector2(isFacingRight ? 0.6f : -0.6f, 0f);
+        Vector2 facingDir = transform.localScale.x > 0f ? Vector2.right : Vector2.left;
+        float offsetX = (_attackOffset.offset.x + _attackOffset.size.x / 2f + _attackBoxSize.x / 2f) * facingDir.x;
+        Vector2 origin = (Vector2)transform.position + new Vector2(offsetX, 0f);
 
         _hitBuffer.Clear();
         Physics2D.OverlapBox(origin, _attackBoxSize, 0f, _contactFilter, _hitBuffer);
@@ -140,17 +140,13 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        bool isFacingRight = transform.localScale.x > 0f;
-
-        // 일반 공격 범위 (빨간색)
-        Vector3 attackOrigin = _attackPoint != null
-            ? _attackPoint.position
-            : transform.position + new Vector3(isFacingRight ? 0.6f : -0.6f, 0f, 0f);
-
+        Vector2 facingDir = transform.localScale.x > 0f ? Vector2.right : Vector2.left;
+        float offsetX = (_attackOffset.offset.x + _attackOffset.size.x / 2f + _attackBoxSize.x / 2f) * facingDir.x;
+        Vector2 origin = (Vector2)transform.position + new Vector2(offsetX, 0f);
         Gizmos.color = new Color(1f, 0f, 0f, 0.35f);
-        Gizmos.DrawCube(attackOrigin, _attackBoxSize);
+        Gizmos.DrawCube(origin, _attackBoxSize);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(attackOrigin, _attackBoxSize);
+        Gizmos.DrawWireCube(origin, _attackBoxSize);
 
     }
 #endif

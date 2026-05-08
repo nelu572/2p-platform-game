@@ -22,13 +22,14 @@ public class SlowPotion : Potion
     {
         // 이미 슬로우 중이면 중복 적용 안함
         if (target.IsSlowed) yield break;
-
         target.IsSlowed = true;
-        target.MoveSpeed *= _slowMagnitude;
+
+        float multiplier = 1f - _slowMagnitude;
+        target.MoveSpeed *= multiplier;
 
         yield return new WaitForSeconds(_slowDuration);
 
-        target.MoveSpeed /= _slowMagnitude;
+        target.MoveSpeed /= multiplier;
         target.IsSlowed = false;
     }
 }
