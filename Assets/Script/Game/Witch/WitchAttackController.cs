@@ -43,7 +43,7 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
     void Start()
     {
         //Awake에서 ObjectPoolManager가 싱글톤이 되기에 Start에서 참조하는 것이 안전합니다.
-        _objectPoolManager = _objectPoolManager = ObjectPoolManager.Instance;
+        _objectPoolManager = ObjectPoolManager.Instance;
     }
 
     void Update()
