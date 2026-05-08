@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BatManStatData
   m_EditorClassIdentifier: 
   life: 3
-  _maxHp: 1500
+  _maxHp: 1250
   _attackDamage: 70
-  _attackCooltimeMax: 0.8
+  _attackCooltimeMax: 1
   _skillDamage: 0
   _skillCooltimeMax: 15
   _moveSpeed: 5
