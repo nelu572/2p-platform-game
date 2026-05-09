@@ -23,7 +23,7 @@ public class UIAnimator : MonoBehaviour
     [SerializeField] private float _scaleOutDuration = 0.3f;
 
     // Moving용 필드
-    [SerializeField] private Vector3 _moveOffset = Vector3.zero;
+    [SerializeField] private Vector2 _moveOffset = Vector3.zero;
     [SerializeField] private float _moveDuration = 0.3f;
 
     private RectTransform _rectTransform;
@@ -218,7 +218,7 @@ public class UIAnimator : MonoBehaviour
         float duration = _moveDuration;
         Vector2 targetPosition = isOpen
             ? _baseAnchoredPosition
-            : _baseAnchoredPosition + new Vector2(_moveOffset.x, _moveOffset.y);
+            : _baseAnchoredPosition + _moveOffset;
 
         if (duration <= 0f)
         {
@@ -228,7 +228,7 @@ public class UIAnimator : MonoBehaviour
 
         // 열기 시 오프셋 위치에서 기준 위치로 이동
         if (isOpen)
-            _rectTransform.anchoredPosition = _baseAnchoredPosition + new Vector2(_moveOffset.x, _moveOffset.y);
+            _rectTransform.anchoredPosition = _baseAnchoredPosition + _moveOffset;
 
         sequence.Join(_rectTransform.DOAnchorPos(targetPosition, duration));
     }
@@ -248,7 +248,7 @@ public class UIAnimator : MonoBehaviour
         if (HasType(UIAnimaType.Moving) && _rectTransform != null && !_hasLayoutDriver)
             _rectTransform.anchoredPosition = isOpen
                 ? _baseAnchoredPosition
-                : _baseAnchoredPosition + new Vector2(_moveOffset.x, _moveOffset.y);
+                : _baseAnchoredPosition + _moveOffset;
     }
 
     /// <summary>

@@ -48,7 +48,7 @@ public class UIAnimatorEditor : Editor
 
         if (EditorGUI.EndChangeCheck())
         {
-            Undo.RecordObject(target, "Change UIPanel Type");
+            Undo.RecordObject(target, "Change UIAnimator Type");
             _uiAnimaType.intValue = (int)type;
             serializedObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(target);
