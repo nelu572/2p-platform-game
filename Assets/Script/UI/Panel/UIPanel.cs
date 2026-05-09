@@ -5,6 +5,14 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CanvasGroup))]
 public class UIPanel : MonoBehaviour
 {
+    [System.Serializable]
+    private class UIAnimatorStep
+    {
+        [SerializeField] private UIAnimator[] _animators;
+
+        public UIAnimator[] Animators => _animators;
+    }
+
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private bool _baseEnabled = false;
 
@@ -15,9 +23,11 @@ public class UIPanel : MonoBehaviour
     [Header("Events")]
     [SerializeField] private UnityEvent _onOpened;
     [SerializeField] private UnityEvent _onClosed;
+
+    [Header("Animator Steps")]
     [SerializeField] private float _stepDelay = 0.1f;
-    [SerializeField] private UnityEvent[] _onOpenedSteps;
-    [SerializeField] private UnityEvent[] _onClosedSteps;
+    [SerializeField] private UIAnimatorStep[] _onOpenedSteps;
+    [SerializeField] private UIAnimatorStep[] _onClosedSteps;
 
     private Tween _activeTween;
     private Tween _stepTween;
@@ -63,14 +73,14 @@ public class UIPanel : MonoBehaviour
         if (_activeTween == null)
         {
             _onOpened?.Invoke();
-            PlayStepsSequentially(_onOpenedSteps);
+            PlayStepsSequentially(_onOpenedSteps, true);
             return;
         }
 
         _activeTween.OnComplete(() =>
         {
             _onOpened?.Invoke();
-            PlayStepsSequentially(_onOpenedSteps);
+            PlayStepsSequentially(_onOpenedSteps, true);
         });
     }
 
@@ -83,7 +93,7 @@ public class UIPanel : MonoBehaviour
         if (_activeTween == null)
         {
             _onClosed?.Invoke();
-            PlayStepsSequentially(_onClosedSteps);
+            PlayStepsSequentially(_onClosedSteps, false);
             gameObject.SetActive(false);
             return;
         }
@@ -91,7 +101,7 @@ public class UIPanel : MonoBehaviour
         _activeTween.OnComplete(() =>
         {
             _onClosed?.Invoke();
-            PlayStepsSequentially(_onClosedSteps);
+            PlayStepsSequentially(_onClosedSteps, false);
             gameObject.SetActive(false);
         });
     }
@@ -126,7 +136,7 @@ public class UIPanel : MonoBehaviour
         _stepTween?.Kill();
     }
 
-    private void PlayStepsSequentially(UnityEvent[] steps)
+    private void PlayStepsSequentially(UIAnimatorStep[] steps, bool isOpen)
     {
         if (steps == null || steps.Length == 0)
             return;
@@ -137,7 +147,24 @@ public class UIPanel : MonoBehaviour
         for (int i = 0; i < steps.Length; i++)
         {
             int index = i;
-            sequence.AppendCallback(() => steps[index]?.Invoke());
+            sequence.AppendCallback(() =>
+            {
+                UIAnimatorStep step = steps[index];
+                if (step == null || step.Animators == null)
+                    return;
+
+                for (int j = 0; j < step.Animators.Length; j++)
+                {
+                    UIAnimator animator = step.Animators[j];
+                    if (animator == null)
+                        continue;
+
+                    if (isOpen)
+                        animator.Open();
+                    else
+                        animator.Close();
+                }
+            });
 
             if (i < steps.Length - 1)
                 sequence.AppendInterval(_stepDelay);
@@ -153,17 +180,17 @@ public class UIPanel : MonoBehaviour
 
         for (int i = 0; i < _onOpenedSteps.Length; i++)
         {
-            UnityEvent evt = _onOpenedSteps[i];
-            if (evt == null)
+            UIAnimatorStep step = _onOpenedSteps[i];
+            if (step == null || step.Animators == null)
                 continue;
 
-            int count = evt.GetPersistentEventCount();
-            for (int j = 0; j < count; j++)
+            for (int j = 0; j < step.Animators.Length; j++)
             {
-                Object target = evt.GetPersistentTarget(j);
-                string method = evt.GetPersistentMethodName(j);
-                if (target is UIAnimator animator && method == nameof(UIAnimator.Open))
-                    animator.SetClosedStateImmediate();
+                UIAnimator animator = step.Animators[j];
+                if (animator == null)
+                    continue;
+
+                animator.SetClosedStateImmediate();
             }
         }
     }
