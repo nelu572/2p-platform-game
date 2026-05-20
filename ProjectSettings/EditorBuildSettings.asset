@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Ready/ModSelectScene.unity
     guid: 577204ca183f04c4d8ca4881e3562ae6
   - enabled: 1
-    path: Assets/Scenes/Ready/Character Select Scene.unity
+    path: Assets/Scenes/Ready/CharacterSelectScene.unity
     guid: 000fb0762637b3d47b95941fc6433a75
   - enabled: 1
     path: Assets/Scenes/Ready/Boss Select Scene.unity
