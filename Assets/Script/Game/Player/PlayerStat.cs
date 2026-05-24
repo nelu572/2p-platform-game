@@ -48,4 +48,10 @@ public class PlayerStat : MonoBehaviour, IDamageable
         if (Hp < 0) Hp = 0;
         Debug.Log($"{attackDamage} 만큼 피해를 입었습니다, 남은HP: {Hp}");
     }
+
+    public void Revive()
+    {
+        Life--;
+        Hp = MaxHp;
+    }
 }
