@@ -24,7 +24,6 @@
 - `OptionScene`: 옵션 화면
 - `ModSelectScene`: 모드 선택 화면
 - `CharacterSelectScene`: 캐릭터 선택 화면
-- `Boss Select Scene`: 보스 선택 또는 준비 화면으로 보이나 정확한 역할 확인 필요
 - `Map1`: 전투 또는 맵 테스트 씬
 
 ## 캐릭터 비주얼 기준

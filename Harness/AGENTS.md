@@ -9,7 +9,7 @@
 - 프로젝트 의도: 2명의 플레이어가 같은 공간에서 싸우는 2D 플랫포머 액션 PVP
 - 핵심 플레이: 캐릭터와 맵을 선택한 뒤 낙사, 넉백, 캐릭터별 전투 스타일로 승부한다.
 - 주요 패키지: Input System, Universal Render Pipeline, UGUI, Unity Test Framework
-- 등록 씬: `MainScene`, `OptionScene`, `ModSelectScene`, `CharacterSelectScene`, `Boss Select Scene`, `Map1`
+- 등록 씬: `MainScene`, `OptionScene`, `ModSelectScene`, `CharacterSelectScene`, `Map1`
 
 ## 먼저 읽을 문서 순서
 
@@ -68,13 +68,16 @@
 - Unity 자동 생성 파일과 메타 파일의 의미를 확인하고 수정한다.
 - 명시 요청이 없는 리팩터링은 피하고, 요청된 범위 안에서 변경한다.
 - 가능하면 Unity 빌드, 에디터 검증, 테스트, 정적 확인 중 수행 가능한 검증을 한다.
-- 작업 완료 후 `Harness/Docs/Logs/FILE_CHANGE_LOG.md`를 갱신한다.
+- 작업 완료 후 `Harness/Docs/Logs/FILE_CHANGE_LOG.md`의 날짜별 섹션에 변경 요약을 남긴다.
 
 ## 문서 처리 규칙
 
 - 하네스 문서는 실제 작업 착수를 빠르게 하기 위한 운영 문서로 유지한다.
 - 너무 긴 설명보다 현재 프로젝트에서 바로 쓸 수 있는 규칙을 우선한다.
 - 프로젝트 고유 컨벤션, 로드맵, 장르, 씬 이름, 비주얼 키워드는 확인된 내용만 기록한다.
+- `FILE_CHANGE_LOG.md`의 `현재 커밋 안 된 작업` 섹션은 사용자가 작성을 요청했을 때만 갱신한다.
+- 일반 작업 완료 시에는 `현재 커밋 안 된 작업`을 자동 갱신하지 않고 날짜별 로그만 갱신한다.
+- 커밋할 때 `현재 커밋 안 된 작업` 섹션에는 GitHub 업로드용 주석만 남긴다.
 - `WORK_ORDER.md`의 템플릿 구조는 명시 요청 없이 삭제하지 않는다.
 - `WORK_ORDER.md`의 `작업 이름`, `상세 요구사항`, `유저 메모장` 섹션에 있는 GitHub 업로드용 주석은 작업 지시가 없을 때 반드시 유지한다.
 - 사용자가 "메모 작업해"라고 말하면 `Harness/WORK_ORDER.md`를 읽고 그 안의 작업을 실제로 수행한다.
