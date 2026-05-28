@@ -3,16 +3,34 @@ using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
-    [SerializeField] private PlayerStat Player1;
-    [SerializeField] private PlayerStat Player2;
+    [SerializeField] private PlayerStat _player1;
+    [SerializeField] private PlayerStat _player2;
+    [SerializeField] private CharacterManager _characterManager;
 
     private bool isRoundOver;
 
 
+
+    void Awake()
+    {
+        _characterManager.SpawnPlayers();
+    }
+
     void Update()
     {
-        if (Player1.Hp <= 0) PlayerDead(Player1);
-        if (Player2.Hp <= 0) PlayerDead(Player2);
+        if (isRoundOver || _player1 == null || _player2 == null)
+            return;
+
+        if (_player1.Hp <= 0) PlayerDead(_player1);
+        if (_player2.Hp <= 0) PlayerDead(_player2);
+    }
+
+    //캐릭터가 생성될때 실행
+    public void InitializePlayers(PlayerStat player1, PlayerStat player2)
+    {
+        _player1 = player1;
+        _player2 = player2;
+        isRoundOver = false;
     }
 
     public void PlayerDead(PlayerStat deadPlayer)
@@ -26,7 +44,7 @@ public class InGameManager : MonoBehaviour
         }
         else
         {
-            PlayerStat winnerPlayer = (deadPlayer == Player1) ? Player2 : Player1;
+            PlayerStat winnerPlayer = (deadPlayer == _player1) ? _player2 : _player1;
             SelectWinner(winnerPlayer, deadPlayer);
         }
     }
@@ -34,6 +52,7 @@ public class InGameManager : MonoBehaviour
 
     public void SelectWinner(PlayerStat winnerPlayer, PlayerStat loserPlayer)
     {
+        if (isRoundOver) return;
         Debug.Log($"플레이어{winnerPlayer.TeamId} 승리");
         StartCoroutine(RoundEnd(winnerPlayer, loserPlayer));
     }
