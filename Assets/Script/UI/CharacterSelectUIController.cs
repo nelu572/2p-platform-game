@@ -59,6 +59,8 @@ public class CharacterSelectUIController : MonoBehaviour
 
     private void OnDisable()
     {
+        StopCountdown();
+
         if (_uiInput == null)
         {
             return;
