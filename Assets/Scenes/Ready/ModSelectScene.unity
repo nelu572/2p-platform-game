@@ -665,7 +665,7 @@ MonoBehaviour:
   _buttonType: 4
   _enablePanel: {fileID: 0}
   _disablePanel: {fileID: 0}
-  _nextSceneName: 
+  _nextSceneName: CharacterSelectScene
   _upButton: {fileID: 0}
   _downButton: {fileID: 0}
   _leftButton: {fileID: 608935155}
