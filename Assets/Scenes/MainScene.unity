@@ -2404,56 +2404,32 @@ MonoBehaviour:
     m_ActionId: 0a19e7a5-f3b0-4517-9553-7c507bc27a82
     m_ActionName: 'Player2/Skill[/Keyboard/numpadPeriod]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1323364225}
-        m_TargetAssemblyTypeName: UIInput, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 8262f1b4-323d-4e1a-979a-0b3b6e052817
-    m_ActionName: 'UI/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+      m_Calls: []
+    m_ActionId: 179b1153-d5e1-47cf-abdb-d645f1b0d7c2
+    m_ActionName: 'UI_P1/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1323364225}
-        m_TargetAssemblyTypeName: UIInput, Assembly-CSharp
-        m_MethodName: OnSubmit
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: fae49d6c-9b05-43ef-808f-7bca10ec06c0
-    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+      m_Calls: []
+    m_ActionId: 66b2d941-feb2-4cbd-a3e7-8b38b44e4a73
+    m_ActionName: 'UI_P1/Submit[/Keyboard/f]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1323364225}
-        m_TargetAssemblyTypeName: UIInput, Assembly-CSharp
-        m_MethodName: OnCancel
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: fbb1fd0a-87d0-4067-b237-a07e4e927755
-    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+      m_Calls: []
+    m_ActionId: 3e5c0acd-257b-41c1-956d-e22328c25779
+    m_ActionName: 'UI_P1/Cancel[/Keyboard/g]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 32ea2ba7-41f8-46c3-beb3-890b73639442
+    m_ActionName: 'UI_P2/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9ae3fe3a-8783-47bb-86a9-f4ef3e06a619
+    m_ActionName: 'UI_P2/Submit[/Keyboard/numpad0]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b514b7da-8ba8-4ea4-a1a1-7a946bfe5cbc
+    m_ActionName: 'UI_P2/Cancel[/Keyboard/numpadPeriod]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1323364225
@@ -2699,10 +2675,10 @@ RectTransform:
   - {fileID: 1956344780}
   m_Father: {fileID: 1635658970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 581.25, y: -62.5}
+  m_SizeDelta: {x: 337.5, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1520120369
 MonoBehaviour:
@@ -3214,10 +3190,10 @@ RectTransform:
   - {fileID: 722918238}
   m_Father: {fileID: 1635658970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 168.75, y: -62.5}
+  m_SizeDelta: {x: 337.5, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1902592534
 MonoBehaviour:
@@ -3318,7 +3294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1912833681
 RectTransform:
   m_ObjectHideFlags: 0

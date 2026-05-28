@@ -4,6 +4,37 @@
 
 <!-- 이 부분은 깃허브에 올릴때에는 항상 이 주석만 있도록 유지해야한다 -->
 
+## 2026-05-28
+
+### UI 입력 분리
+
+- `UIInput`의 선택 상태를 P1/P2 커서로 분리했다.
+  - 기존 `OnMove`, `OnSubmit`, `OnCancel` 메서드는 유지하면서 액션맵/액션 이름이 `Player2` 또는 `P2`일 때 P2 커서로 라우팅하도록 했다.
+  - 인스펙터에서 명시 연결할 수 있도록 `OnPlayer1Move/Submit/Cancel`, `OnPlayer2Move/Submit/Cancel` 메서드를 추가했다.
+  - P1/P2 입력을 개별로 켜고 끄는 메서드와 P1만 입력받는 전환 메서드를 추가했다.
+- `PlayerInputActions`에 UI 전용 액션맵 `UI_P1`, `UI_P2`를 추가했다.
+  - `UI_P1`: WASD 이동, F 확인, G 취소.
+  - `UI_P2`: 방향키 이동, Numpad 0 확인, Numpad . 취소.
+- `UIInputActionBinder`를 추가하고 메인씬 `UIInputManager`에 연결했다.
+  - 기존 플레이어 프리팹의 `Player1/Player2` 전투 입력 이벤트는 건드리지 않고, UI 전용 액션맵만 코드로 구독하도록 분리했다.
+- 기존 단일 `UI` 액션맵과 `UI/...` 이벤트 참조를 제거했다.
+  - 메인씬 `UIInputManager`의 중복 UI 이벤트 연결을 제거하고 기본 액션맵을 `UI_P1`로 변경했다.
+  - 맵 레이아웃 씬의 플레이어 프리팹 인스턴스에 남아 있던 오래된 `UI/...` 이벤트 오버라이드를 제거했다.
+- `UIButton`의 `GoScene` 처리에 빈 씬명 방어를 추가했다.
+  - `_nextSceneName`이 비어 있으면 경고만 남기고 `SceneManager.LoadScene`을 호출하지 않도록 했다.
+- 캐릭터 선택 씬에 UI 선택 흐름 컨트롤러를 추가했다.
+  - `UIInput`의 P1/P2 선택, 확인, 취소 이벤트를 캐릭터 선택 씬에서 가로챌 수 있도록 확장했다.
+  - `CharacterSelectUIController`를 추가해 캐릭터 버튼 확인 시 P1/P2 hover를 각 플레이어 패널 버튼으로 이동시키고, 취소 시 확정했던 캐릭터 버튼으로 되돌리도록 했다.
+  - P1 hover는 파랑, P2 hover는 빨강으로 표시하도록 했다.
+  - 확인한 캐릭터 버튼은 노란색으로 표시하고, 취소하면 원래 색으로 복구하도록 했다.
+  - P1/P2가 모두 확인하면 중앙 `LeftTime` 텍스트로 5초 카운트다운을 표시한 뒤 `Map1` 씬으로 이동하도록 했다.
+  - 캐릭터 선택 씬 `MainPanel`에 컨트롤러를 연결했다.
+  - 입력은 `DontDestroyOnLoad`되는 전역 `UIInputManager`를 사용하도록 유지했다.
+- 검증
+  - `PlayerInputActions.inputactions` JSON 파싱과 액션맵 목록을 확인했다.
+  - `UI/Move`, `UI/Submit`, `UI/Cancel` 잔여 참조가 없는 것을 확인했다.
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
 ## 2026-05-27
 
 ### 하네스 구조
