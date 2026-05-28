@@ -5,7 +5,7 @@ public class CharacterManager : MonoBehaviour
 {
 
     [Header("Data")]
-    [SerializeField] private GameDataSO _gameData;
+    [SerializeField] private CharacterSelectData _characterSelectData;
     [SerializeField] private InGameManager _inGameManager;
 
     [Header("Spawn Point")]
@@ -36,22 +36,22 @@ public class CharacterManager : MonoBehaviour
 
     private int ResolveCharacterIndex(bool isPlayer1)
     {
-        if (_gameData == null)
+        if (_characterSelectData == null)
             return isPlayer1 ? _fallbackP1CharacterIndex : _fallbackP2CharacterIndex;
 
-        return isPlayer1 ? _gameData.p1CharacterIndex : _gameData.p2CharacterIndex;
+        return isPlayer1 ? _characterSelectData.p1CharacterIndex : _characterSelectData.p2CharacterIndex;
     }
 
     private GameObject SpawnSinglePlayer(int teamId, string actionMapName, int characterIndex, Transform spawnPoint)
     {
-        if (_gameData == null || _gameData.characterPrefabs == null || _gameData.characterPrefabs.Length == 0)
+        if (_characterSelectData == null || _characterSelectData.characterPrefabs == null || _characterSelectData.characterPrefabs.Length == 0)
         {
             Debug.LogError("GameDataSO 또는 characterPrefabs가 비어 있어 플레이어를 생성할 수 없습니다.");
             return null;
         }
 
-        int safeIndex = Mathf.Clamp(characterIndex, 0, _gameData.characterPrefabs.Length - 1);
-        GameObject prefab = _gameData.characterPrefabs[safeIndex];
+        int safeIndex = Mathf.Clamp(characterIndex, 0, _characterSelectData.characterPrefabs.Length - 1);
+        GameObject prefab = _characterSelectData.characterPrefabs[safeIndex];
         if (prefab == null)
         {
             Debug.LogError($"characterPrefabs[{safeIndex}]가 비어 있습니다.");
