@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 78450061}
   - component: {fileID: 78450060}
   - component: {fileID: 78450062}
+  - component: {fileID: 78450063}
   m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
@@ -249,6 +250,19 @@ MonoBehaviour:
   _downButton: {fileID: 0}
   _leftButton: {fileID: 0}
   _rightButton: {fileID: 474886905}
+--- !u!114 &78450063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78450057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385248e16c1df284d96d5ef639680752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterIndex: 2
 --- !u!1 &151871851
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +681,7 @@ GameObject:
   - component: {fileID: 325666177}
   - component: {fileID: 325666176}
   - component: {fileID: 325666178}
+  - component: {fileID: 325666179}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -785,6 +800,19 @@ MonoBehaviour:
   _downButton: {fileID: 78450062}
   _leftButton: {fileID: 0}
   _rightButton: {fileID: 1665499672}
+--- !u!114 &325666179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325666173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385248e16c1df284d96d5ef639680752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterIndex: 0
 --- !u!1 &327257234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,6 +1335,7 @@ GameObject:
   - component: {fileID: 474886904}
   - component: {fileID: 474886903}
   - component: {fileID: 474886905}
+  - component: {fileID: 474886906}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1425,6 +1454,19 @@ MonoBehaviour:
   _downButton: {fileID: 0}
   _leftButton: {fileID: 78450062}
   _rightButton: {fileID: 0}
+--- !u!114 &474886906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474886900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385248e16c1df284d96d5ef639680752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterIndex: 3
 --- !u!1 &542012461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,6 +1893,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638709669}
   m_CullTransparentMesh: 1
+--- !u!1 &667472501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 667472503}
+  - component: {fileID: 667472502}
+  m_Layer: 0
+  m_Name: CharacterSelectManger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &667472502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667472501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b774bb66ca45342b97038ccdfd2e65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterSelectData: {fileID: 11400000, guid: f9a7c65cb7375d54c910193304f11723, type: 2}
+  _uiInput: {fileID: 0}
+--- !u!4 &667472503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667472501}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.19, y: 0.59, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &706426079
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,6 +3696,7 @@ GameObject:
   - component: {fileID: 1665499671}
   - component: {fileID: 1665499670}
   - component: {fileID: 1665499672}
+  - component: {fileID: 1665499673}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -3726,6 +3815,19 @@ MonoBehaviour:
   _downButton: {fileID: 474886905}
   _leftButton: {fileID: 325666178}
   _rightButton: {fileID: 0}
+--- !u!114 &1665499673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665499667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385248e16c1df284d96d5ef639680752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterIndex: 1
 --- !u!1 &1810349132
 GameObject:
   m_ObjectHideFlags: 0
@@ -4329,3 +4431,4 @@ SceneRoots:
   - {fileID: 467702026}
   - {fileID: 1353593221}
   - {fileID: 843397671}
+  - {fileID: 667472503}
