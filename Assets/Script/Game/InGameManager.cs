@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
-    [SerializeField] private PlayerStat _playerStat1;
-    [SerializeField] private PlayerStat _playerStat2;
     [SerializeField] private CharacterManager _characterManager;
 
-    [SerializeField] private GameObject _player;
-    [SerializeField] private GameObject _enemy;
+    //자동으로 할당됨
+    [SerializeField] private PlayerStat _playerStat1;
+    [SerializeField] private PlayerStat _playerStat2;
+    [SerializeField] private GameObject _player1;
+    [SerializeField] private GameObject _player2;
 
     private bool isRoundOver;
 
@@ -27,10 +28,12 @@ public class InGameManager : MonoBehaviour
     }
 
     //캐릭터가 생성될때 실행
-    public void InitializePlayers(PlayerStat player1, PlayerStat player2)
+    public void InitializePlayers(PlayerStat playerStat1, PlayerStat playerStat2)
     {
-        _playerStat1 = player1;
-        _playerStat2 = player2;
+        _playerStat1 = playerStat1;
+        _playerStat2 = playerStat2;
+        _player1 = playerStat1.gameObject;
+        _player2 = playerStat2.gameObject;
         _playerStat1.TeamId = 1;
         _playerStat2.TeamId = 2;
         isRoundOver = false;
