@@ -128,7 +128,7 @@ public class CharacterSelectUIController : MonoBehaviour
         _isInputBound = true;
     }
 
-    private bool OnSubmitRequested(int playerIndex, UIButton button)
+    public bool OnSubmitRequested(int playerIndex, UIButton button)
     {
         if (IsCharacterButton(button) == false)
         {
