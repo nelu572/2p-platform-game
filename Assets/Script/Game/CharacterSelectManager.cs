@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelectManager : MonoBehaviour
 {
-    public CharacterSelectData _characterSelectData;
+    [SerializeField] private CharacterSelectData _characterSelectData;
+    [SerializeField] private CharacterSelectUIController _characterSelectUIController;
     [SerializeField] private UIInput _uiInput;
 
     private void OnEnable()
@@ -11,16 +12,16 @@ public class CharacterSelectManager : MonoBehaviour
         _uiInput ??= FindFirstObjectByType<UIInput>();
 
         if (_uiInput != null)
-            _uiInput.SubmitRequested += OnSubmitRequested;
+            _uiInput.SubmitRequested += SaveCharacterSelection;
     }
 
     private void OnDisable()
     {
         if (_uiInput != null)
-            _uiInput.SubmitRequested -= OnSubmitRequested;
+            _uiInput.SubmitRequested -= SaveCharacterSelection;
     }
 
-    private bool OnSubmitRequested(int playerIndex, UIButton button)
+    private bool SaveCharacterSelection(int playerIndex, UIButton button)
     {
         CharacterSelectButton selectButton = button.GetComponent<CharacterSelectButton>();
         if (selectButton == null)
@@ -30,6 +31,8 @@ public class CharacterSelectManager : MonoBehaviour
             OnPlayer1Select(selectButton.CharacterIndex);
         else
             OnPlayer2Select(selectButton.CharacterIndex);
+
+        //_characterSelectUIController.OnSubmitRequested(playerIndex, button);
 
         return true;
     }
