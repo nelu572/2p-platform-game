@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InGameManager : MonoBehaviour
 {
     [SerializeField] private CharacterManager _characterManager;
+    [SerializeField] private RoundEndUI _roundEndUI;
 
     //자동으로 할당됨
     [SerializeField] private PlayerStat _playerStat1;
@@ -65,10 +67,13 @@ public class InGameManager : MonoBehaviour
     private IEnumerator RoundEnd(PlayerStat winner, PlayerStat loser)
     {
         isRoundOver = true;
+        SetPlayersMovementEnabled(false);
 
         //  슬로우모션 시작
         Time.timeScale = 0.2f;        // 속도를 20%로 줄임
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        _roundEndUI?.Show();
+        // TODO: RoundEndUI Show 완료 후 버튼 등장 애니메이션을 실행하고, 2초 뒤 플레이어 입력을 다시 켜기.
 
         // 실제 시간 기준으로 3초 대기 (Unscaled = timeScale 영향 안 받음)
         yield return new WaitForSecondsRealtime(3f);
@@ -84,5 +89,34 @@ public class InGameManager : MonoBehaviour
     {
         yield return null;
         //TODO 결과 화면 SetActive(true) & 결과 화면에 들어가야될 정보 추가
+    }
+
+    private void SetPlayersMovementEnabled(bool enabled)
+    {
+        SetPlayerMovementEnabled(_player1, enabled);
+        SetPlayerMovementEnabled(_player2, enabled);
+    }
+
+    private void SetPlayerMovementEnabled(GameObject player, bool enabled)
+    {
+        if (player == null)
+            return;
+
+        ChargeInputHandler chargeInputHandler = player.GetComponent<ChargeInputHandler>();
+        if (chargeInputHandler != null)
+            chargeInputHandler.enabled = enabled;
+
+        PlayerInputHandler inputHandler = player.GetComponent<PlayerInputHandler>();
+        if (inputHandler != null)
+        {
+            if (!enabled)
+                inputHandler.ResetInput();
+
+            inputHandler.enabled = enabled;
+        }
+
+        PlayerInput playerInput = player.GetComponent<PlayerInput>();
+        if (playerInput != null)
+            playerInput.enabled = enabled;
     }
 }
