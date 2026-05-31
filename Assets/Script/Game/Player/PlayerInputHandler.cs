@@ -16,6 +16,12 @@ public class PlayerInputHandler : MonoBehaviour
         _playerController.Move(_moveInput);
     }
 
+    public void ResetInput()
+    {
+        _moveInput = Vector2.zero;
+        _playerController.Move(Vector2.zero);
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
