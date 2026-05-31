@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
@@ -24,13 +25,10 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [SerializeField] private float _skillMaxCharge = 6f;
 
     [Header("레이저")]
-    [SerializeField] private GameObject _laser;
     [SerializeField] private float _laserDuration = 0.5f;
     // 오브젝트 폴링에 넘길 key값
     // 이 오브젝트로 생성할 오브젝트를 찾은후 오브젝트 활성화
     [SerializeField] private string _laserKey = "Laser";
-    private bool _laserActive = false;
-    private float _laserTimer = 0f;
 
     [Header("넉백")]
     [SerializeField] private float _jumpKnockbackPower = 16f;
@@ -77,18 +75,6 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
     void Update()
     {
-        if (_laserActive)
-        {
-            _laserTimer += Time.deltaTime;
-
-            if (_laserTimer >= _laserDuration)
-            {
-                _objectPoolManager.Return(_laserKey, _laser); // null 위험 없음, 시간이 지나면 오브젝트 풀에 반환
-                _laser = null;// 참조 해제
-                _laserActive = false;
-                _laserTimer = 0f;
-            }
-        }
 
         // 일반 차징
         if (IsCharging)
@@ -290,16 +276,24 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Vector2 spawnPos = origin + direction * (sizeX / 2f);
 
-        //레이저가 널일 경우를 대비
-        _laser = _objectPoolManager.Get(_laserKey);
+        GameObject laser = _objectPoolManager.Get(_laserKey);
+        if (laser == null)
+            return;
 
-        _laser.transform.position = spawnPos;
-        _laser.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-        _laser.transform.localScale = new Vector3(sizeX, sizeY, 1f);
+        laser.transform.position = spawnPos;
+        laser.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        laser.transform.localScale = new Vector3(sizeX, sizeY, 1f);
         // SetActive 중복 제거 → Get() 내부에서 처리
 
-        _laserActive = true;
-        _laserTimer = 0f;
+        StartCoroutine(ReturnLaserAfterDelay(laser));
+    }
+
+    private IEnumerator ReturnLaserAfterDelay(GameObject laser)
+    {
+        yield return new WaitForSeconds(_laserDuration);
+
+        if (laser != null && laser.activeSelf)
+            _objectPoolManager.Return(_laserKey, laser);
     }
 
     private Vector2 GetFacingDirection()
