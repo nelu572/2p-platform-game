@@ -25,16 +25,16 @@ public class CharacterSelectManager : MonoBehaviour
     {
         CharacterSelectButton selectButton = button.GetComponent<CharacterSelectButton>();
         if (selectButton == null)
-            return false;
+            return _characterSelectUIController != null
+                && _characterSelectUIController.OnSubmitRequested(playerIndex, button);
 
         if (playerIndex == 1)
             OnPlayer1Select(selectButton.CharacterIndex);
         else
             OnPlayer2Select(selectButton.CharacterIndex);
 
-        _characterSelectUIController.OnSubmitRequested(playerIndex, button);
-
-        return true;
+        return _characterSelectUIController != null
+            && _characterSelectUIController.OnSubmitRequested(playerIndex, button);
     }
 
     public void OnPlayer1Select(int index) => _characterSelectData.p1CharacterIndex = index;
