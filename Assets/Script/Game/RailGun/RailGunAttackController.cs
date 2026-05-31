@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
@@ -285,15 +284,10 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         laser.transform.localScale = new Vector3(sizeX, sizeY, 1f);
         // SetActive 중복 제거 → Get() 내부에서 처리
 
-        StartCoroutine(ReturnLaserAfterDelay(laser));
-    }
-
-    private IEnumerator ReturnLaserAfterDelay(GameObject laser)
-    {
-        yield return new WaitForSeconds(_laserDuration);
-
-        if (laser != null && laser.activeSelf)
-            _objectPoolManager.Return(_laserKey, laser);
+        if (laser.TryGetComponent<SelfReturn>(out var selfReturn))
+            selfReturn.ReturnAfter(_laserDuration);
+        else
+            Debug.LogWarning("Laser 프리팹에 SelfReturn 컴포넌트가 없습니다.", laser);
     }
 
     private Vector2 GetFacingDirection()
