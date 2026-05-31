@@ -32,6 +32,11 @@ public class InGameManager : MonoBehaviour
     //캐릭터가 생성될때 실행
     public void InitializePlayers(PlayerStat playerStat1, PlayerStat playerStat2)
     {
+        if (playerStat1 == null || playerStat2 == null)
+        {
+            Debug.LogError("InitializePlayers: 스텟이 비어있습니다");
+            return;
+        }
         _playerStat1 = playerStat1;
         _playerStat2 = playerStat2;
         _player1 = playerStat1.gameObject;
