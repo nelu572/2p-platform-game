@@ -75,8 +75,9 @@ public class InGameManager : MonoBehaviour
         SetPlayersMovementEnabled(false);
 
         //  슬로우모션 시작
+        float originalFixedDeltaTime = Time.fixedDeltaTime;
         Time.timeScale = 0.2f;        // 속도를 20%로 줄임
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        Time.fixedDeltaTime = originalFixedDeltaTime * Time.timeScale;
         _roundEndUI?.Show();
         // TODO: RoundEndUI Show 완료 후 버튼 등장 애니메이션을 실행하고, 2초 뒤 플레이어 입력을 다시 켜기.
 
@@ -85,7 +86,7 @@ public class InGameManager : MonoBehaviour
 
         //  속도 원복
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f;
+        Time.fixedDeltaTime = originalFixedDeltaTime;
 
         // TODO: 결과 UI 표시
         StartCoroutine(CreateResultUI());
