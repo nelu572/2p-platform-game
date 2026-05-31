@@ -32,7 +32,7 @@ public class CharacterSelectManager : MonoBehaviour
         else
             OnPlayer2Select(selectButton.CharacterIndex);
 
-        //_characterSelectUIController.OnSubmitRequested(playerIndex, button);
+        _characterSelectUIController.OnSubmitRequested(playerIndex, button);
 
         return true;
     }
