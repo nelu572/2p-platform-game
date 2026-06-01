@@ -2,10 +2,30 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
+    [Header("Follow")]
+    [SerializeField] private float _positionSmoothTime = 0.15f;
+    [SerializeField] private float _zoomSmoothTime = 0.15f;
+
+    [Header("Zoom")]
+    [SerializeField] private float _minSize = 6f;
+    [SerializeField] private float _padding = 2f;
+
     private Transform _player1Transform;
     private Transform _player2Transform;
 
-    private float _zPos = -10f;
+    private Camera _camera;
+    private Vector3 _positionVelocity;
+    private float _zoomVelocity;
+    private float _zPos;
+
+    void Awake()
+    {
+        _camera = GetComponent<Camera>();
+        if (_camera == null)
+            _camera = Camera.main;
+
+        _zPos = transform.position.z;
+    }
 
     public void SetTargets(Transform p1, Transform p2)
     {
@@ -16,16 +36,23 @@ public class CameraMove : MonoBehaviour
     void LateUpdate()
     {
         if (_player1Transform == null || _player2Transform == null) return;
+        if (_camera == null) return;
 
         Vector3 p1Pos = _player1Transform.position;
         Vector3 p2Pos = _player2Transform.position;
 
-        float x_pos = (p1Pos.x + p2Pos.x) / 2f;
-        float y_pos = (p1Pos.y + p2Pos.y) / 2f;
+        float xPos = (p1Pos.x + p2Pos.x) / 2f;
+        float yPos = (p1Pos.y + p2Pos.y) / 2f;
 
-        transform.position = new Vector3(x_pos, y_pos, _zPos);
+        Vector3 targetPosition = new Vector3(xPos, yPos, _zPos);
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _positionVelocity, _positionSmoothTime);
 
-        float distance = Vector2.Distance(p1Pos, p2Pos);
-        Camera.main.orthographicSize = Mathf.Max(distance * 0.5f, 6f);
+        float horizontalDistance = Mathf.Abs(p1Pos.x - p2Pos.x);
+        float verticalDistance = Mathf.Abs(p1Pos.y - p2Pos.y);
+        float verticalSize = verticalDistance * 0.5f + _padding;
+        float horizontalSize = horizontalDistance * 0.5f / _camera.aspect + _padding;
+        float targetSize = Mathf.Max(verticalSize, horizontalSize, _minSize);
+
+        _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, targetSize, ref _zoomVelocity, _zoomSmoothTime);
     }
 }

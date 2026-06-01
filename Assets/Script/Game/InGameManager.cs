@@ -6,6 +6,7 @@ public class InGameManager : MonoBehaviour
 {
     [SerializeField] private CharacterManager _characterManager;
     [SerializeField] private RoundEndUI _roundEndUI;
+    [SerializeField] private CameraMove _cameraMove;
 
     //자동으로 할당됨
     [SerializeField] private PlayerStat _playerStat1;
@@ -43,6 +44,7 @@ public class InGameManager : MonoBehaviour
         _player2 = playerStat2.gameObject;
         _playerStat1.TeamId = 1;
         _playerStat2.TeamId = 2;
+        InitializeCameraTargets();
         isRoundOver = false;
     }
 
@@ -77,6 +79,15 @@ public class InGameManager : MonoBehaviour
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
+    }
+
+    private void InitializeCameraTargets()
+    {
+        if (_cameraMove == null)
+            _cameraMove = FindFirstObjectByType<CameraMove>();
+
+        if (_cameraMove != null)
+            _cameraMove.SetTargets(_player1.transform, _player2.transform);
     }
 
     public void SelectWinner(PlayerStat winnerPlayer, PlayerStat loserPlayer)
