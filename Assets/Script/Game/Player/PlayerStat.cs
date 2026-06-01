@@ -9,7 +9,9 @@ public class PlayerStat : MonoBehaviour, IDamageable
 
     [SerializeField] private CharacterStatData _statData;
 
-    public int Life { get => _statData.life; set => _statData.life = value; }
+    private int _life;
+
+    public int Life { get => _life; set => _life = value; }
     public int Hp { get; set; }
     public int MaxHp => _statData._maxHp;
     public int AttackDamage => _statData._attackDamage;
@@ -31,6 +33,7 @@ public class PlayerStat : MonoBehaviour, IDamageable
 
     protected void OnAwake()
     {
+        _life = _statData.life;
         Hp = _statData._maxHp;
         _currentMoveSpeed = _statData._moveSpeed;
     }
@@ -47,5 +50,11 @@ public class PlayerStat : MonoBehaviour, IDamageable
         Hp -= attackDamage;
         if (Hp < 0) Hp = 0;
         Debug.Log($"{attackDamage} 만큼 피해를 입었습니다, 남은HP: {Hp}");
+    }
+
+    public void Revive()
+    {
+        Life--;
+        Hp = MaxHp;
     }
 }

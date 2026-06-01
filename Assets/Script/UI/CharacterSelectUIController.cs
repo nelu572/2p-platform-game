@@ -66,7 +66,6 @@ public class CharacterSelectUIController : MonoBehaviour
             return;
         }
 
-        _uiInput.SubmitRequested -= OnSubmitRequested;
         _uiInput.CancelRequested -= OnCancelRequested;
         _uiInput.SelectionChanged -= OnSelectionChanged;
         _isInputBound = false;
@@ -113,7 +112,6 @@ public class CharacterSelectUIController : MonoBehaviour
 
         if (_uiInput != null && _isInputBound)
         {
-            _uiInput.SubmitRequested -= OnSubmitRequested;
             _uiInput.CancelRequested -= OnCancelRequested;
             _uiInput.SelectionChanged -= OnSelectionChanged;
         }
@@ -122,13 +120,12 @@ public class CharacterSelectUIController : MonoBehaviour
         _uiInput.SetDefaultButton(_defaultCharacterButton);
         _uiInput.SetPlayer1CurrentButton(_defaultCharacterButton);
         _uiInput.SetPlayer2CurrentButton(_defaultCharacterButton);
-        _uiInput.SubmitRequested += OnSubmitRequested;
         _uiInput.CancelRequested += OnCancelRequested;
         _uiInput.SelectionChanged += OnSelectionChanged;
         _isInputBound = true;
     }
 
-    private bool OnSubmitRequested(int playerIndex, UIButton button)
+    public bool OnSubmitRequested(int playerIndex, UIButton button)
     {
         if (IsCharacterButton(button) == false)
         {
