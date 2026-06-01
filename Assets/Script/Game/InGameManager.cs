@@ -53,6 +53,7 @@ public class InGameManager : MonoBehaviour
             Debug.Log($"player{deadPlayer.TeamId}사망");
             /// TODO: 캐릭터에 맞는 유령 생성 로직 작성 필요 
             deadPlayer.Revive();
+            RespawnPlayer(deadPlayer);
             Debug.Log("부활됨");
         }
         else
@@ -62,6 +63,21 @@ public class InGameManager : MonoBehaviour
         }
     }
 
+    private void RespawnPlayer(PlayerStat player)
+    {
+        if (player == null)
+            return;
+
+        Vector3 respawnPosition = _characterManager != null
+            ? _characterManager.GetSpawnPosition(player.TeamId)
+            : Vector3.zero;
+
+        player.transform.position = respawnPosition;
+
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
+    }
 
     public void SelectWinner(PlayerStat winnerPlayer, PlayerStat loserPlayer)
     {

@@ -18,6 +18,18 @@ public class CharacterManager : MonoBehaviour
 
     private GameObject _player1;
     private GameObject _player2;
+
+    public Vector3 GetSpawnPosition(int teamId)
+    {
+        Transform spawnPoint = null;
+        if (teamId == 1)
+            spawnPoint = _player1SpawnPoint;
+        else if (teamId == 2)
+            spawnPoint = _player2SpawnPoint;
+
+        return spawnPoint != null ? spawnPoint.position : Vector3.zero;
+    }
+
     public void SpawnPlayers()
     {
         _player1 = SpawnSinglePlayer(1, "Player1", ResolveCharacterIndex(isPlayer1: true), _player1SpawnPoint);
