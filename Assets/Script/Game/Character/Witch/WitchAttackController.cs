@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(ChargeInputHandler))]
-public class WitchAttackController : MonoBehaviour, IAttackController, IChargeable
+public class WitchAttackController : BaseAttackController, IChargeable
 {
     [Header("일반 공격")]
     [SerializeField] private float _throwPower = 1f;
@@ -22,22 +22,12 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
     [Header("스킬 - 포션 선택")]
     [SerializeField] private int _potionIndex = 0;
 
-    private PlayerController _playerController;
-    private PlayerStat _playerStat;
     private ObjectPoolManager _objectPoolManager;
-    private BoxCollider2D _boxCollider2D;
     //private Animator _animator;
 
-    void Awake()
+    protected override void Awake()
     {
-        _playerController = GetComponent<PlayerController>();
-        _playerStat = GetComponent<PlayerStat>();
-        //PlayerController에 RequireComponent로 되어있음
-        _boxCollider2D = GetComponent<BoxCollider2D>();
-        
-
-        _playerController.OnAttackHandler = Attack;
-        _playerController.OnSkillHandler = Skill;
+        base.Awake();
     }
 
     void Start()
@@ -55,12 +45,12 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
         }
     }
 
-    public void Attack()
+    public override void Attack()
     {
-        if(_playerStat.AttackCooltime > 0f)
+        if(IsAttackOnCooldown())
             return;
 
-        if (_playerController.IsGrounded)
+        if (PlayerController.IsGrounded)
         {
             //_animator.SetTrigger("ReadyThrow");
             IsCharging = true;
@@ -88,9 +78,7 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
         _potion.transform.position = transform.position;
 
         // 바라보는 방향
-        Vector2 facingDir = _playerController.transform.localScale.x > 0f
-            ? Vector2.right
-            : Vector2.left;
+        Vector2 facingDir = GetFacingDirection();
 
         // 포물선 방향 계산 (바라보는 방향 + 위쪽 각도)
         float rad = _throwAngle * Mathf.Deg2Rad;
@@ -112,11 +100,11 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
 
         // 포션에 스탯 전달
         if (_potion.TryGetComponent<Potion>(out var potion))
-            potion.Initialize(_playerStat, _potionCollisionLayerMask);
+            potion.Initialize(PlayerStat, _potionCollisionLayerMask);
 
         Debug.Log($"[Witch] {potion.name}물약 던짐 힘: {_throwPower}");
         _throwPower = 0f;
-        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
+        StartAttackCooldown();
 
     }
 
@@ -125,7 +113,7 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
         GameObject obj = _objectPoolManager.Get(_windPotionKey);
         if (obj == null) return;
 
-        float offsetY = _boxCollider2D.size.y * 0.5f;
+        float offsetY = BodyCollider.size.y * 0.5f;
         obj.transform.position = (Vector2)transform.position + Vector2.down * offsetY;
 
         if (obj.TryGetComponent<Rigidbody2D>(out var rb))
@@ -135,13 +123,13 @@ public class WitchAttackController : MonoBehaviour, IAttackController, IChargeab
         }
 
         if (obj.TryGetComponent<Potion>(out var potion))
-            potion.Initialize(_playerStat, _potionCollisionLayerMask);
+            potion.Initialize(PlayerStat, _potionCollisionLayerMask);
 
-        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
+        StartAttackCooldown();
     }
 
     // 스킬 - 포션 순환 선택
-    public void Skill()
+    public override void Skill()
     {
         _potionIndex = (_potionIndex + 1) % _potions.Length; // 끝에 도달하면 0으로 순환
         Debug.Log($"[Witch] 선택된 포션: {_potions[_potionIndex]}");

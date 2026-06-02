@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(ChargeInputHandler))]
-public class RailGunAttackController : MonoBehaviour, IAttackController, IChargeable
+public class RailGunAttackController : BaseAttackController, IChargeable
 {
     [Header("일반 공격")]
     //공격 위치(인스펙터에서 만지지 말아야 제대로 된 공격 위치가됨)
@@ -34,10 +33,6 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     [SerializeField] private float _playerKnockbackPower = 2f;
     [SerializeField] private float _enemyKnockbackPower = 3f;
 
-    //델리게이트에 함수를 가져오기 위한 참조 변수
-    private PlayerController _playerController;
-    //쿨타임 공격력 가져오는 참조 변수
-    private PlayerStat _playerStat;
     //레이저 생성 클래스
     private ObjectPoolManager _objectPoolManager;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
@@ -51,21 +46,12 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     private bool _isSkillCharging = false;
     private Transform _skillDetectedTarget = null;
 
-    List<Collider2D> _hitBuffer = new List<Collider2D>(15);
-    private ContactFilter2D _contactFilter;
-
-    void Awake()
+    protected override void Awake()
     {
-        _playerController = GetComponent<PlayerController>();
-        _playerStat = GetComponent<PlayerStat>();
-
-        _playerController.OnAttackHandler = Attack;
-        _playerController.OnSkillHandler = Skill;
-
-        _contactFilter = new ContactFilter2D();
-        _contactFilter.SetLayerMask(_attackLayerMask);
-        _contactFilter.useTriggers = true;
+        base.Awake();
+        SetupContactFilter(_attackLayerMask);
     }
+
     void Start()
     {
         //Awake에서 ObjectPoolManager가 싱글톤이 되기에 Start에서 참조하는 것이 안전합니다.
@@ -91,11 +77,11 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     }
 
     // PlayerController → 누를 때 호출됨 → 차징 시작
-    public void Attack()
+    public override void Attack()
     {
-        if (_playerStat.AttackCooltime > 0f) return;
+        if (IsAttackOnCooldown()) return;
 
-        //if (_playerController.IsGrounded)
+        //if (PlayerController.IsGrounded)
         //_animator.SetTrigger("NormalAttack");
         //else
         //_animator.SetTrigger("JumpAttack");
@@ -108,7 +94,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
     {   //공격키 해제시 호출됨
         if (!IsCharging) return;
 
-        if (_playerController.IsGrounded)
+        if (PlayerController.IsGrounded)
             NormalAttack();
         else
             JumpAttack();
@@ -116,13 +102,13 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         IsCharging = false;
         _chargeTimer = 0f;
         _detectedTarget = null;
-        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
+        StartAttackCooldown();
     }
 
     public void NormalAttack()
     {
         int level = Mathf.Clamp(Mathf.FloorToInt(_chargeTimer), 0, _chargeDamageMultiplier.Length - 1);
-        int damage = _playerStat.AttackDamage * _chargeDamageMultiplier[level];
+        int damage = PlayerStat.AttackDamage * _chargeDamageMultiplier[level];
 
         Vector2 fireDir = _detectedTarget != null
             ? (_detectedTarget.position - transform.position).normalized
@@ -132,7 +118,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         if (_detectedTarget != null && _detectedTarget.TryGetComponent<PlayerStat>(out var enemyStat))
         {
-            if (enemyStat.TeamId != _playerStat.TeamId)
+            if (enemyStat.TeamId != PlayerStat.TeamId)
             {
                 enemyStat.TakeDamage(damage);
                 if (_detectedTarget.TryGetComponent<IKnockbackable>(out var pc))
@@ -140,14 +126,14 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
             }
         }
 
-        _playerController.ApplyKnockback(-fireDir, _playerKnockbackPower * level + 1f); // 차징 시간에 비례한 넉백
+        PlayerController.ApplyKnockback(-fireDir, _playerKnockbackPower * level + 1f); // 차징 시간에 비례한 넉백
         Debug.Log($"[Railgun] Lv{level} | 데미지: {damage} | 방향: {fireDir}");
     }
 
     public void JumpAttack()
     {
         int level = Mathf.Clamp(Mathf.FloorToInt(_chargeTimer), 0, _chargeDamageMultiplier.Length - 1);
-        int damage = _playerStat.AttackDamage * _chargeDamageMultiplier[level];
+        int damage = PlayerStat.AttackDamage * _chargeDamageMultiplier[level];
 
         // 무조건 아래 방향
         Vector2 fireDir = Vector2.down;
@@ -156,30 +142,27 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         // 아래 방향 감지 (점프공격은 별도 감지 없이 바로 아래 OverlapBox)
         Vector2 boxCenter = (Vector2)transform.position + Vector2.down * (_attackSize.x / 2f);
-        _hitBuffer.Clear();
-        Physics2D.OverlapBox(boxCenter, new Vector2(_attackSize.y, _attackSize.x), 0f, _contactFilter, _hitBuffer);
+        OverlapBox(boxCenter, new Vector2(_attackSize.y, _attackSize.x));
         // attackSize를 90도 회전 → x,y 반전 (세로로 긴 박스)
 
-        foreach (var col in _hitBuffer)
+        foreach (var col in HitBuffer)
         {
-            if (col.gameObject == gameObject) continue; // 자기 자신은 제외
-            if (!col.TryGetComponent<PlayerStat>(out var enemyStat)) continue; //PlayerStat없을 시 제외
-            if (enemyStat.TeamId == _playerStat.TeamId) continue; //같은 팀 제외
+            if (!TryGetEnemyStat(col, out var enemyStat)) continue;
 
             enemyStat.TakeDamage(damage);
             if (col.TryGetComponent<IKnockbackable>(out var kb))
                 kb.ApplyKnockback(fireDir, _enemyKnockbackPower * (level + 1f));
         }
         //속도 초기화
-        _playerController.ResetFallSpeed();
+        PlayerController.ResetFallSpeed();
         // 차징 시간에 비례한 위쪽 반동
-        _playerController.ApplyKnockback(Vector2.up, _jumpKnockbackPower * level + 1f);
+        PlayerController.ApplyKnockback(Vector2.up, _jumpKnockbackPower * level + 1f);
 
     }
 
-    public void Skill()
+    public override void Skill()
     {
-        if (_playerStat.SkillCooltime > 0f) return;
+        if (IsSkillOnCooldown()) return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator.SetTrigger("Skill");
@@ -197,13 +180,13 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
         _isSkillCharging = false;
         _skillChargeTimer = 0f;
         _skillDetectedTarget = null;
-        _playerStat.SkillCooltime = _playerStat.SkillCooltimeMax;
+        StartSkillCooldown();
     }
 
     private void FireSkill()
     {
         int level = Mathf.Clamp(Mathf.FloorToInt(_skillChargeTimer), 0, _chargeDamageMultiplier.Length - 1);
-        int damage = _playerStat.SkillDamage * _chargeDamageMultiplier[level];
+        int damage = PlayerStat.SkillDamage * _chargeDamageMultiplier[level];
 
         Vector2 fireDir = _skillDetectedTarget != null
             ? (_skillDetectedTarget.position - transform.position).normalized
@@ -213,7 +196,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         if (_skillDetectedTarget != null && _skillDetectedTarget.TryGetComponent<PlayerStat>(out var enemyStat))
         {
-            if (enemyStat.TeamId != _playerStat.TeamId)
+            if (enemyStat.TeamId != PlayerStat.TeamId)
             {
                 enemyStat.TakeDamage(damage);
                 if (_skillDetectedTarget.TryGetComponent<IKnockbackable>(out var kb))
@@ -221,7 +204,7 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
             }
         }
 
-        _playerController.ApplyKnockback(-fireDir, (_playerKnockbackPower * level + 1f) * 2f); // 반동도 2배
+        PlayerController.ApplyKnockback(-fireDir, (_playerKnockbackPower * level + 1f) * 2f); // 반동도 2배
         Debug.Log($"[Railgun Skill] Lv{level} | 데미지: {damage} | 방향: {fireDir}");
     }
 
@@ -242,18 +225,15 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
 
         // 박스 중심을 바라보는 방향으로 오프셋
         Vector2 boxCenter = (Vector2)transform.position + facingDir * (sizeX / 2f);
-        _hitBuffer.Clear();
-        Physics2D.OverlapBox(boxCenter, new Vector2(sizeX, attackSizeY), 0f, _contactFilter, _hitBuffer);
+        OverlapBox(boxCenter, new Vector2(sizeX, attackSizeY));
 
         Transform closest = null;
         //가장 가까운 적의 거리
         float closestDist = Mathf.Infinity;
 
-        foreach (var col in _hitBuffer)
+        foreach (var col in HitBuffer)
         {
-            if (col.gameObject == gameObject) continue; // 자기 자신은 제외
-            if (!col.TryGetComponent<PlayerStat>(out var stat)) continue; //PlayerStat없을 시 제외
-            if (stat.TeamId == _playerStat.TeamId) continue; //같은 팀 제외
+            if (!TryGetEnemyStat(col, out _)) continue;
 
             float distSqr = ((Vector2)transform.position - (Vector2)col.transform.position).sqrMagnitude;
             if (distSqr < closestDist)
@@ -288,11 +268,6 @@ public class RailGunAttackController : MonoBehaviour, IAttackController, ICharge
             selfReturn.ReturnAfter(_laserDuration);
         else
             Debug.LogWarning("Laser 프리팹에 SelfReturn 컴포넌트가 없습니다.", laser);
-    }
-
-    private Vector2 GetFacingDirection()
-    {
-        return transform.localScale.x > 0f ? Vector2.right : Vector2.left;
     }
 
 #if UNITY_EDITOR
