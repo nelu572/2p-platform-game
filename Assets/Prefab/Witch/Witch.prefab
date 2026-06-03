@@ -64,9 +64,65 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_ActionId
+      value: 179b1153-d5e1-47cf-abdb-d645f1b0d7c2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_ActionId
+      value: 66b2d941-feb2-4cbd-a3e7-8b38b44e4a73
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[10].m_ActionId
+      value: 3e5c0acd-257b-41c1-956d-e22328c25779
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionId
+      value: 32ea2ba7-41f8-46c3-beb3-890b73639442
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionId
+      value: 9ae3fe3a-8783-47bb-86a9-f4ef3e06a619
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionId
+      value: b514b7da-8ba8-4ea4-a1a1-7a946bfe5cbc
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_ActionName
+      value: 'UI_P1/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_ActionName
+      value: 'UI_P1/Submit[/Keyboard/f]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[10].m_ActionName
+      value: 'UI_P1/Cancel[/Keyboard/g]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionName
+      value: 'UI_P2/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_ActionName
+      value: 'UI_P2/Submit[/Keyboard/numpad0]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_ActionName
+      value: 'UI_P2/Cancel[/Keyboard/numpadPeriod]'
+      objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Name
-      value: Witch Variant
+      value: Witch
       objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Layer
