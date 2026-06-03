@@ -26,7 +26,8 @@ public class BatManAttackController : BaseAttackController, IChargeable
     protected override void Awake()
     {
         base.Awake();
-        _attackOffset = BodyCollider;
+        if (_attackOffset == null)
+            _attackOffset = BodyCollider;
         //_animator = GetComponent<Animator>();
 
         SetupContactFilter(_attackLayerMask);

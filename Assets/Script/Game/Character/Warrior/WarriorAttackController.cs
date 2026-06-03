@@ -30,7 +30,8 @@ public class WarriorAttackController : BaseAttackController
         base.Awake();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
-        _attackOffset = BodyCollider;
+        if(_attackOffset == null)
+            _attackOffset = BodyCollider;
 
         // LayerMask를 ContactFilter2D로 변환
         SetupContactFilter(_attackLayerMask);
