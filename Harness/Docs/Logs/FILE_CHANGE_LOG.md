@@ -4,6 +4,20 @@
 
 <!-- 이 부분은 깃허브에 올릴때에는 항상 이 주석만 있도록 유지해야한다 -->
 
+## 2026-06-02
+
+### 공격 컨트롤러 공통 부모 클래스
+
+- `BaseAttackController`를 추가해 공격 컨트롤러 공통 초기화와 보조 로직을 분리했다.
+  - `PlayerController`, `PlayerStat`, `BoxCollider2D` 캐싱과 공격 / 스킬 핸들러 연결을 부모 클래스에서 처리하도록 했다.
+  - 공격 / 스킬 쿨타임 처리, 바라보는 방향 계산, `ContactFilter2D`, 히트 버퍼, 팀 기반 적 판정 보조 메서드를 추가했다.
+- 전사, 마녀, 방망이, 레일건 공격 컨트롤러가 `BaseAttackController`를 상속하도록 변경했다.
+  - 캐릭터별 공격, 차징, 스킬 동작과 기존 직렬화 필드는 유지했다.
+  - 차징형 캐릭터의 `IChargeable` 계약과 `ReleaseCharge` 흐름은 유지했다.
+- `Assembly-CSharp.csproj`에 새 부모 클래스 스크립트를 포함해 로컬 C# 검증 대상에 반영했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
 ## 2026-05-28
 
 ### UI 입력 분리

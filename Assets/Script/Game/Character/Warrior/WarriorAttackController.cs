@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-public class WarriorAttackController : MonoBehaviour, IAttackController
+public class WarriorAttackController : BaseAttackController
 {
     [Header("공격 설정")]
     [SerializeField] private Vector2 _attackBoxSize = new Vector2(2f, 1.5f);
@@ -22,71 +21,47 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
     // 검기 크기
     [SerializeField] private Vector2 _slashWaveScale = new Vector2(4.5f, 8f);
 
-    //델리게이트에 함수를 가져오기 위한 참조 변수
-    private PlayerController _playerController;
-    //쿨타임 공격력 가져오는 참조 변수
-    private PlayerStat _playerStat;
     // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
     //private Animator _animator;
     private BoxCollider2D _attackOffset;
 
-    //GC부하를 줄이기 위해 미리 Collider2D<>버퍼 생성
-    //리스트도 동적 배열이라서 크기가 변경되면 재할당이 발생하지만
-    //이미 존재하는 리스트를 사용하기에 OverlapBoxAll보다는 성능면에서는 좋다
-    List<Collider2D> _hitBuffer = new List<Collider2D>(15);
-    private ContactFilter2D _contactFilter;
-    void Awake()
+    protected override void Awake()
     {
-
-        //스크립트 가져오기
-        _playerController = GetComponent<PlayerController>();
-        _playerStat = GetComponent<PlayerStat>();
+        base.Awake();
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator = GetComponent<Animator>();
-        _attackOffset = GetComponent<BoxCollider2D>();
-
-        _playerController.OnAttackHandler = Attack;
-        _playerController.OnSkillHandler = Skill;
+        if(_attackOffset == null)
+            _attackOffset = BodyCollider;
 
         // LayerMask를 ContactFilter2D로 변환
-        _contactFilter = new ContactFilter2D();
-        _contactFilter.SetLayerMask(_attackLayerMask);
-        _contactFilter.useTriggers = true;
+        SetupContactFilter(_attackLayerMask);
     }
 
-    public void Attack()
+    public override void Attack()
     {
-        if (_playerStat.AttackCooltime > 0f)
+        if (IsAttackOnCooldown())
             return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
-        //if (_playerController.IsGrounded)
+        //if (PlayerController.IsGrounded)
         //    _animator.SetTrigger("NormalAttack");
         //else
         //    _animator.SetTrigger("JumpAttack");
         PerformAttackHit();
-        _playerStat.AttackCooltime = _playerStat.AttackCooltimeMax;
+        StartAttackCooldown();
     }
-    
+
     public void PerformAttackHit()
     {
-        Vector2 facingDir = transform.localScale.x > 0f ? Vector2.right : Vector2.left;
-        float offsetX = (_attackOffset.offset.x + _attackOffset.size.x / 2f + _attackBoxSize.x / 2f) * facingDir.x;
-        Vector2 origin = (Vector2)transform.position + new Vector2(offsetX, 0f);
+        Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackBoxSize);
 
-        _hitBuffer.Clear();
-        Physics2D.OverlapBox(origin, _attackBoxSize, 0f, _contactFilter, _hitBuffer);
+        OverlapBox(origin, _attackBoxSize);
 
-        for (int i = 0; i < _hitBuffer.Count; i++)
+        for (int i = 0; i < HitBuffer.Count; i++)
         {
-            Collider2D enemy = _hitBuffer[i];
-            if (enemy.gameObject == gameObject) continue;
-
-            if (enemy.TryGetComponent<PlayerStat>(out var enemyStat))
-            {
-                if (enemyStat.TeamId != _playerStat.TeamId)
-                    enemyStat.TakeDamage(_playerStat.AttackDamage);
-            }
+            Collider2D enemy = HitBuffer[i];
+            if (TryGetEnemyStat(enemy, out var enemyStat))
+                enemyStat.TakeDamage(PlayerStat.AttackDamage);
         }
         //인터페이스에서 프로퍼티 값으로 적과 자신(아군)을 구별하고 있습니다
         ///TODO InGameManager에서 캐릭터에게 TeamId 부여하는 기능 필요
@@ -94,16 +69,16 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
         //물론 2인용이 아니라 다인용일때 합니다 지금하면 오버엔지니어링에 걸릴 수 있습니다
     }
 
-    public void Skill()
+    public override void Skill()
     {
-        if (_playerStat.SkillCooltime > 0f)
+        if (IsSkillOnCooldown())
             return;
 
         // 애니메이션이 생긴다면 주석처리를 해제할 것입니다
         //_animator.SetTrigger("Skill");
 
         FireSlashWave();
-        _playerStat.SkillCooltime = _playerStat.SkillCooltimeMax;
+        StartSkillCooldown();
     }
 
     private void FireSlashWave()
@@ -114,7 +89,7 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
             return;
         }
 
-        bool isFacingRight = transform.localScale.x > 0f;
+        bool isFacingRight = IsFacingRight();
         Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
 
         // 검기 생성
@@ -131,18 +106,19 @@ public class WarriorAttackController : MonoBehaviour, IAttackController
 
         // 검기 초기화
         if (slashWaveObj.TryGetComponent<SlashWave>(out var slashWave))
-            slashWave.Initialize(_playerStat.SkillDamage, _playerStat.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
+            slashWave.Initialize(PlayerStat.SkillDamage, PlayerStat.TeamId, direction, _slashWaveSpeed, _slashWaveMaxDistance, _attackLayerMask);
 
         // 시전자 반동
-        _playerController.ApplyKnockback(-direction, _selfKnockbackForce);
+        PlayerController.ApplyKnockback(-direction, _selfKnockbackForce);
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Vector2 facingDir = transform.localScale.x > 0f ? Vector2.right : Vector2.left;
-        float offsetX = (_attackOffset.offset.x + _attackOffset.size.x / 2f + _attackBoxSize.x / 2f) * facingDir.x;
-        Vector2 origin = (Vector2)transform.position + new Vector2(offsetX, 0f);
+        if (_attackOffset == null)
+            _attackOffset = GetComponent<BoxCollider2D>();
+
+        Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackBoxSize);
         Gizmos.color = new Color(1f, 0f, 0f, 0.35f);
         Gizmos.DrawCube(origin, _attackBoxSize);
         Gizmos.color = Color.red;
