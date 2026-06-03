@@ -69,6 +69,9 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
 
     protected Vector2 GetHorizontalBoxOrigin(BoxCollider2D offsetCollider, Vector2 attackSize)
     {
+        if(offsetCollider == null)
+            return (Vector2) transform.position;
+
         Vector2 facingDir = GetFacingDirection();
         float offsetX = (offsetCollider.offset.x + offsetCollider.size.x / 2f + attackSize.x / 2f) * facingDir.x;
         return (Vector2)transform.position + new Vector2(offsetX, 0f);
@@ -78,7 +81,7 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     {
         enemyStat = null;
 
-        if (target.gameObject == gameObject)
+        if (target == null || PlayerStat == null || target.gameObject == gameObject)
             return false;
 
         if (!target.TryGetComponent(out enemyStat))
