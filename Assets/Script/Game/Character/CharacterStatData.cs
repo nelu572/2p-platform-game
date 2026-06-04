@@ -19,4 +19,8 @@ public class CharacterStatData : ScriptableObject
 
     [Header("이동")]
     public float _moveSpeed = 5f;
+
+    [Header("유령")]
+    public string ghostPoolKey;
+    public GameObject ghostPrefab;
 }

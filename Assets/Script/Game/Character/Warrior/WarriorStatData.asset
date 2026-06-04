@@ -17,3 +17,5 @@ MonoBehaviour:
   _attackCooltimeMax: 0.8
   _skillDamage: 50
   _skillCooltimeMax: 10
+  ghostPoolKey: WarriorGhost
+  ghostPrefab: {fileID: 0}

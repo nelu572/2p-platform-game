@@ -19,3 +19,5 @@ MonoBehaviour:
   _skillDamage: 100
   _skillCooltimeMax: 35
   _moveSpeed: 5
+  ghostPoolKey: RailGunGhost
+  ghostPrefab: {fileID: 0}
