@@ -20,4 +20,4 @@ MonoBehaviour:
   _skillCooltimeMax: 15
   _moveSpeed: 5
   ghostPoolKey: BatManGhost
-  ghostPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 8169983949501697397, guid: fa72e41d240f1054cb8b9452ae781888, type: 3}

@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85838a86aa3b58945a26a4a670ca28ac, type: 3}
   m_Name: WarriorStatData
   m_EditorClassIdentifier: 
+  life: 3
   _maxHp: 1000
   _attackDamage: 30
   _attackCooltimeMax: 0.8
   _skillDamage: 50
   _skillCooltimeMax: 10
+  _moveSpeed: 5
   ghostPoolKey: WarriorGhost
-  ghostPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 9175032816059688736, guid: a60306319672206469f72d4fcb306ef2, type: 3}

@@ -20,4 +20,4 @@ MonoBehaviour:
   _skillCooltimeMax: 35
   _moveSpeed: 5
   ghostPoolKey: RailGunGhost
-  ghostPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 2771155314212984932, guid: acdd204b26df7204aa5dc2742faa1d96, type: 3}

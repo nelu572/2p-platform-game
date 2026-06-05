@@ -20,4 +20,4 @@ MonoBehaviour:
   _skillCooltimeMax: 0
   _moveSpeed: 5
   ghostPoolKey: WitchGhost
-  ghostPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 6183088544437663095, guid: fb8a2cef8f38c324db91143b4a0e4763, type: 3}
