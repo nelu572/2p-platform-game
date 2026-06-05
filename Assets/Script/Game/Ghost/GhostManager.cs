@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GhostCreateManager : MonoBehaviour
+public class GhostManager : MonoBehaviour
 {
     [SerializeField] private ObjectPoolManager _objectPoolManager;
 
@@ -15,7 +15,7 @@ public class GhostCreateManager : MonoBehaviour
         ObjectPoolManager poolManager = ResolvePoolManager();
         if (poolManager == null)
         {
-            Debug.LogWarning("GhostCreateManager: ObjectPoolManager를 찾을 수 없습니다.");
+            Debug.LogWarning("GhostManager: ObjectPoolManager를 찾을 수 없습니다.");
             return;
         }
 
@@ -48,7 +48,7 @@ public class GhostCreateManager : MonoBehaviour
 
         if (poolManager == null)
         {
-            Debug.LogWarning("GhostCreateManager: ObjectPoolManager를 찾을 수 없습니다.");
+            Debug.LogWarning("GhostManager: ObjectPoolManager를 찾을 수 없습니다.");
             return;
         }
 

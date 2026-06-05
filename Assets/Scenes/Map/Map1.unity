@@ -751816,7 +751816,7 @@ MonoBehaviour:
   _characterManager: {fileID: 1484987758}
   _roundEndUI: {fileID: 141654045}
   _cameraMove: {fileID: 0}
-  _ghostCreateManager: {fileID: 0}
+  _ghostManager: {fileID: 0}
   _playerStat1: {fileID: 0}
   _playerStat2: {fileID: 0}
   _player1: {fileID: 0}
