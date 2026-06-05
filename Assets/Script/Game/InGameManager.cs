@@ -7,6 +7,7 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private CharacterManager _characterManager;
     [SerializeField] private RoundEndUI _roundEndUI;
     [SerializeField] private CameraMove _cameraMove;
+    [SerializeField] private GhostCreateManager _ghostCreateManager;
 
     //자동으로 할당됨
     [SerializeField] private PlayerStat _playerStat1;
@@ -45,6 +46,7 @@ public class InGameManager : MonoBehaviour
         _playerStat1.TeamId = 1;
         _playerStat2.TeamId = 2;
         InitializeCameraTargets();
+        InitializeGhostPool();
         isRoundOver = false;
     }
 
@@ -53,7 +55,7 @@ public class InGameManager : MonoBehaviour
         if (deadPlayer.Life > 0)
         {
             Debug.Log($"player{deadPlayer.TeamId}사망");
-            /// TODO: 캐릭터에 맞는 유령 생성 로직 작성 필요 
+            CreateGhost(deadPlayer);
             deadPlayer.Revive();
             RespawnPlayer(deadPlayer);
             Debug.Log("부활됨");
@@ -63,6 +65,32 @@ public class InGameManager : MonoBehaviour
             PlayerStat winnerPlayer = (deadPlayer == _playerStat1) ? _playerStat2 : _playerStat1;
             SelectWinner(winnerPlayer, deadPlayer);
         }
+    }
+
+    private void CreateGhost(PlayerStat deadPlayer)
+    {
+        ResolveGhostCreateManager();
+
+        if (_ghostCreateManager != null)
+            _ghostCreateManager.DeadPoint(deadPlayer);//여기서 호출하고 바로 유령 생성
+        else
+            Debug.LogWarning("InGameManager: GhostCreateManager를 찾을 수 없습니다.");
+    }
+
+    private void InitializeGhostPool()
+    {
+        ResolveGhostCreateManager();
+
+        if (_ghostCreateManager != null)
+            _ghostCreateManager.PrewarmSelectedGhosts(_playerStat1, _playerStat2);
+        else
+            Debug.LogWarning("InGameManager: GhostCreateManager를 찾을 수 없습니다.");
+    }
+
+    private void ResolveGhostCreateManager()
+    {
+        if (_ghostCreateManager == null)
+            _ghostCreateManager = FindFirstObjectByType<GhostCreateManager>();
     }
 
     private void RespawnPlayer(PlayerStat player)
