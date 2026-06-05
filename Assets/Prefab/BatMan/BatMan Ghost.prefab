@@ -126,13 +126,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Name
-      value: BatMan 1
+      value: BatMan Ghost
       objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Layer
       value: 19
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+    - {fileID: 493374525097729564, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
