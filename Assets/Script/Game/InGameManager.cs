@@ -128,6 +128,7 @@ public class InGameManager : MonoBehaviour
     {
         isRoundOver = true;
         SetPlayersMovementEnabled(false);
+        ClearGhosts();
 
         //  슬로우모션 시작
         float originalFixedDeltaTime = Time.fixedDeltaTime;
@@ -179,5 +180,13 @@ public class InGameManager : MonoBehaviour
         PlayerInput playerInput = player.GetComponent<PlayerInput>();
         if (playerInput != null)
             playerInput.enabled = enabled;
+    }
+
+    private void ClearGhosts()
+    {
+        ResolveGhostCreateManager();
+
+        if (_ghostCreateManager != null)
+            _ghostCreateManager.ClearGhosts();
     }
 }

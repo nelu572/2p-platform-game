@@ -8,6 +8,7 @@ public class GhostCreateManager : MonoBehaviour
 
     private Vector3 _p1DeadPoint;
     private Vector3 _p2DeadPoint;
+    private readonly List<ActiveGhost> _activeGhosts = new List<ActiveGhost>();
 
     public void PrewarmSelectedGhosts(PlayerStat player1, PlayerStat player2)
     {
@@ -63,8 +64,40 @@ public class GhostCreateManager : MonoBehaviour
             return;
 
         ConfigureGhostObject(ghost);
+        RegisterActiveGhost(ghostPoolKey, ghost);
 
         Debug.Log($"player{deadPlayer.TeamId} 유령 생성: {spawnPosition}");
+    }
+
+    public void ClearGhosts()
+    {
+        ObjectPoolManager poolManager = ResolvePoolManager();
+
+        for (int i = _activeGhosts.Count - 1; i >= 0; i--)
+        {
+            ActiveGhost activeGhost = _activeGhosts[i];
+            if (activeGhost.Ghost == null)
+                continue;
+
+            if (poolManager != null && !string.IsNullOrWhiteSpace(activeGhost.PoolKey))
+                poolManager.Return(activeGhost.PoolKey, activeGhost.Ghost);
+            else
+                activeGhost.Ghost.SetActive(false);
+        }
+
+        _activeGhosts.Clear();
+    }
+
+    private void RegisterActiveGhost(string poolKey, GameObject ghost)
+    {
+        for (int i = _activeGhosts.Count - 1; i >= 0; i--)
+        {
+            GameObject activeGhost = _activeGhosts[i].Ghost;
+            if (activeGhost == null || activeGhost == ghost || !activeGhost.activeInHierarchy)
+                _activeGhosts.RemoveAt(i);
+        }
+
+        _activeGhosts.Add(new ActiveGhost(poolKey, ghost));
     }
 
     private void ConfigureGhostObject(GameObject ghost)
@@ -170,5 +203,17 @@ public class GhostCreateManager : MonoBehaviour
         public string PoolKey { get; }
         public GameObject Prefab { get; }
         public int Count { get; set; }
+    }
+
+    private readonly struct ActiveGhost
+    {
+        public ActiveGhost(string poolKey, GameObject ghost)
+        {
+            PoolKey = poolKey;
+            Ghost = ghost;
+        }
+
+        public string PoolKey { get; }
+        public GameObject Ghost { get; }
     }
 }
