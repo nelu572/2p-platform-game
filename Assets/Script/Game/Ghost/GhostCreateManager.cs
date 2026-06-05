@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GhostCreateManager : MonoBehaviour
 {
@@ -61,7 +62,69 @@ public class GhostCreateManager : MonoBehaviour
         if (ghost == null)
             return;
 
+        ConfigureGhostObject(ghost);
+
         Debug.Log($"player{deadPlayer.TeamId} 유령 생성: {spawnPosition}");
+    }
+
+    private void ConfigureGhostObject(GameObject ghost)
+    {
+        DisablePlayerInput(ghost);
+        ApplyGhostLayer(ghost);
+        IgnorePlayerCollisions(ghost);
+    }
+
+    private void DisablePlayerInput(GameObject ghost)
+    {
+        PlayerInput playerInput = ghost.GetComponent<PlayerInput>();
+        if (playerInput != null)
+            playerInput.enabled = false;
+
+        PlayerInputHandler inputHandler = ghost.GetComponent<PlayerInputHandler>();
+        if (inputHandler != null)
+            inputHandler.enabled = false;
+    }
+
+    private void ApplyGhostLayer(GameObject ghost)
+    {
+        int ghostLayer = LayerMask.NameToLayer("Ghost");
+        if (ghostLayer < 0)
+            return;
+
+        SetLayerRecursively(ghost.transform, ghostLayer);
+    }
+
+    private void SetLayerRecursively(Transform target, int layer)
+    {
+        target.gameObject.layer = layer;
+
+        for (int i = 0; i < target.childCount; i++)
+            SetLayerRecursively(target.GetChild(i), layer);
+    }
+
+    private void IgnorePlayerCollisions(GameObject ghost)
+    {
+        Collider2D[] ghostColliders = ghost.GetComponentsInChildren<Collider2D>();
+        PlayerStat[] playerStats = FindObjectsByType<PlayerStat>(FindObjectsSortMode.None);
+
+        foreach (Collider2D ghostCollider in ghostColliders)
+        {
+            if (ghostCollider == null)
+                continue;
+
+            foreach (PlayerStat playerStat in playerStats)
+            {
+                if (playerStat == null || playerStat.gameObject == ghost)
+                    continue;
+
+                Collider2D[] playerColliders = playerStat.GetComponentsInChildren<Collider2D>();
+                foreach (Collider2D playerCollider in playerColliders)
+                {
+                    if (playerCollider != null)
+                        Physics2D.IgnoreCollision(ghostCollider, playerCollider, true);
+                }
+            }
+        }
     }
 
     private ObjectPoolManager ResolvePoolManager()
