@@ -63,7 +63,8 @@ public class ObjectPoolManager : MonoBehaviour
             _prefabs[key] = prefab;
 
         int safeCount = Mathf.Max(0, count);
-        for (int i = 0; i < safeCount; i++)
+        int needCount = safeCount - _pools[key].Count;
+        for (int i = 0; i < needCount; i++)
             _pools[key].Enqueue(CreateNew(key));
     }
 
