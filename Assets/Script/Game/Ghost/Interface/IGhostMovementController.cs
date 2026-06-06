@@ -3,7 +3,7 @@
 /// </summary>
 public interface IGhostMovementController
 {
-    public void Initialize(GhostMovementContext context);
+    public void Initialize();
     public void TickMovement(float deltaTime);
     public void StopMovement();
 }

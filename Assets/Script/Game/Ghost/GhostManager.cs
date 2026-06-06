@@ -64,6 +64,7 @@ public class GhostManager : MonoBehaviour
             return;
 
         ConfigureGhostObject(ghost);
+        InitializeGhostMovement(ghost);
         RegisterActiveGhost(ghostPoolKey, ghost);
 
         Debug.Log($"player{deadPlayer.TeamId} 유령 생성: {spawnPosition}");
@@ -78,6 +79,8 @@ public class GhostManager : MonoBehaviour
             ActiveGhost activeGhost = _activeGhosts[i];
             if (activeGhost.Ghost == null)
                 continue;
+
+            StopGhostMovement(activeGhost.Ghost);
 
             if (poolManager != null && !string.IsNullOrWhiteSpace(activeGhost.PoolKey))
                 poolManager.Return(activeGhost.PoolKey, activeGhost.Ghost);
@@ -98,6 +101,22 @@ public class GhostManager : MonoBehaviour
         }
 
         _activeGhosts.Add(new ActiveGhost(poolKey, ghost));
+    }
+
+    private void InitializeGhostMovement(GameObject ghost)
+    {
+        IGhostMovementController movementController = ghost.GetComponentInChildren<IGhostMovementController>();
+        if (movementController == null)
+            return;
+
+        movementController.Initialize();
+    }
+
+    private void StopGhostMovement(GameObject ghost)
+    {
+        IGhostMovementController movementController = ghost.GetComponentInChildren<IGhostMovementController>();
+        if (movementController != null)
+            movementController.StopMovement();
     }
 
     private void ConfigureGhostObject(GameObject ghost)
