@@ -47,6 +47,7 @@ public class InGameManager : MonoBehaviour
         _playerStat2.TeamId = 2;
         InitializeCameraTargets();
         InitializeGhostPool();
+        ClearGhosts();
         isRoundOver = false;
     }
 

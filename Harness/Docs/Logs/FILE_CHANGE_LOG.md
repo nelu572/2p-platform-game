@@ -6,6 +6,13 @@
 
 ## 2026-06-06
 
+### PR 리뷰 코멘트 반영
+
+- `InitializePlayers`에서 유령 풀 초기화 후 기존 활성 유령을 정리하도록 해 강제 재초기화 시 남은 유령이 유지되지 않도록 했다.
+- `GhostManager.IgnorePlayerCollisions`는 플레이어 콜라이더를 먼저 수집한 뒤 유령 콜라이더와 충돌 무시를 적용하는 현재 최적화 상태를 확인했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
 ### 유령 움직임 인터페이스 정의
 
 - `IGhostMovementController`를 추가해 유령 이동 구현체의 초기화, 이동 갱신, 중지 계약을 정의했다.
