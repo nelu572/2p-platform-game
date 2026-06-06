@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: WitchStatData
   m_EditorClassIdentifier: 
   life: 3
-  _maxHp: 1000
+  _maxHp: 1500
   _attackDamage: 40
   _attackCooltimeMax: 1.5
   _skillDamage: 0
   _skillCooltimeMax: 0
   _moveSpeed: 5
+  ghostPoolKey: WitchGhost
+  ghostPrefab: {fileID: 6183088544437663095, guid: fb8a2cef8f38c324db91143b4a0e4763, type: 3}

@@ -32,34 +32,64 @@ public class ObjectPoolManager : MonoBehaviour
             return;
         }
         Instance = this;
+        if (_entries == null)
+            return;
+
         //미리 생성할 오브젝트
         foreach (var entry in _entries)
         {
-            _pools[entry.key] = new Queue<GameObject>();
-            _prefabs[entry.key] = entry.prefab;
-            //오브젝트 생성
-            for (int i = 0; i < entry.initialSize; i++)
-                _pools[entry.key].Enqueue(CreateNew(entry.key));
+            Prewarm(entry.key, entry.prefab, entry.initialSize);
         }
+    }
+
+    public void Prewarm(string key, GameObject prefab, int count)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            Debug.LogWarning("[Pool] 키가 비어 있어 사전 생성을 건너뜁니다.");
+            return;
+        }
+
+        if (prefab == null)
+        {
+            Debug.LogWarning($"[Pool] {key} 프리팹이 비어 있어 사전 생성을 건너뜁니다.");
+            return;
+        }
+
+        if (!_pools.ContainsKey(key))
+            _pools[key] = new Queue<GameObject>();
+
+        if (!_prefabs.ContainsKey(key))
+            _prefabs[key] = prefab;
+
+        int safeCount = Mathf.Max(0, count);
+        int needCount = safeCount - _pools[key].Count;
+        for (int i = 0; i < needCount; i++)
+            _pools[key].Enqueue(CreateNew(key));
     }
 
     public GameObject Get(string key)
     {
-        if (!_pools.ContainsKey(key))
-        {
-            Debug.LogError($"[Pool] 키 없음: {key}");
+        GameObject obj = GetInactiveObject(key);
+        if (obj == null)
             return null;
-        }
-
-        var obj = _pools[key].Count > 0
-            ? _pools[key].Dequeue()
-            : CreateNew(key);
 
         obj.SetActive(true);
+        InitPooledObject(key, obj);
 
-        if (obj.TryGetComponent<PooledObject>(out var pooled))
-            pooled.Init(key, this);
-        
+        return obj;
+    }
+
+    public GameObject Get(string key, Vector3 position, Quaternion rotation)
+    {
+        GameObject obj = GetInactiveObject(key);
+        if (obj == null)
+            return null;
+
+        obj.transform.SetPositionAndRotation(position, rotation);
+        obj.SetActive(true);
+        InitPooledObject(key, obj);
+
         return obj;
     }
 
@@ -74,6 +104,27 @@ public class ObjectPoolManager : MonoBehaviour
 
         obj.SetActive(false);
         _pools[key].Enqueue(obj);
+    }
+
+    private GameObject GetInactiveObject(string key)
+    {
+        if (!_pools.ContainsKey(key))
+        {
+            Debug.LogError($"[Pool] 키 없음: {key}");
+            return null;
+        }
+
+        var obj = _pools[key].Count > 0
+            ? _pools[key].Dequeue()
+            : CreateNew(key);
+
+        return obj;
+    }
+
+    private void InitPooledObject(string key, GameObject obj)
+    {
+        if (obj.TryGetComponent<PooledObject>(out var pooled))
+            pooled.Init(key, this);
     }
 
     private GameObject CreateNew(string key)

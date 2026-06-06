@@ -4,6 +4,45 @@
 
 <!-- 이 부분은 깃허브에 올릴때에는 항상 이 주석만 있도록 유지해야한다 -->
 
+## 2026-06-06
+
+### PR 리뷰 코멘트 반영
+
+- `InitializePlayers`에서 유령 풀 초기화 후 기존 활성 유령을 정리하도록 해 강제 재초기화 시 남은 유령이 유지되지 않도록 했다.
+- `GhostManager.IgnorePlayerCollisions`는 플레이어 콜라이더를 먼저 수집한 뒤 유령 콜라이더와 충돌 무시를 적용하는 현재 최적화 상태를 확인했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+### 유령 움직임 인터페이스 정의
+
+- `IGhostMovementController`를 추가해 유령 이동 구현체의 초기화, 이동 갱신, 중지 계약을 정의했다.
+- 유령 이동 초기화는 현재 생성 위치, 소유자, 대상 정보가 필요 없으므로 인자 없는 `Initialize()`로 유지했다.
+- `GhostManager`가 유령 생성 직후 이동 컨트롤러가 붙어 있으면 초기화하고, 유령 정리 전에는 이동 중지를 호출하도록 했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+## 2026-06-05
+
+### 유령 물리 충돌 분리
+
+- `Ghost` 레이어를 추가하고 전사, 마녀, 방망이, 레일건 유령 프리팹의 루트 레이어를 `Ghost`로 변경했다.
+- 기존 2D 물리 레이어 행렬에서 `Ghost` 레이어가 캐릭터 레이어와 충돌하지 않고 `Ground`와는 충돌하는 것을 확인했다.
+- 유령 생성 시 런타임에서도 플레이어 입력 컴포넌트를 비활성화하고 `Ghost` 레이어를 자식까지 적용하도록 보강했다.
+- 유령 콜라이더와 현재 씬의 플레이어 콜라이더 간 `Physics2D.IgnoreCollision`을 적용해 프리팹 설정 누락에도 캐릭터를 밀지 않도록 했다.
+- `ChargeInputHandler`가 `PlayerInput` 없는 유령에서 NullReference를 내지 않도록 방어 조건을 수정했다.
+- 검증
+  - 유령 프리팹 4종의 `m_Layer`가 20번으로 설정된 것을 확인했다.
+  - `Ghost`와 `Warrior`, `RailGun`, `Witch`, `BatMan` 레이어 충돌이 꺼져 있고 `Ground` 충돌은 켜져 있는 것을 확인했다.
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+### 라운드 종료 시 유령 정리
+
+- `GhostManager`가 생성한 유령과 풀 키를 추적하도록 했다.
+- 게임 종료 시 `InGameManager`의 라운드 종료 흐름에서 모든 활성 유령을 풀로 반환하도록 했다.
+- `GhostCreateManager` 파일, 클래스, 참조 이름을 `GhostManager`로 변경했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
 ## 2026-06-02
 
 ### 공격 컨트롤러 공통 부모 클래스

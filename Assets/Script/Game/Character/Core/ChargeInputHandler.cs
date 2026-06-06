@@ -14,7 +14,7 @@ public class ChargeInputHandler : MonoBehaviour
 
     void OnEnable()
     {
-        if (_chargeable == null && _playerInput == null) return;
+        if (_chargeable == null || _playerInput == null) return;
 
         // IChargeable을 구현한 경우에만 모든 액션 canceled 구독
         foreach (var action in _playerInput.actions)

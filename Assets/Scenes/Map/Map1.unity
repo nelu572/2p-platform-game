@@ -751486,6 +751486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1014864114}
+  - component: {fileID: 1014864115}
   m_Layer: 19
   m_Name: Player1SpawnPoint
   m_TagString: Untagged
@@ -751508,6 +751509,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1014864115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014864113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3d02264c4d4cbe499577039732d50ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectPoolManager: {fileID: 0}
 --- !u!1 &1016163520
 GameObject:
   m_ObjectHideFlags: 0
@@ -751718,6 +751732,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf5e79ca28ae524781fc7c8f3198a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _positionSmoothTime: 0.15
+  _zoomSmoothTime: 0.15
+  _minSize: 6
+  _padding: 2
 --- !u!1 &1484987754
 GameObject:
   m_ObjectHideFlags: 0
@@ -751730,6 +751748,7 @@ GameObject:
   - component: {fileID: 1484987757}
   - component: {fileID: 1484987759}
   - component: {fileID: 1484987758}
+  - component: {fileID: 1484987760}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -751796,10 +751815,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterManager: {fileID: 1484987758}
   _roundEndUI: {fileID: 141654045}
+  _cameraMove: {fileID: 0}
+  _ghostManager: {fileID: 0}
   _playerStat1: {fileID: 0}
   _playerStat2: {fileID: 0}
   _player1: {fileID: 0}
   _player2: {fileID: 0}
+--- !u!114 &1484987760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484987754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3d02264c4d4cbe499577039732d50ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectPoolManager: {fileID: 1016163521}
 --- !u!1 &1677354684
 GameObject:
   m_ObjectHideFlags: 0

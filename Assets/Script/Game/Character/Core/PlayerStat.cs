@@ -18,6 +18,9 @@ public class PlayerStat : MonoBehaviour, IDamageable
     public int SkillDamage => _statData._skillDamage;
     public float AttackCooltimeMax => _statData._attackCooltimeMax;
     public float SkillCooltimeMax => _statData._skillCooltimeMax;
+    public string GhostPoolKey => _statData != null ? _statData.ghostPoolKey : string.Empty;
+    public GameObject GhostPrefab => _statData != null ? _statData.ghostPrefab : null;
+    public int GhostPrewarmCount => _statData != null ? Mathf.Max(0, _statData.life) : 0;
 
     public float AttackCooltime { get; set; } = 0f;
     public float SkillCooltime { get; set; } = 0f;

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &220052407094084917
+--- !u!1001 &2856103669120597303
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,18 +11,22 @@ PrefabInstance:
     - target: {fileID: -7592069465267567888, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: _statData
       value: 
-      objectReference: {fileID: 11400000, guid: 6ddf02460b239584ca2ccee9a3934be7, type: 2}
+      objectReference: {fileID: 11400000, guid: 297218f2535bbc64a893457b86e68a0a, type: 2}
+    - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.b
-      value: 0.2783019
+      value: 0.8443396
       objectReference: {fileID: 0}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4071780637921829554, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Color.r
-      value: 0.3342795
+      value: 0.76234835
       objectReference: {fileID: 0}
     - target: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122,66 +126,64 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Name
-      value: BatMan
+      value: Witch Ghost
       objectReference: {fileID: 0}
     - target: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       propertyPath: m_Layer
-      value: 19
+      value: 20
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6225754125672622147, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+    - {fileID: 493374525097729564, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5154643086058714940}
+      addedObject: {fileID: -2806475572032276132}
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8955058315314984164}
+      addedObject: {fileID: -4954161974006842596}
   m_SourcePrefab: {fileID: 100100000, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
---- !u!61 &6679745773212937246 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 6899216782923802923, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-  m_PrefabInstance: {fileID: 220052407094084917}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8169983949501697397 stripped
+--- !u!1 &6183088544437663095 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
-  m_PrefabInstance: {fileID: 220052407094084917}
+  m_PrefabInstance: {fileID: 2856103669120597303}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5154643086058714940
+--- !u!114 &-2806475572032276132
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8169983949501697397}
+  m_GameObject: {fileID: 6183088544437663095}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b462168efcb92584aa3e163378190b3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8955058315314984164
+--- !u!114 &-4954161974006842596
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8169983949501697397}
+  m_GameObject: {fileID: 6183088544437663095}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc211e2dfb1671c47850779fdb96dcc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 61581d15a157472459380c769ce4af2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chargingTime: 0
-  _chargingMaxTime: 3
-  _knockbackPower: 10
-  _attackSize: {x: 3, y: 2}
-  _attackLayerMask:
+  _throwPower: 1
+  _throwMaxPower: 30
+  _throwChargeSpeed: 7.5
+  _throwAngle: 30
+  _potions:
+  - Pain
+  - Poison
+  - Slow
+  _potionCollisionLayerMask:
     serializedVersion: 2
-    m_Bits: 983040
-  _chargeMultiplier: 01000000020000000300000004000000
-  _attackOffset: {fileID: 6679745773212937246}
-  _speedUpScale: 1.5
-  _duration: 10
-  _isSpeedUp: 0
+    m_Bits: 983048
+  _windPotionKey: Wind
+  _potionIndex: 0
