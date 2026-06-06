@@ -157,24 +157,29 @@ public class GhostManager : MonoBehaviour
     private void IgnorePlayerCollisions(GameObject ghost)
     {
         Collider2D[] ghostColliders = ghost.GetComponentsInChildren<Collider2D>();
+        if (ghostColliders.Length == 0)
+            return;
+
         PlayerStat[] playerStats = FindObjectsByType<PlayerStat>(FindObjectsSortMode.None);
+        List<Collider2D> playerColliders = new List<Collider2D>();
+
+        foreach (PlayerStat playerStat in playerStats)
+        {
+            if (playerStat == null || playerStat.gameObject == ghost)
+                continue;
+
+            playerColliders.AddRange(playerStat.GetComponentsInChildren<Collider2D>());
+        }
 
         foreach (Collider2D ghostCollider in ghostColliders)
         {
             if (ghostCollider == null)
                 continue;
 
-            foreach (PlayerStat playerStat in playerStats)
+            foreach (Collider2D playerCollider in playerColliders)
             {
-                if (playerStat == null || playerStat.gameObject == ghost)
-                    continue;
-
-                Collider2D[] playerColliders = playerStat.GetComponentsInChildren<Collider2D>();
-                foreach (Collider2D playerCollider in playerColliders)
-                {
-                    if (playerCollider != null)
-                        Physics2D.IgnoreCollision(ghostCollider, playerCollider, true);
-                }
+                if (playerCollider != null)
+                    Physics2D.IgnoreCollision(ghostCollider, playerCollider, true);
             }
         }
     }
