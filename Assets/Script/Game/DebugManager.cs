@@ -37,7 +37,7 @@ public sealed class DebugManager : MonoBehaviour
     [FormerlySerializedAs("VisibleLogCount")]
     [SerializeField] private int _visibleLogCount = 8;
     private const int MaxLogMessageLength = 120;
-    [SerializeField] private readonly List<LogEntry> _logs = new List<LogEntry>(MaxLogCount);
+    private readonly List<LogEntry> _logs = new List<LogEntry>(MaxLogCount);
 
     private const float BoxPaddingX = 18f;
     private const float BoxTitleHeight = 40f;
