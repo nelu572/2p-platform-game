@@ -225,6 +225,7 @@ public sealed class DebugManager : MonoBehaviour
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
+    // 로그 가져오기
     private void HandleLogMessageReceived(string condition, string stackTrace, LogType type)
     {
         if (_logs.Count >= MaxLogCount)
@@ -246,6 +247,7 @@ public sealed class DebugManager : MonoBehaviour
             : firstLine;
     }
 
+    // 로그 종류에 따른 색상
     private static Color GetLogColor(LogType type)
     {
         switch (type)
