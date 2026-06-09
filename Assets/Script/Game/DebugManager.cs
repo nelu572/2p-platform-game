@@ -2,32 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public sealed class DebugManager : MonoBehaviour
 {
     [Header("커서 활성화 키")]
-    [SerializeField]private const KeyCode CursorToggleKey = KeyCode.M;
+    private const KeyCode CursorToggleKey = KeyCode.M;
     [SerializeField] private bool _isCursorVisible;
 
     [Header("디버그 도움말 창")]
-    [SerializeField] private const float HelpBoxWidth = 430f;
-    [SerializeField] private const float HelpBoxHeight = 230f;
-    [SerializeField] private const KeyCode HelpToggleKey = KeyCode.F1;
+    [FormerlySerializedAs("HelpBoxWidth")]
+    [SerializeField] private float _helpBoxWidth = 430f;
+    [FormerlySerializedAs("HelpBoxHeight")]
+    [SerializeField] private float _helpBoxHeight = 230f;
+    private const KeyCode HelpToggleKey = KeyCode.F1;
     [SerializeField] private bool _isHelpVisible;
 
     [Header("상태 확인 창")]
-    [SerializeField] private const float StatusBoxWidth = 430f;
-    [SerializeField] private const float StatusBoxHeight = 165f;
-    [SerializeField] private const KeyCode StatusToggleKey = KeyCode.F2;
-    [SerializeField]private bool _isStatusVisible;
+    [FormerlySerializedAs("StatusBoxWidth")]
+    [SerializeField] private float _statusBoxWidth = 430f;
+    [FormerlySerializedAs("StatusBoxHeight")]
+    [SerializeField] private float _statusBoxHeight = 165f;
+    private const KeyCode StatusToggleKey = KeyCode.F2;
+    [SerializeField] private bool _isStatusVisible;
     
     [Header("로그 창")]
-    [SerializeField]private const float LogBoxWidth = 860f;
-    [SerializeField]private const float LogBoxHeight = 320f;
-    [SerializeField]private const KeyCode LogToggleKey = KeyCode.F3;
-    [SerializeField]private bool _isLogVisible;
-    [SerializeField]private const int MaxLogCount = 30;
-    [SerializeField]private const int VisibleLogCount = 8;
+    [FormerlySerializedAs("LogBoxWidth")]
+    [SerializeField] private float _logBoxWidth = 860f;
+    [FormerlySerializedAs("LogBoxHeight")]
+    [SerializeField] private float _logBoxHeight = 320f;
+    private const KeyCode LogToggleKey = KeyCode.F3;
+    [SerializeField] private bool _isLogVisible;
+    private const int MaxLogCount = 30;
+    [FormerlySerializedAs("VisibleLogCount")]
+    [SerializeField] private int _visibleLogCount = 8;
     private const int MaxLogMessageLength = 120;
     [SerializeField] private readonly List<LogEntry> _logs = new List<LogEntry>(MaxLogCount);
 
@@ -107,7 +115,7 @@ public sealed class DebugManager : MonoBehaviour
     //디버그 도움말 구성
     private void DrawHelpOverlay()
     {
-        Rect helpRect = new Rect(12f, 12f, HelpBoxWidth, HelpBoxHeight);
+        Rect helpRect = new Rect(12f, 12f, _helpBoxWidth, _helpBoxHeight);
 
         string sceneName = SceneManager.GetActiveScene().name;
         string cursorState = _isCursorVisible ? "켜짐" : "꺼짐";
@@ -126,7 +134,7 @@ public sealed class DebugManager : MonoBehaviour
     //상태창 구성
     private void DrawStatusOverlay()
     {
-        Rect statusRect = new Rect(12f, 255f, StatusBoxWidth, StatusBoxHeight);
+        Rect statusRect = new Rect(12f, 255f, _statusBoxWidth, _statusBoxHeight);
         string sceneName = SceneManager.GetActiveScene().name;
         float frameTimeMs = _smoothedDeltaTime * 1000f;
         float fps = _smoothedDeltaTime > 0f ? 1f / _smoothedDeltaTime : 0f;
@@ -142,12 +150,12 @@ public sealed class DebugManager : MonoBehaviour
     //디버그 창 구성
     private void DrawLogOverlay()
     {
-        Rect logRect = new Rect(12f, 440f, LogBoxWidth, LogBoxHeight);
+        Rect logRect = new Rect(12f, 440f, _logBoxWidth, _logBoxHeight);
 
         GUI.Box(logRect, $"최근 로그 ({_logs.Count}/{MaxLogCount})", _boxStyle);
         GUILayout.BeginArea(GetContentRect(logRect));
 
-        int startIndex = Mathf.Max(0, _logs.Count - VisibleLogCount);
+        int startIndex = Mathf.Max(0, _logs.Count - _visibleLogCount);
         for (int i = startIndex; i < _logs.Count; i++)
         {
             LogEntry entry = _logs[i];
