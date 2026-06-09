@@ -43,18 +43,6 @@ public sealed class DebugManager : MonoBehaviour
     
     private static DebugManager _instance;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void CreateDebugManager()
-    {
-        if (_instance != null)
-            return;
-
-        GameObject obj = new GameObject("[DebugManager]");
-        _instance = obj.AddComponent<DebugManager>();
-
-        DontDestroyOnLoad(obj);
-    }
-
     private void Awake()
     {
         if (_instance != null && _instance != this)
