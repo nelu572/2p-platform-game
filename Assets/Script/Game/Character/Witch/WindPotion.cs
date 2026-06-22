@@ -2,6 +2,8 @@
 
 public class WindPotion : Potion
 {
+    protected override Color AreaColor => new Color(0.2f, 1f, 0.95f, 1f);
+
     //점프 공격이기에 하늘에 있을 가능성을 염두하고 높게 잡음
     [SerializeField] private Vector2 _size = new Vector2(3f, 15f);
     [SerializeField] private float _jumpAttackUpForce = 10f;
