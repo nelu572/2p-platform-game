@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WarriorStatData
   m_EditorClassIdentifier: 
   life: 3
-  _maxHp: 1000
+  _maxHp: 1350
   _attackDamage: 30
   _attackCooltimeMax: 0.8
   _skillDamage: 50
