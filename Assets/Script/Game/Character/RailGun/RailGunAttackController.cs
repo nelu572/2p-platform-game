@@ -28,6 +28,10 @@ public class RailGunAttackController : BaseAttackController, IChargeable
     // 이 오브젝트로 생성할 오브젝트를 찾은후 오브젝트 활성화
     [SerializeField] private string _laserKey = "Laser";
 
+    [Header("범위 표시")]
+    [SerializeField] private float _visibleLengthScale = 1f;
+    [SerializeField] private float _visibleLengthOffset = 0f;
+
     [Header("넉백")]
     [SerializeField] private float _jumpKnockbackPower = 16f;
     [SerializeField] private float _playerKnockbackPower = 2f;
@@ -66,6 +70,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         {
             _chargeTimer = Mathf.Clamp(_chargeTimer + Time.deltaTime, 0f, _maxCharge);
             _detectedTarget = DetectEnemy(_attackSize.x, _maxWidth, _attackSize.y, _maxCharge, _chargeTimer);
+            ShowChargeTriangle(_attackSize.x, _maxWidth, _attackSize.y, _maxCharge, _chargeTimer, false);
         }
 
         // 스킬 차징
@@ -73,6 +78,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         {
             _skillChargeTimer = Mathf.Clamp(_skillChargeTimer + Time.deltaTime, 0f, _skillMaxCharge);
             _skillDetectedTarget = DetectEnemy(_skillAttackSize.x, _skillMaxWidth, _skillAttackSize.y, _skillMaxCharge, _skillChargeTimer);
+            ShowChargeTriangle(_skillAttackSize.x, _skillMaxWidth, _skillAttackSize.y, _skillMaxCharge, _skillChargeTimer, true);
         }
     }
 
@@ -102,6 +108,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         IsCharging = false;
         _chargeTimer = 0f;
         _detectedTarget = null;
+        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack").Hide();
         StartAttackCooldown();
     }
 
@@ -180,6 +187,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         _isSkillCharging = false;
         _skillChargeTimer = 0f;
         _skillDetectedTarget = null;
+        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack").Hide();
         StartSkillCooldown();
     }
 
@@ -268,6 +276,22 @@ public class RailGunAttackController : BaseAttackController, IChargeable
             selfReturn.ReturnAfter(_laserDuration);
         else
             Debug.LogWarning("Laser 프리팹에 SelfReturn 컴포넌트가 없습니다.", laser);
+    }
+
+    private void ShowChargeTriangle(float length, float maxWidth, float minWidth, float maxCharge, float chargeTimer, bool isSkill)
+    {
+        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack").ShowCharge(
+            transform.position,
+            GetFacingDirection(),
+            length,
+            _visibleLengthScale,
+            _visibleLengthOffset,
+            maxWidth,
+            minWidth,
+            chargeTimer,
+            maxCharge,
+            isSkill
+        );
     }
 
 #if UNITY_EDITOR
