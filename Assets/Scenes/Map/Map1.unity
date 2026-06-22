@@ -751486,7 +751486,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1014864114}
-  - component: {fileID: 1014864115}
   m_Layer: 19
   m_Name: Player1SpawnPoint
   m_TagString: Untagged
@@ -751509,19 +751508,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1014864115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014864113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3d02264c4d4cbe499577039732d50ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _objectPoolManager: {fileID: 0}
 --- !u!1 &1016163520
 GameObject:
   m_ObjectHideFlags: 0
@@ -751566,6 +751552,9 @@ MonoBehaviour:
     initialSize: 2
   - key: Wind
     prefab: {fileID: 6316478413356991948, guid: 1166d757dcaddc74b90dd4b13527362b, type: 3}
+    initialSize: 2
+  - key: PotionAreaIndicator
+    prefab: {fileID: 7475219751802213000, guid: 6c8e837b5f8b46a4a9a67fd89298c901, type: 3}
     initialSize: 2
 --- !u!4 &1016163522
 Transform:
