@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
@@ -9,6 +10,8 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     protected BoxCollider2D BodyCollider { get; private set; }
     protected List<Collider2D> HitBuffer { get; } = new List<Collider2D>(15);
     protected ContactFilter2D ContactFilter { get; private set; }
+    private readonly Dictionary<Type, VisibleAttack> _visibleAttacks = new Dictionary<Type, VisibleAttack>();
+    private readonly HashSet<VisibleAttack> _ownedVisibleAttacks = new HashSet<VisibleAttack>();
 
     protected virtual void Awake()
     {
@@ -18,6 +21,20 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
 
         PlayerController.OnAttackHandler = Attack;
         PlayerController.OnSkillHandler = Skill;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        foreach (VisibleAttack visibleAttack in _ownedVisibleAttacks)
+        {
+            if (visibleAttack == null)
+                continue;
+
+            DestroyVisibleAttack(visibleAttack);
+        }
+
+        _ownedVisibleAttacks.Clear();
+        _visibleAttacks.Clear();
     }
 
     public abstract void Attack();
@@ -51,6 +68,37 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     protected bool IsFacingRight()
     {
         return transform.localScale.x > 0f;
+    }
+
+    protected T GetVisibleAttack<T>(string childName) where T : VisibleAttack
+    {
+        Type type = typeof(T);
+        if (_visibleAttacks.TryGetValue(type, out VisibleAttack cachedAttack) && cachedAttack != null)
+            return (T)cachedAttack;
+
+        GameObject indicator = new GameObject(childName);
+        indicator.transform.position = transform.position;
+        indicator.transform.rotation = Quaternion.identity;
+        indicator.transform.localScale = Vector3.one;
+        T visibleAttack = indicator.AddComponent<T>();
+        visibleAttack.Hide();
+        _ownedVisibleAttacks.Add(visibleAttack);
+        _visibleAttacks[type] = visibleAttack;
+        return visibleAttack;
+    }
+
+    private void DestroyVisibleAttack(VisibleAttack visibleAttack)
+    {
+        if (Application.isPlaying)
+        {
+            Destroy(visibleAttack.gameObject);
+            return;
+        }
+
+#if UNITY_EDITOR
+        if (!UnityEditor.EditorUtility.IsPersistent(visibleAttack.gameObject))
+            Destroy(visibleAttack.gameObject);
+#endif
     }
 
     protected void SetupContactFilter(LayerMask layerMask)
