@@ -24,17 +24,14 @@ public class RailGunVisibleAttack : VisibleAttack
         bool isSkill)
     {
         Vector2 safeDirection = facingDirection.sqrMagnitude > 0f ? facingDirection.normalized : Vector2.right;
-        float angle = Mathf.Atan2(safeDirection.y, safeDirection.x) * Mathf.Rad2Deg;
         float chargeRatio = maxChargeTime > 0f ? Mathf.Clamp01(chargeTime / maxChargeTime) : 1f;
         float baseWidth = Mathf.Lerp(maxBaseWidth, minBaseWidth, chargeRatio);
         float halfBaseWidth = Mathf.Max(0f, baseWidth) * 0.5f;
         float displayLength = Mathf.Max(0f, hitLength * lengthScale + lengthOffset);
         Color color = GetChargeColor(isSkill, chargeRatio);
 
-        ShowShape(
-            apex,
-            angle,
-            CreateTriangleVertices(displayLength, halfBaseWidth),
+        ShowWorldShape(
+            CreateTriangleVertices(apex, safeDirection, displayLength, halfBaseWidth),
             WithAlpha(color, Mathf.Lerp(_minFillAlpha, _maxFillAlpha, chargeRatio)),
             WithAlpha(color, Mathf.Lerp(_minOutlineAlpha, _maxOutlineAlpha, chargeRatio))
         );
@@ -47,13 +44,16 @@ public class RailGunVisibleAttack : VisibleAttack
             : Color.Lerp(_attackMinColor, _attackMaxColor, chargeRatio);
     }
 
-    private Vector3[] CreateTriangleVertices(float displayLength, float halfBaseWidth)
+    private Vector3[] CreateTriangleVertices(Vector2 apex, Vector2 direction, float displayLength, float halfBaseWidth)
     {
+        Vector2 baseCenter = apex + direction * displayLength;
+        Vector2 perpendicular = new Vector2(-direction.y, direction.x);
+
         return new Vector3[]
         {
-            Vector3.zero,
-            new Vector3(displayLength, -halfBaseWidth, 0f),
-            new Vector3(displayLength, halfBaseWidth, 0f)
+            new Vector3(apex.x, apex.y, 0f),
+            new Vector3(baseCenter.x - perpendicular.x * halfBaseWidth, baseCenter.y - perpendicular.y * halfBaseWidth, 0f),
+            new Vector3(baseCenter.x + perpendicular.x * halfBaseWidth, baseCenter.y + perpendicular.y * halfBaseWidth, 0f)
         };
     }
 }
