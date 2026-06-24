@@ -16,8 +16,6 @@ public abstract class VisibleAttack : MonoBehaviour
 
     private void Awake()
     {
-        EnsureRenderers();
-        Hide();
     }
 
     private void OnDisable()
@@ -50,6 +48,11 @@ public abstract class VisibleAttack : MonoBehaviour
         ShowShape(vertices, fillColor, outlineColor);
     }
 
+    protected void ShowWorldShape(Vector3[] worldVertices, Color fillColor, Color outlineColor)
+    {
+        ShowShape(ToLocalVertices(worldVertices), fillColor, outlineColor);
+    }
+
     protected void ShowShape(Vector3[] vertices, Color fillColor, Color outlineColor)
     {
         EnsureRenderers();
@@ -77,6 +80,11 @@ public abstract class VisibleAttack : MonoBehaviour
         transform.position = position;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
         ShowFill(vertices, fillColor);
+    }
+
+    protected void ShowWorldFill(Vector3[] worldVertices, Color fillColor)
+    {
+        ShowFill(ToLocalVertices(worldVertices), fillColor);
     }
 
     protected void ShowFill(Vector3[] vertices, Color fillColor)
@@ -201,6 +209,15 @@ public abstract class VisibleAttack : MonoBehaviour
             return component;
 
         return gameObject.AddComponent<T>();
+    }
+
+    private Vector3[] ToLocalVertices(Vector3[] worldVertices)
+    {
+        Vector3[] localVertices = new Vector3[worldVertices.Length];
+        for (int i = 0; i < worldVertices.Length; i++)
+            localVertices[i] = transform.InverseTransformPoint(worldVertices[i]);
+
+        return localVertices;
     }
 
     private Material CreateRuntimeMaterial()
