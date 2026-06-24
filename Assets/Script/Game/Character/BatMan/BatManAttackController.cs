@@ -73,7 +73,7 @@ public class BatManAttackController : BaseAttackController, IChargeable
 
         Vector2 facingDir = GetFacingDirection();
         Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackSize);
-        GetVisibleAttack<BatManVisibleAttack>("BatManVisibleAttack")?.ShowRelease(origin, _attackSize, _chargingTime, _chargingMaxTime);
+        GetChildVisibleAttack<BatManVisibleAttack>("BatManVisibleAttack")?.ShowRelease(origin, _attackSize, _chargingTime, _chargingMaxTime);
         //_animator.SetTrigger("Attack");
 
         OverlapBox(origin, _attackSize);
@@ -115,7 +115,7 @@ public class BatManAttackController : BaseAttackController, IChargeable
     private void ShowChargeIndicator()
     {
         Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackSize);
-        GetVisibleAttack<BatManVisibleAttack>("BatManVisibleAttack")?.ShowCharging(origin, _attackSize, _chargingTime, _chargingMaxTime);
+        GetChildVisibleAttack<BatManVisibleAttack>("BatManVisibleAttack")?.ShowCharging(origin, _attackSize, _chargingTime, _chargingMaxTime);
     }
 
 #if UNITY_EDITOR

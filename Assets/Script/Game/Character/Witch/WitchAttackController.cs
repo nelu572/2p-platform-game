@@ -74,7 +74,7 @@ public class WitchAttackController : BaseAttackController, IChargeable
         if (!IsCharging) return;
 
         IsCharging = false;
-        GetVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.Hide();
+        GetChildVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.Hide();
 
         // 포션 꺼내기
         _potion = _objectPoolManager.Get(_potions[_potionIndex]);
@@ -107,7 +107,7 @@ public class WitchAttackController : BaseAttackController, IChargeable
 
     public void JumpAttack()
     {
-        GetVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.Hide();
+        GetChildVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.Hide();
 
         GameObject obj = _objectPoolManager.Get(_windPotionKey);
         if (obj == null) return;
@@ -147,7 +147,7 @@ public class WitchAttackController : BaseAttackController, IChargeable
         Vector2 throwDir = GetThrowDirection();
         Vector2 startPosition = GetThrowStartPosition(throwDir);
         Vector2 initialVelocity = throwDir * _throwPower;
-        GetVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.ShowThrowTrajectory(startPosition, initialVelocity, _trajectoryGravityScale);
+        GetChildVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.ShowThrowTrajectory(startPosition, initialVelocity, _trajectoryGravityScale);
     }
 
     private Vector2 GetThrowDirection()

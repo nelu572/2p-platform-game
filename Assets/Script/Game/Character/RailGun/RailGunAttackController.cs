@@ -108,7 +108,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         IsCharging = false;
         _chargeTimer = 0f;
         _detectedTarget = null;
-        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.Hide();
+        GetChildVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.Hide();
         StartAttackCooldown();
     }
 
@@ -187,7 +187,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         _isSkillCharging = false;
         _skillChargeTimer = 0f;
         _skillDetectedTarget = null;
-        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.Hide();
+        GetChildVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.Hide();
         StartSkillCooldown();
     }
 
@@ -280,7 +280,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
 
     private void ShowChargeTriangle(float length, float maxWidth, float minWidth, float maxCharge, float chargeTimer, bool isSkill)
     {
-        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.ShowCharge(
+        GetChildVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.ShowCharge(
             transform.position,
             GetFacingDirection(),
             length,
