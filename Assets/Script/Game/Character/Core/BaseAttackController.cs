@@ -11,7 +11,6 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     protected List<Collider2D> HitBuffer { get; } = new List<Collider2D>(15);
     protected ContactFilter2D ContactFilter { get; private set; }
     private readonly Dictionary<Type, VisibleAttack> _visibleAttacks = new Dictionary<Type, VisibleAttack>();
-    private readonly HashSet<VisibleAttack> _ownedVisibleAttacks = new HashSet<VisibleAttack>();
 
     protected virtual void Awake()
     {
@@ -21,20 +20,6 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
 
         PlayerController.OnAttackHandler = Attack;
         PlayerController.OnSkillHandler = Skill;
-    }
-
-    protected virtual void OnDestroy()
-    {
-        foreach (VisibleAttack visibleAttack in _ownedVisibleAttacks)
-        {
-            if (visibleAttack == null)
-                continue;
-
-            DestroyVisibleAttack(visibleAttack);
-        }
-
-        _ownedVisibleAttacks.Clear();
-        _visibleAttacks.Clear();
     }
 
     public abstract void Attack();
@@ -70,35 +55,32 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
         return transform.localScale.x > 0f;
     }
 
-    protected T GetVisibleAttack<T>(string childName) where T : VisibleAttack
+    protected T GetChildVisibleAttack<T>(string childName) where T : VisibleAttack
     {
         Type type = typeof(T);
         if (_visibleAttacks.TryGetValue(type, out VisibleAttack cachedAttack) && cachedAttack != null)
             return (T)cachedAttack;
 
-        GameObject indicator = new GameObject(childName);
-        indicator.transform.position = transform.position;
-        indicator.transform.rotation = Quaternion.identity;
-        indicator.transform.localScale = Vector3.one;
-        T visibleAttack = indicator.AddComponent<T>();
-        visibleAttack.Hide();
-        _ownedVisibleAttacks.Add(visibleAttack);
-        _visibleAttacks[type] = visibleAttack;
-        return visibleAttack;
-    }
-
-    private void DestroyVisibleAttack(VisibleAttack visibleAttack)
-    {
-        if (Application.isPlaying)
+        T visibleAttack = null;
+        T[] visibleAttackComponents = GetComponentsInChildren<T>(true);
+        for (int i = 0; i < visibleAttackComponents.Length; i++)
         {
-            Destroy(visibleAttack.gameObject);
-            return;
+            if (visibleAttackComponents[i].transform == transform)
+                continue;
+
+            visibleAttack = visibleAttackComponents[i];
+            break;
         }
 
-#if UNITY_EDITOR
-        if (!UnityEditor.EditorUtility.IsPersistent(visibleAttack.gameObject))
-            Destroy(visibleAttack.gameObject);
-#endif
+        if (visibleAttack == null)
+        {
+            Debug.LogWarning($"{childName} 자식 오브젝트가 없어 공격 범위 표시를 건너뜁니다.", this);
+            return null;
+        }
+
+        visibleAttack.Hide();
+        _visibleAttacks[type] = visibleAttack;
+        return visibleAttack;
     }
 
     protected void SetupContactFilter(LayerMask layerMask)
