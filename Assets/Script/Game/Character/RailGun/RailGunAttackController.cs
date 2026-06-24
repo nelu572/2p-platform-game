@@ -29,7 +29,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
     [SerializeField] private string _laserKey = "Laser";
 
     [Header("범위 표시")]
-    [SerializeField] private float _visibleLengthScale = 1f;
+    [SerializeField] private float _visibleLengthScale = 0.5f;
     [SerializeField] private float _visibleLengthOffset = 0f;
 
     [Header("넉백")]
@@ -108,7 +108,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         IsCharging = false;
         _chargeTimer = 0f;
         _detectedTarget = null;
-        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack").Hide();
+        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.Hide();
         StartAttackCooldown();
     }
 
@@ -187,7 +187,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
         _isSkillCharging = false;
         _skillChargeTimer = 0f;
         _skillDetectedTarget = null;
-        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack").Hide();
+        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.Hide();
         StartSkillCooldown();
     }
 
@@ -280,7 +280,7 @@ public class RailGunAttackController : BaseAttackController, IChargeable
 
     private void ShowChargeTriangle(float length, float maxWidth, float minWidth, float maxCharge, float chargeTimer, bool isSkill)
     {
-        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack").ShowCharge(
+        GetVisibleAttack<RailGunVisibleAttack>("RailGunVisibleAttack")?.ShowCharge(
             transform.position,
             GetFacingDirection(),
             length,
