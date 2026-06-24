@@ -6,6 +6,13 @@
 
 ## 2026-06-24
 
+### 마녀 포션 포물선 표시 거리 제한
+
+- `WitchVisibleAttack`에 포물선 최대 표시 거리 값을 추가해 차징 중 궤적이 일정 거리 이상 길어지지 않도록 제한했다.
+- 마녀 프리팹의 `WitchVisibleAttack`에 기본 최대 표시 거리를 8로 설정해 인스펙터에서 조절할 수 있게 했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
 ### 공격 범위 표시 컴포넌트 위치 수정
 
 - 캐릭터 루트에 붙은 `*VisibleAttack`이 기존 `SpriteRenderer`와 같은 GameObject에 `MeshRenderer`를 추가하려다 NullReferenceException이 발생할 수 있던 구조를 수정했다.

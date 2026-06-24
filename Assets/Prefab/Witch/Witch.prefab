@@ -50,6 +50,7 @@ MonoBehaviour:
   _trajectoryPointCount: 7
   _trajectoryTimeStep: 0.08
   _trajectoryDotSize: 0.12
+  _trajectoryMaxDistance: 8
 --- !u!1001 &2856103669120597303
 PrefabInstance:
   m_ObjectHideFlags: 0
