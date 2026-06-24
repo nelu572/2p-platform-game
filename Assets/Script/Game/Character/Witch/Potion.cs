@@ -75,7 +75,7 @@ public abstract class Potion : MonoBehaviour
             return;
 
         Color color = AreaColor;
-        WitchVisibleAttack visibleAttack = null;
+        WitchPotionAreaVisibleAttack visibleAttack = null;
         if (areaIndicator.TryGetComponent(out visibleAttack))
             visibleAttack.ShowPotionArea(transform.position, _overlapSize, color, _areaIndicatorDuration);
 
