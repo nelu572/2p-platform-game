@@ -58,7 +58,7 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     protected T GetChildVisibleAttack<T>(string childName) where T : VisibleAttack
     {
         Type type = typeof(T);
-        if (_visibleAttacks.TryGetValue(type, out VisibleAttack cachedAttack) && cachedAttack != null)
+        if (_visibleAttacks.TryGetValue(type, out VisibleAttack cachedAttack))
             return (T)cachedAttack;
 
         T visibleAttack = null;
@@ -75,6 +75,7 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
         if (visibleAttack == null)
         {
             Debug.LogWarning($"{childName} 자식 오브젝트가 없어 공격 범위 표시를 건너뜁니다.", this);
+            _visibleAttacks[type] = null;
             return null;
         }
 
