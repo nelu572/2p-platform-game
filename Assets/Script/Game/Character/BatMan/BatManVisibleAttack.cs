@@ -15,7 +15,7 @@ public class BatManVisibleAttack : VisibleAttack
         float chargeRatio = GetChargeRatio(chargeTime, maxChargeTime);
         Color color = GetChargeColor(chargeRatio);
         ShowWorldShape(
-            CreateBoxVertices(center, size),
+            GetBoxVertices(center, size),
             WithAlpha(color, Mathf.Lerp(_minFillAlpha, _maxFillAlpha, chargeRatio)),
             WithAlpha(color, Mathf.Lerp(_minOutlineAlpha, _maxOutlineAlpha, chargeRatio))
         );
@@ -25,7 +25,7 @@ public class BatManVisibleAttack : VisibleAttack
     {
         float chargeRatio = GetChargeRatio(chargeTime, maxChargeTime);
         Color color = GetChargeColor(chargeRatio);
-        ShowWorldShape(CreateBoxVertices(center, size), WithAlpha(color, _maxFillAlpha), WithAlpha(color, _maxOutlineAlpha));
+        ShowWorldShape(GetBoxVertices(center, size), WithAlpha(color, _maxFillAlpha), WithAlpha(color, _maxOutlineAlpha));
         HideAfter(_releaseDuration);
     }
 
@@ -37,17 +37,5 @@ public class BatManVisibleAttack : VisibleAttack
     private Color GetChargeColor(float chargeRatio)
     {
         return Color.Lerp(_minChargeColor, _maxChargeColor, chargeRatio);
-    }
-
-    private Vector3[] CreateBoxVertices(Vector2 center, Vector2 size)
-    {
-        Vector2 halfSize = new Vector2(Mathf.Max(0f, size.x), Mathf.Max(0f, size.y)) * 0.5f;
-        return new Vector3[]
-        {
-            new Vector3(center.x - halfSize.x, center.y - halfSize.y, 0f),
-            new Vector3(center.x + halfSize.x, center.y - halfSize.y, 0f),
-            new Vector3(center.x + halfSize.x, center.y + halfSize.y, 0f),
-            new Vector3(center.x - halfSize.x, center.y + halfSize.y, 0f)
-        };
     }
 }

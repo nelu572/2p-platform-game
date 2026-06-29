@@ -13,6 +13,7 @@ public abstract class VisibleAttack : MonoBehaviour
     private Material _lineMaterial;
     private Mesh _mesh;
     private Coroutine _hideRoutine;
+    private readonly Vector3[] _cachedBoxVertices = new Vector3[4];
 
     private void Awake()
     {
@@ -235,6 +236,16 @@ public abstract class VisibleAttack : MonoBehaviour
     {
         color.a = alpha;
         return color;
+    }
+
+    protected Vector3[] GetBoxVertices(Vector2 center, Vector2 size)
+    {
+        Vector2 halfSize = new Vector2(Mathf.Max(0f, size.x), Mathf.Max(0f, size.y)) * 0.5f;
+        _cachedBoxVertices[0] = new Vector3(center.x - halfSize.x, center.y - halfSize.y, 0f);
+        _cachedBoxVertices[1] = new Vector3(center.x + halfSize.x, center.y - halfSize.y, 0f);
+        _cachedBoxVertices[2] = new Vector3(center.x + halfSize.x, center.y + halfSize.y, 0f);
+        _cachedBoxVertices[3] = new Vector3(center.x - halfSize.x, center.y + halfSize.y, 0f);
+        return _cachedBoxVertices;
     }
 
     private void DestroyRuntimeMaterial(Material material)
