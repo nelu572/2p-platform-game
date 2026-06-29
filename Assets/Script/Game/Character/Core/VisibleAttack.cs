@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class VisibleAttack : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public abstract class VisibleAttack : MonoBehaviour
     private Mesh _mesh;
     private Coroutine _hideRoutine;
     private readonly Vector3[] _cachedBoxVertices = new Vector3[4];
+    private readonly List<Vector3> _cachedLocalVertices = new List<Vector3>();
 
     private void Awake()
     {
@@ -88,7 +90,28 @@ public abstract class VisibleAttack : MonoBehaviour
         ShowFill(ToLocalVertices(worldVertices), fillColor);
     }
 
+    protected void ShowWorldFill(List<Vector3> worldVertices, Color fillColor)
+    {
+        ShowFill(ToLocalVertices(worldVertices), fillColor);
+    }
+
     protected void ShowFill(Vector3[] vertices, Color fillColor)
+    {
+        EnsureRenderers();
+
+        if (_hideRoutine != null)
+        {
+            StopCoroutine(_hideRoutine);
+            _hideRoutine = null;
+        }
+
+        UpdateMesh(vertices);
+        _fillMaterial.color = fillColor;
+        _meshRenderer.enabled = true;
+        _lineRenderer.enabled = false;
+    }
+
+    protected void ShowFill(List<Vector3> vertices, Color fillColor)
     {
         EnsureRenderers();
 
@@ -169,18 +192,31 @@ public abstract class VisibleAttack : MonoBehaviour
     {
         _mesh.Clear();
         _mesh.vertices = vertices;
+        UpdateTriangles(vertices.Length);
+        _mesh.RecalculateBounds();
+    }
 
-        if (vertices.Length == 3)
+    private void UpdateMesh(List<Vector3> vertices)
+    {
+        _mesh.Clear();
+        _mesh.SetVertices(vertices);
+        UpdateTriangles(vertices.Count);
+        _mesh.RecalculateBounds();
+    }
+
+    private void UpdateTriangles(int vertexCount)
+    {
+        if (vertexCount == 3)
         {
             _mesh.triangles = new[] { 0, 1, 2 };
         }
-        else if (vertices.Length == 4)
+        else if (vertexCount == 4)
         {
             _mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 };
         }
-        else if (vertices.Length % 4 == 0)
+        else if (vertexCount % 4 == 0)
         {
-            int quadCount = vertices.Length / 4;
+            int quadCount = vertexCount / 4;
             int[] triangles = new int[quadCount * 6];
             for (int i = 0; i < quadCount; i++)
             {
@@ -200,8 +236,6 @@ public abstract class VisibleAttack : MonoBehaviour
         {
             _mesh.triangles = System.Array.Empty<int>();
         }
-
-        _mesh.RecalculateBounds();
     }
 
     private T GetOrAdd<T>() where T : Component
@@ -219,6 +253,18 @@ public abstract class VisibleAttack : MonoBehaviour
             localVertices[i] = transform.InverseTransformPoint(worldVertices[i]);
 
         return localVertices;
+    }
+
+    private List<Vector3> ToLocalVertices(List<Vector3> worldVertices)
+    {
+        _cachedLocalVertices.Clear();
+        if (_cachedLocalVertices.Capacity < worldVertices.Count)
+            _cachedLocalVertices.Capacity = worldVertices.Count;
+
+        for (int i = 0; i < worldVertices.Count; i++)
+            _cachedLocalVertices.Add(transform.InverseTransformPoint(worldVertices[i]));
+
+        return _cachedLocalVertices;
     }
 
     private Material CreateRuntimeMaterial()

@@ -9,11 +9,16 @@ public class WitchVisibleAttack : VisibleAttack
     [SerializeField] private float _trajectoryTimeStep = 0.08f;
     [SerializeField] private float _trajectoryDotSize = 0.12f;
     [SerializeField] private float _trajectoryMaxDistance = 8f;
+    private readonly List<Vector3> _cachedVertices = new List<Vector3>();
 
     public void ShowThrowTrajectory(Vector2 startPosition, Vector2 initialVelocity, float gravityScale)
     {
         int pointCount = Mathf.Max(2, _trajectoryPointCount);
-        List<Vector3> vertices = new List<Vector3>(pointCount * 4);
+        _cachedVertices.Clear();
+        int requiredCapacity = pointCount * 4;
+        if (_cachedVertices.Capacity < requiredCapacity)
+            _cachedVertices.Capacity = requiredCapacity;
+
         Vector2 gravity = Physics2D.gravity * gravityScale;
         float maxDistance = Mathf.Max(0f, _trajectoryMaxDistance);
 
@@ -26,14 +31,14 @@ public class WitchVisibleAttack : VisibleAttack
             if (maxDistance > 0f && offset.magnitude > maxDistance)
             {
                 position = startPosition + offset.normalized * maxDistance;
-                AddDotVertices(vertices, position, _trajectoryDotSize);
+                AddDotVertices(_cachedVertices, position, _trajectoryDotSize);
                 break;
             }
 
-            AddDotVertices(vertices, position, _trajectoryDotSize);
+            AddDotVertices(_cachedVertices, position, _trajectoryDotSize);
         }
 
-        ShowWorldFill(vertices.ToArray(), _trajectoryColor);
+        ShowWorldFill(_cachedVertices, _trajectoryColor);
     }
 
     private void AddDotVertices(List<Vector3> vertices, Vector2 center, float size)
