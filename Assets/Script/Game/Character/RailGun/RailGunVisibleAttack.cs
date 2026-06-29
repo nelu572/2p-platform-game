@@ -10,6 +10,7 @@ public class RailGunVisibleAttack : VisibleAttack
     [SerializeField] private float _maxFillAlpha = 0.42f;
     [SerializeField] private float _minOutlineAlpha = 0.6f;
     [SerializeField] private float _maxOutlineAlpha = 1f;
+    private readonly Vector3[] _cachedTriangleVertices = new Vector3[3];
 
     public void ShowCharge(
         Vector2 apex,
@@ -49,11 +50,9 @@ public class RailGunVisibleAttack : VisibleAttack
         Vector2 baseCenter = apex + direction * displayLength;
         Vector2 perpendicular = new Vector2(-direction.y, direction.x);
 
-        return new Vector3[]
-        {
-            new Vector3(apex.x, apex.y, 0f),
-            new Vector3(baseCenter.x - perpendicular.x * halfBaseWidth, baseCenter.y - perpendicular.y * halfBaseWidth, 0f),
-            new Vector3(baseCenter.x + perpendicular.x * halfBaseWidth, baseCenter.y + perpendicular.y * halfBaseWidth, 0f)
-        };
+        _cachedTriangleVertices[0] = new Vector3(apex.x, apex.y, 0f);
+        _cachedTriangleVertices[1] = new Vector3(baseCenter.x - perpendicular.x * halfBaseWidth, baseCenter.y - perpendicular.y * halfBaseWidth, 0f);
+        _cachedTriangleVertices[2] = new Vector3(baseCenter.x + perpendicular.x * halfBaseWidth, baseCenter.y + perpendicular.y * halfBaseWidth, 0f);
+        return _cachedTriangleVertices;
     }
 }
