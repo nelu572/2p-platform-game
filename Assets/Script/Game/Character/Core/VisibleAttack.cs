@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public abstract class VisibleAttack : MonoBehaviour
 {
+    private static readonly int[] TriangleIndices = { 0, 1, 2 };
+    private static readonly int[] QuadIndices = { 0, 1, 2, 0, 2, 3 };
+
     [SerializeField] private string _sortingLayerName = "Player";
     [SerializeField] private int _sortingOrder = -10;
 
@@ -16,6 +19,7 @@ public abstract class VisibleAttack : MonoBehaviour
     private Coroutine _hideRoutine;
     private readonly Vector3[] _cachedBoxVertices = new Vector3[4];
     private readonly List<Vector3> _cachedLocalVertices = new List<Vector3>();
+    private int[] _cachedQuadTriangles;
 
     private void Awake()
     {
@@ -208,34 +212,43 @@ public abstract class VisibleAttack : MonoBehaviour
     {
         if (vertexCount == 3)
         {
-            _mesh.triangles = new[] { 0, 1, 2 };
+            _mesh.triangles = TriangleIndices;
         }
         else if (vertexCount == 4)
         {
-            _mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+            _mesh.triangles = QuadIndices;
         }
-        else if (vertexCount % 4 == 0)
+        else if (vertexCount > 0 && vertexCount % 4 == 0)
         {
             int quadCount = vertexCount / 4;
-            int[] triangles = new int[quadCount * 6];
-            for (int i = 0; i < quadCount; i++)
-            {
-                int vertexIndex = i * 4;
-                int triangleIndex = i * 6;
-                triangles[triangleIndex] = vertexIndex;
-                triangles[triangleIndex + 1] = vertexIndex + 1;
-                triangles[triangleIndex + 2] = vertexIndex + 2;
-                triangles[triangleIndex + 3] = vertexIndex;
-                triangles[triangleIndex + 4] = vertexIndex + 2;
-                triangles[triangleIndex + 5] = vertexIndex + 3;
-            }
-
-            _mesh.triangles = triangles;
+            _mesh.triangles = GetQuadTriangles(quadCount);
         }
         else
         {
             _mesh.triangles = System.Array.Empty<int>();
         }
+    }
+
+    private int[] GetQuadTriangles(int quadCount)
+    {
+        int triangleCount = quadCount * 6;
+        if (_cachedQuadTriangles != null && _cachedQuadTriangles.Length == triangleCount)
+            return _cachedQuadTriangles;
+
+        _cachedQuadTriangles = new int[triangleCount];
+        for (int i = 0; i < quadCount; i++)
+        {
+            int vertexIndex = i * 4;
+            int triangleIndex = i * 6;
+            _cachedQuadTriangles[triangleIndex] = vertexIndex;
+            _cachedQuadTriangles[triangleIndex + 1] = vertexIndex + 1;
+            _cachedQuadTriangles[triangleIndex + 2] = vertexIndex + 2;
+            _cachedQuadTriangles[triangleIndex + 3] = vertexIndex;
+            _cachedQuadTriangles[triangleIndex + 4] = vertexIndex + 2;
+            _cachedQuadTriangles[triangleIndex + 5] = vertexIndex + 3;
+        }
+
+        return _cachedQuadTriangles;
     }
 
     private T GetOrAdd<T>() where T : Component
