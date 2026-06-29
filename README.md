@@ -62,3 +62,4 @@ AI 작업자는 먼저 다음 문서를 확인한다.
 - `Harness/Docs/Conventions/CODING_CONVENTIONS.md`: 코드 작성 규칙
 - `Harness/Docs/Conventions/GITHUB_HARNESS.md`: GitHub 작업 규칙
 - `Harness/Docs/Logs/FILE_CHANGE_LOG.md`: 파일 변경 이력
+ 
