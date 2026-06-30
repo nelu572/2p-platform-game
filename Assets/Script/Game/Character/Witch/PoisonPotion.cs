@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PoisonPotion : Potion
 {
+    protected override Color AreaColor => new Color(0.45f, 1f, 0.1f, 1f);
+
     [SerializeField] private float _poisonDuration = 5f; // 지속 시간
 
     protected override void ApplyEffect(Collider2D hit)

@@ -90,7 +90,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2511572648570731402}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       insertIndex: 7
@@ -99,6 +102,11 @@ PrefabInstance:
 --- !u!1 &9175032816059688736 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+  m_PrefabInstance: {fileID: 952536464290951008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9175032816059688737 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
   m_PrefabInstance: {fileID: 952536464290951008}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5799861597956858159
@@ -123,3 +131,52 @@ MonoBehaviour:
   _slashWavePrefab: {fileID: 6742440097368036595, guid: 296793028406c5f4cbe603698c71fabd, type: 3}
   _slashWaveMaxDistance: 30
   _slashWaveScale: {x: 4.5, y: 8}
+--- !u!1 &2511572648570731403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2511572648570731402}
+  - component: {fileID: 2511572648570731401}
+  m_Layer: 0
+  m_Name: WarriorVisibleAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2511572648570731402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511572648570731403}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9175032816059688737}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2511572648570731401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511572648570731403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16d8ca8363ec4d7c827449b69dc686e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sortingLayerName: Player
+  _sortingOrder: -10
+  _attackFillColor: {r: 1, g: 0, b: 0, a: 0.28}
+  _attackOutlineColor: {r: 1, g: 0, b: 0, a: 0.9}
+  _attackDuration: 0.15

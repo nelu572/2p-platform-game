@@ -39,6 +39,7 @@ public class BatManAttackController : BaseAttackController, IChargeable
         {
             _chargingTime += Time.deltaTime;
             _chargingTime = Mathf.Min(_chargingTime, _chargingMaxTime);
+            ShowChargeIndicator();
         }
 
         if(_isSpeedUp)
@@ -72,6 +73,7 @@ public class BatManAttackController : BaseAttackController, IChargeable
 
         Vector2 facingDir = GetFacingDirection();
         Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackSize);
+        GetChildVisibleAttack<BatManVisibleAttack>("BatManVisibleAttack")?.ShowRelease(origin, _attackSize, _chargingTime, _chargingMaxTime);
         //_animator.SetTrigger("Attack");
 
         OverlapBox(origin, _attackSize);
@@ -108,6 +110,12 @@ public class BatManAttackController : BaseAttackController, IChargeable
         PlayerStat.MoveSpeed += _plusMoveSpeed;// player의 속도 배율은 1 + _speedUpScale
         _isSpeedUp = true;
         StartSkillCooldown();
+    }
+
+    private void ShowChargeIndicator()
+    {
+        Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackSize);
+        GetChildVisibleAttack<BatManVisibleAttack>("BatManVisibleAttack")?.ShowCharging(origin, _attackSize, _chargingTime, _chargingMaxTime);
     }
 
 #if UNITY_EDITOR

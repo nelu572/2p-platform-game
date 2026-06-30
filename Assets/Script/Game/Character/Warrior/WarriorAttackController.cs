@@ -54,6 +54,7 @@ public class WarriorAttackController : BaseAttackController
     public void PerformAttackHit()
     {
         Vector2 origin = GetHorizontalBoxOrigin(_attackOffset, _attackBoxSize);
+        GetChildVisibleAttack<WarriorVisibleAttack>("WarriorVisibleAttack")?.ShowAttack(origin, _attackBoxSize);
 
         OverlapBox(origin, _attackBoxSize);
 

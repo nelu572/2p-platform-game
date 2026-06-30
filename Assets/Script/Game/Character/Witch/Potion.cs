@@ -13,6 +13,9 @@ public abstract class Potion : MonoBehaviour
     [Header("공격 감지")]
     // 포션의 영역을 자식에서 조절하도록 protected로 설정
     [SerializeField] protected Vector2 _overlapSize = new Vector2(8f, 1f);
+    [Header("범위 표시")]
+    [SerializeField] private string _areaIndicatorKey = "PotionAreaIndicator";
+    [SerializeField] private float _areaIndicatorDuration = 0.6f;
     List<Collider2D> _hitBuffer = new List<Collider2D>(15);
     private ContactFilter2D _contactFilter;
 
@@ -52,11 +55,33 @@ public abstract class Potion : MonoBehaviour
             ApplyEffect(_hitBuffer[i]);
         }
 
+        ShowAreaIndicator();
         _pooled.ReturnToPool();
     }
 
     // 자식 클래스에서 효과 구현
     protected abstract void ApplyEffect(Collider2D hit);
+
+    protected virtual Color AreaColor => Color.white;
+
+    private void ShowAreaIndicator()
+    {
+        ObjectPoolManager poolManager = ObjectPoolManager.Instance;
+        if (poolManager == null)
+            return;
+
+        GameObject areaIndicator = poolManager.Get(_areaIndicatorKey, transform.position, Quaternion.identity);
+        if (areaIndicator == null)
+            return;
+
+        Color color = AreaColor;
+        WitchPotionAreaVisibleAttack visibleAttack = null;
+        if (areaIndicator.TryGetComponent(out visibleAttack))
+            visibleAttack.ShowPotionArea(transform.position, _overlapSize, color, _areaIndicatorDuration);
+
+        if (areaIndicator.TryGetComponent<SelfReturn>(out var selfReturn))
+            selfReturn.ReturnAfter(_areaIndicatorDuration);
+    }
 
     private void OnDrawGizmosSelected()
     {

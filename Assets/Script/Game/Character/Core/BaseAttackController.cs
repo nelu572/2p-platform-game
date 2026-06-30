@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
@@ -9,6 +10,7 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     protected BoxCollider2D BodyCollider { get; private set; }
     protected List<Collider2D> HitBuffer { get; } = new List<Collider2D>(15);
     protected ContactFilter2D ContactFilter { get; private set; }
+    private readonly Dictionary<Type, VisibleAttack> _visibleAttacks = new Dictionary<Type, VisibleAttack>();
 
     protected virtual void Awake()
     {
@@ -51,6 +53,35 @@ public abstract class BaseAttackController : MonoBehaviour, IAttackController
     protected bool IsFacingRight()
     {
         return transform.localScale.x > 0f;
+    }
+
+    protected T GetChildVisibleAttack<T>(string childName) where T : VisibleAttack
+    {
+        Type type = typeof(T);
+        if (_visibleAttacks.TryGetValue(type, out VisibleAttack cachedAttack))
+            return (T)cachedAttack;
+
+        T visibleAttack = null;
+        T[] visibleAttackComponents = GetComponentsInChildren<T>(true);
+        for (int i = 0; i < visibleAttackComponents.Length; i++)
+        {
+            if (visibleAttackComponents[i].transform == transform)
+                continue;
+
+            visibleAttack = visibleAttackComponents[i];
+            break;
+        }
+
+        if (visibleAttack == null)
+        {
+            Debug.LogWarning($"{childName} 자식 오브젝트가 없어 공격 범위 표시를 건너뜁니다.", this);
+            _visibleAttacks[type] = null;
+            return null;
+        }
+
+        visibleAttack.Hide();
+        _visibleAttacks[type] = visibleAttack;
+        return visibleAttack;
     }
 
     protected void SetupContactFilter(LayerMask layerMask)

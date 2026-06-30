@@ -130,7 +130,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3190214821496456042}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       insertIndex: -1
@@ -147,6 +150,11 @@ BoxCollider2D:
 --- !u!1 &8169983949501697397 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+  m_PrefabInstance: {fileID: 220052407094084917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8169983949501697398 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
   m_PrefabInstance: {fileID: 220052407094084917}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5154643086058714940
@@ -185,3 +193,56 @@ MonoBehaviour:
   _speedUpScale: 1.5
   _duration: 10
   _isSpeedUp: 0
+--- !u!1 &3190214821496456043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3190214821496456042}
+  - component: {fileID: 3190214821496456041}
+  m_Layer: 0
+  m_Name: BatManVisibleAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3190214821496456042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3190214821496456043}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8169983949501697398}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3190214821496456041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3190214821496456043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f063d104bd455894ef88c298b04512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sortingLayerName: Player
+  _sortingOrder: -10
+  _minChargeColor: {r: 1, g: 0.45, b: 0, a: 1}
+  _maxChargeColor: {r: 1, g: 0, b: 0, a: 1}
+  _minFillAlpha: 0.18
+  _maxFillAlpha: 0.42
+  _minOutlineAlpha: 0.65
+  _maxOutlineAlpha: 1
+  _releaseDuration: 0.18

@@ -4,6 +4,68 @@
 
 <!-- 이 부분은 깃허브에 올릴때에는 항상 이 주석만 있도록 유지해야한다 -->
 
+## 2026-06-29
+
+### PR 53 Gemini 리뷰 코멘트 반영
+
+- `BaseAttackController`가 공격 범위 표시 자식 컴포넌트를 찾지 못한 경우도 캐싱해 반복 검색과 경고 로그가 발생하지 않도록 수정했다.
+- `VisibleAttack`에 박스 버텍스 공통 캐시 헬퍼와 리스트 기반 표시 경로를 추가해 전사 / 방망이 / 마녀 포션 / 마녀 궤적 표시의 반복 할당을 줄였다.
+- `RailGunVisibleAttack`의 차징 삼각형 버텍스를 캐시 배열로 재사용하도록 수정했다.
+- `VisibleAttack`의 메쉬 삼각형 인덱스 배열을 고정 배열과 다중 사각형 캐시로 재사용하도록 수정했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+## 2026-06-24
+
+### 마녀 포션 포물선 표시 거리 제한
+
+- `WitchVisibleAttack`에 포물선 최대 표시 거리 값을 추가해 차징 중 궤적이 일정 거리 이상 길어지지 않도록 제한했다.
+- 마녀 프리팹의 `WitchVisibleAttack`에 기본 최대 표시 거리를 8로 설정해 인스펙터에서 조절할 수 있게 했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+### 공격 범위 표시 컴포넌트 위치 수정
+
+- 캐릭터 루트에 붙은 `*VisibleAttack`이 기존 `SpriteRenderer`와 같은 GameObject에 `MeshRenderer`를 추가하려다 NullReferenceException이 발생할 수 있던 구조를 수정했다.
+- 전사 / 방망이 / 레일건 / 마녀 프리팹에 `*VisibleAttack` 전용 자식 오브젝트를 추가하고, 표시 컴포넌트는 해당 자식에서 렌더링하도록 정리했다.
+- `BaseAttackController`가 루트의 `*VisibleAttack`을 사용하거나 런타임 GameObject를 생성하지 않고, 자식 표시 컴포넌트만 찾아 사용하도록 변경했다.
+- `PotionAreaIndicator`는 포션 충돌 후 장판 범위만 표시하도록 `WitchPotionAreaVisibleAttack`으로 분리하고, 마녀 투척 포물선 설정 필드가 섞이지 않게 정리했다.
+- 레일건 공격 범위 시각화의 전방 길이 배율을 0.5로 낮춰 기존 가로 길이의 절반만 표시되도록 조정했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+## 2026-06-22
+
+### 공격 범위 표시 책임 분리
+
+- `VisibleAttack`은 공통 메시 / 라인 렌더링 컴포넌트로 유지하고, 전사 / 방망이 / 레일건 / 마녀 전용 `*VisibleAttack` 스크립트를 추가했다.
+- `VisibleAttack`을 추상 공통 렌더러로 줄이고, 박스 / 삼각형 버텍스 생성은 캐릭터별 `*VisibleAttack` 자식 스크립트에서 구현하도록 분리했다.
+- `BaseAttackController`가 캐릭터별 표시 컴포넌트를 타입 기준으로 런타임 생성 / 재사용하도록 변경했다.
+- 전사와 방망이 공격 컨트롤러는 직접 도형을 그리지 않고 전용 표시 스크립트만 호출하도록 정리했다.
+- 레일건 차징 표시는 캐릭터 위치를 꼭짓점으로 두고 바라보는 방향 앞쪽에 밑변이 오도록 수정했으며, 차징 중 전방 길이는 유지하고 밑변 폭만 줄어들도록 했다.
+- 레일건 공격 컨트롤러에 범위 표시 길이 배율 / 오프셋 필드를 추가해 표시 길이를 인스펙터에서 조정할 수 있게 했다.
+- 공격 범위 표시가 별도 런타임 GameObject를 생성하지 않고 캐릭터에 붙은 `*VisibleAttack` 컴포넌트에서 월드 좌표 버텍스로 그려지도록 수정했다.
+- 방망이와 레일건의 차징 범위 표시가 차징 비율에 따라 색상과 투명도가 더 진해지도록 조정했다.
+- 마녀 포션 차징 중 실제 던지기 방향 / 힘 / 중력 기준의 점 형태 예측 포물선을 표시하고 릴리즈 시 숨기도록 했다.
+- 전사 / 방망이 / 레일건 / 마녀 캐릭터 프리팹에 각 `*VisibleAttack` 컴포넌트를 붙여 인스펙터에서 표시값을 조절할 수 있게 했다.
+- 마녀 포션 장판 프리팹은 `WitchVisibleAttack`을 사용하도록 스크립트 참조를 교체했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
+## 2026-06-20
+
+### 인게임 공격 범위 표시 추가
+
+- `VisibleAttack`를 런타임 범위 표시 컴포넌트로 구현해 삼각형 / 사각형 범위를 반투명 채움과 외곽선으로 표시하도록 했다.
+- `BaseAttackController`에서 공격 표시 오브젝트를 런타임 확보하도록 해 캐릭터 프리팹 연결 변경 없이 표시를 사용할 수 있게 했다.
+- 전사 일반 공격은 기존 `_attackBoxSize` 판정 위치에 빨간 사각형을 짧게 표시하도록 했다.
+- 방망이 일반 공격은 차징 중 기존 `_attackSize` 판정 위치에 주황에서 빨강으로 변하는 사각형을 표시하고, release 후 짧게 유지하도록 했다.
+- 레일건 일반 공격 / 스킬 차징 중 기존 감지 폭 변화에 맞춘 노랑 / 청록 삼각형을 표시하고, release 후 즉시 숨기도록 했다.
+- 마녀 포션 충돌 시 기존 `_overlapSize` 크기의 장판 표시를 잠깐 남기고, Pain / Poison / Slow / Wind 포션별 색상을 구분했다.
+- `PotionAreaIndicator` 풀 프리팹을 추가하고 `Map1`의 `PoolManager`에 `PotionAreaIndicator` 키로 등록했다.
+- 검증
+  - `dotnet build Assembly-CSharp.csproj --no-restore`로 C# 컴파일을 확인했다.
+
 ## 2026-06-08
 
 ### 디버그 매니저 관찰 오버레이 추가

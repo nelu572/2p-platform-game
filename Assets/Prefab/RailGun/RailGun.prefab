@@ -83,7 +83,10 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: -8609067322250837177, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8052900584779646266}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
       insertIndex: -1
@@ -95,6 +98,11 @@ PrefabInstance:
 --- !u!1 &2771155314212984932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8245058897444931648, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
+  m_PrefabInstance: {fileID: 6059956624799879204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2771155314212984933 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4309623148872354247, guid: 8e8e18491d163b649a33f637e25ff36d, type: 3}
   m_PrefabInstance: {fileID: 6059956624799879204}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &290028739437716116
@@ -135,6 +143,62 @@ MonoBehaviour:
   _laser: {fileID: 8850260750053975397, guid: 688f503224173cc4984688aa0eca35ad, type: 3}
   _laserDuration: 0.5
   _laserKey: Laser
+  _visibleLengthScale: 0.5
+  _visibleLengthOffset: 0
   _jumpKnockbackPower: 16
   _playerKnockbackPower: 2
   _enemyKnockbackPower: 3
+--- !u!1 &8052900584779646267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8052900584779646266}
+  - component: {fileID: 8052900584779646265}
+  m_Layer: 0
+  m_Name: RailGunVisibleAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8052900584779646266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052900584779646267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2771155314212984933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8052900584779646265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052900584779646267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38ea445f5f345b1a27e33bc523f8b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sortingLayerName: Player
+  _sortingOrder: -10
+  _attackMinColor: {r: 1, g: 0.9, b: 0, a: 1}
+  _attackMaxColor: {r: 1, g: 0.25, b: 0, a: 1}
+  _skillMinColor: {r: 0, g: 1, b: 1, a: 1}
+  _skillMaxColor: {r: 0, g: 0.35, b: 1, a: 1}
+  _minFillAlpha: 0.16
+  _maxFillAlpha: 0.42
+  _minOutlineAlpha: 0.6
+  _maxOutlineAlpha: 1

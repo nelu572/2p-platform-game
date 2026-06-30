@@ -9,6 +9,7 @@ public class WitchAttackController : BaseAttackController, IChargeable
     [SerializeField] private float _throwMaxPower = 30f;
     [SerializeField] private float _throwChargeSpeed = 7.5f; // 초당 충전되는 힘의 양
     [SerializeField] private float _throwAngle = 30f; // 던지는 각도
+    [SerializeField] private float _throwSpawnOffset = 1.2f;
     [SerializeField] private string[] _potions = { "Pain", "Poison", "Slow" };
     //캐릭터 레이어 + 땅 레이어를 가짐
     [SerializeField] private LayerMask _potionCollisionLayerMask;
@@ -21,6 +22,9 @@ public class WitchAttackController : BaseAttackController, IChargeable
 
     [Header("스킬 - 포션 선택")]
     [SerializeField] private int _potionIndex = 0;
+
+    [Header("범위 표시")]
+    [SerializeField] private float _trajectoryGravityScale = 1f;
 
     private ObjectPoolManager _objectPoolManager;
     //private Animator _animator;
@@ -42,6 +46,7 @@ public class WitchAttackController : BaseAttackController, IChargeable
         {
             _throwPower += Time.deltaTime * _throwChargeSpeed;
             _throwPower = Mathf.Min(_throwPower, _throwMaxPower);
+            ShowThrowTrajectory();
         }
     }
 
@@ -69,6 +74,7 @@ public class WitchAttackController : BaseAttackController, IChargeable
         if (!IsCharging) return;
 
         IsCharging = false;
+        GetChildVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.Hide();
 
         // 포션 꺼내기
         _potion = _objectPoolManager.Get(_potions[_potionIndex]);
@@ -77,19 +83,10 @@ public class WitchAttackController : BaseAttackController, IChargeable
         // 포션 초기 위치를 플레이어 위치로
         _potion.transform.position = transform.position;
 
-        // 바라보는 방향
-        Vector2 facingDir = GetFacingDirection();
-
-        // 포물선 방향 계산 (바라보는 방향 + 위쪽 각도)
-        float rad = _throwAngle * Mathf.Deg2Rad;
-
-        Vector2 throwDir = new Vector2(
-            facingDir.x * Mathf.Cos(rad),
-            Mathf.Sin(rad)
-        );
+        Vector2 throwDir = GetThrowDirection();
 
         // 플레이어 콜라이더 크기만큼 앞에서 생성
-        _potion.transform.position = (Vector2)transform.position + throwDir * 1.2f; // 1f는 오프셋, 조절 가능
+        _potion.transform.position = GetThrowStartPosition(throwDir);
 
         // Rigidbody2D에 힘 주입
         if (_potion.TryGetComponent<Rigidbody2D>(out var rb))
@@ -110,6 +107,8 @@ public class WitchAttackController : BaseAttackController, IChargeable
 
     public void JumpAttack()
     {
+        GetChildVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.Hide();
+
         GameObject obj = _objectPoolManager.Get(_windPotionKey);
         if (obj == null) return;
 
@@ -141,5 +140,28 @@ public class WitchAttackController : BaseAttackController, IChargeable
         {
             case "Attack": ReleaseAttack(); break;
         }
+    }
+
+    private void ShowThrowTrajectory()
+    {
+        Vector2 throwDir = GetThrowDirection();
+        Vector2 startPosition = GetThrowStartPosition(throwDir);
+        Vector2 initialVelocity = throwDir * _throwPower;
+        GetChildVisibleAttack<WitchVisibleAttack>("WitchVisibleAttack")?.ShowThrowTrajectory(startPosition, initialVelocity, _trajectoryGravityScale);
+    }
+
+    private Vector2 GetThrowDirection()
+    {
+        Vector2 facingDir = GetFacingDirection();
+        float rad = _throwAngle * Mathf.Deg2Rad;
+        return new Vector2(
+            facingDir.x * Mathf.Cos(rad),
+            Mathf.Sin(rad)
+        );
+    }
+
+    private Vector2 GetThrowStartPosition(Vector2 throwDir)
+    {
+        return (Vector2)transform.position + throwDir * _throwSpawnOffset;
     }
 }
